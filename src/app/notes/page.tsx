@@ -27,13 +27,15 @@ const Notes: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
+  const baseUrl = "https://mind-maps-backend.onrender.com"
+
   const { userId } = useAuth();
   console.log(userId);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get<Note[]>("http://localhost:8080/notes");
+        const response = await axios.get<Note[]>(`${baseUrl}/notes` || "http://localhost:8080/notes");
         // Filter notes to include only those belonging to the current user
         const userNotes = response.data.filter(
           (note) => note.userId === userId
