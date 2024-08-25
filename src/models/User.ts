@@ -38,12 +38,9 @@
 
 // export default User;
 
-
-
-
 import { Schema, model, models } from "mongoose";
 
-const UserSchema = new Schema ({
+const UserSchema = new Schema({
   clerckId: {
     type: String,
     required: true,
@@ -55,20 +52,22 @@ const UserSchema = new Schema ({
     unique: true,
   },
   username: {
-    type:String,
+    type: String,
     required: true,
   },
   photo: {
     type: String,
     required: true,
-  }, 
+  },
   firstName: {
     type: String,
-  }, 
+  },
   lastName: {
     type: String,
-  }
-})
+  },
+  connectedPeople: [{ type: String }],
+  requestedPeople: [{ type: String }],
+});
 
 const User = models?.User || model("User", UserSchema);
 

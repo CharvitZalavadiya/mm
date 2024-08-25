@@ -28,21 +28,21 @@ const Notes: React.FC = () => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   const baseUrl = "https://mind-maps-backend.onrender.com"
+  const localUrl = "http://localhost:8080"
 
   const { userId } = useAuth();
-  console.log(userId);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get<Note[]>(`${baseUrl}/notes` || "http://localhost:8080/notes");
+        const response = await axios.get<Note[]>(`${baseUrl}/notes` || `${localUrl}/notes`);
         // Filter notes to include only those belonging to the current user
         const userNotes = response.data.filter(
           (note) => note.userId === userId
         );
         setNotes(userNotes);
         setFilteredNotes(userNotes); // Initialize filtered notes with user's notes
-        console.log(response);
+        // console.log(response);
       } catch (error) {
         console.error("Error fetching notes:", error);
       }
@@ -155,7 +155,7 @@ const Notes: React.FC = () => {
       };
 
       await axios.post(
-        `${baseUrl}/notes/${selectedNote._id}`,
+        `${baseUrl}/notes/${selectedNote._id}` || `${localUrl}/notes/${selectedNote._id}`,
         updatedNote
       );
 
@@ -178,7 +178,7 @@ const Notes: React.FC = () => {
     if (!selectedNote) return;
 
     try {
-      await axios.delete(`${baseUrl}/notes/${selectedNote._id}`);
+      await axios.delete(`${baseUrl}/notes/${selectedNote._id}` || `${localUrl}/notes/${selectedNote._id}`);
       setNotes((prevNotes) =>
         prevNotes.filter((note) => note._id !== selectedNote._id)
       );
@@ -205,7 +205,7 @@ const Notes: React.FC = () => {
 
     try {
       const response = await axios.post<Note>(
-        `${baseUrl}/notes`,
+        `${baseUrl}/notes` || `${localUrl}/notes`,
         newNote
       );
       const createdNote = response.data;
