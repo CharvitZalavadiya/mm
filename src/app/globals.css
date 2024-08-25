@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Gradients */
+  --authButtonGradientBackground: linear-gradient(40deg, #0012b0, #a900f1);
+  --headingTextGradient: linear-gradient(45deg, #00d1ff, #722acd 70%);
+
+  /* Radius */
+  --smRadius: 6px;
+  --mdRadius: 10px;
+  --lgRadius: 14px;
+
+  /* Font Size */
+  --smFont: 16px;
+  --mdFont: 20px;
+  --lgFont: 24px;
+
+  /* Font Weight */
+  --smWeight: 500;
+  --mdWeight: 700;
+  --lgWeight: 800;
+
+  /* Dashboard Sidebar */
+  --sidebarGradient: linear-gradient(
+    0deg,
+    rgba(40, 40, 40, 0.8),
+    rgba(96, 96, 105, 0.3),
+    rgba(170, 167, 167, 0.1)
+  );
+  --dividerGradient: linear-gradient(
+    90deg,
+    rgba(51, 255, 0, 0.8),
+    rgba(42, 146, 205, 0.75)
+  );
+  --navBlockBackground: #454545;
+  --navBlockBackgroundHover: #545454;
+  --selectedFunctionalityBackgroundColor: #363636;
+
+  --primaryBackground: #151515;
+
+  /* Notes */
+  --noteBackgroundGradient: linear-gradient(180deg, #333333, #171717);
+  --noteBackground: #252425;
+  --noteEditMode: #595959b3;
+  
+  --noteBorderWhite: #7f7f7f;
+  --noteBackgroundWhite: #4f4f4f81;
+
+  --noteBorderDarkgray: #080808;
+  --noteBackgroundDarkgray: #18181881;
+  
+  --noteBorderGreen: #3acf1c;
+  --noteBackgroundGreen: #3acf1c27;
+  
+  --noteBorderYellow: #dcdf2a;
+  --noteBackgroundYellow: #dcdf2a28;
+  
+  --noteBorderPurple: #a212e4;
+  --noteBackgroundPurple: #a112e418;
+  
+  --noteBorderRed: #dc1818;
+  --noteBackgroundRed: #dc18181f;
+  
+  --noteBorderPink: #cc13b9;
+  --noteBackgroundPink: #cc13b970;
+  
+  --noteBorderCyan: #20c7d3;
+  --noteBackgroundCyan: #20c7d31e;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  color: #00d1ff;
+}
+/* 
+::-webkit-scrollbar-track {
+  color: #0cb3d9;
+}
+
+::-webkit-scrollbar-thumb {
+  color: #08b3d9;
+} */
+
+/* Clerk Form Styles */
+
+/* Auth */
+
+.cl-internal-11f0qyb {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 69, 73, 0.2),
+    rgba(25, 85, 89, 0.6)
+  );
+  border-radius: 10px 10px 0px 0px;
+}
+
+.cl-internal-180wb59 {
+  display: none;
+}
+
+.cl-internal-15di0mo {
+  color: aqua;
+}
+
+.cl-internal-sqs40d[data-variant="default"] {
+  background-color: rgb(9, 45, 43);
+}
+
+.cl-internal-1tp85m9[data-variant="default"] {
+  background-color: rgb(9, 45, 43);
+}
+
+.cl-internal-1c4ikgf {
+  display: none;
+}
+
+.cl-internal-w4f4gh {
+  background: rgb(6, 52, 52);
+  margin-top: 0;
+}
+
+/* User Button */
+.cl-internal-gpirto,
+.cl-internal-11ttlho,
+.cl-internal-lqfubk {
+  display: none;
+}
+
+@keyframes sidebarIncome {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes sidebarOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-110%);
+  }
+}
+
+.sidebarIncome {
+  animation: sidebarIncome 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.sidebarOut {
+  animation: sidebarOut 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}

@@ -1,0 +1,275 @@
+.cssTopbarNew::after {
+  content: "New";
+}
+
+/* Sidebar Responsive */
+
+@media screen and (max-width: 850px) {
+  .cssMenu {
+    display: block;
+  }
+
+  .cssSidebar {
+    position: absolute;
+    z-index: 10;
+    left: 25px;
+    top: 12px;
+    background: #2d2d2d;
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .sidebarIncome {
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .sidebarOut {
+    animation: sidebarOut 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .cssMenuCloseButton {
+    display: block;
+  }
+
+  .cssMainCompNotes {
+    width: 100%;
+    position: relative;
+  }
+
+  .cssNotePopupText {
+    height: 80%;
+  }
+
+  .cssNotePopupNotText {
+    height: 20%;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cssNotePopupColors {
+    width: 100%;
+    padding-left: 10px;
+  }
+
+  .cssNotePopupButtons {
+    width: 70%;
+    padding-left: 10px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .cssNotePopupButtons {
+    width: 100%;
+    padding-left: 10px;
+  }
+
+  .cssNotesGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cssTopbarNew::after {
+    content: "";
+  }
+
+  .cssNotePopupDeleteBtn {
+    font-size: medium;
+    padding: 2px 10;
+  }
+
+  .cssNotePopupSaveBtn {
+    font-size: medium;
+    padding: 2px 10;
+  }
+
+  .cssNotePopupCancelBtn {
+    font-size: medium;
+    padding: 2px 10;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .cssNotePopupText {
+    height: 85%;
+  }
+
+  .cssNotePopupNotText {
+    height: 15%;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cssNotePopupColors {
+    width: 100%;
+    padding-left: 10px;
+    place-content: center;
+  }
+
+  .cssNotePopupButtons {
+    width: 100%;
+  }
+
+  .cssNotesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cssTopbarFull {
+    flex-direction: column;
+    padding-bottom: 10px;
+    justify-content: center;
+  }
+
+  .cssTopbarSearchAndNew {
+    width: 100%;
+  }
+
+  .cssTopbarColors {
+    width: fit-content;
+  }
+
+  .cssNotePopupDeleteBtn {
+    border-radius: 20px;
+    font-size: small;
+    padding: 2px 10px;
+  }
+
+  .cssNotePopupSaveBtn {
+    border-radius: 20px;
+    font-size: small;
+    padding: 2px 10px;
+  }
+
+  .cssNotePopupCancelBtn {
+    border-radius: 20px;
+    font-size: small;
+    padding: 2px 10px;
+  }
+
+  .cssNotePopupColor {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .cssSidebar {
+    position: absolute;
+    z-index: 10;
+    left: 16px;
+    top: 12px;
+    background: #2d2d2d;
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .cssMainCompNotes {
+    width: 100%;
+    position: relative;
+    margin-right: 4px;
+    margin-left: 4px;
+  }
+
+  .cssNotePopupDeleteBtn {
+    border-radius: 20px;
+    font-size: x-small;
+    padding: 2px 10px;
+  }
+
+  .cssNotePopupSaveBtn {
+    border-radius: 20px;
+    font-size: x-small;
+    padding: 2px 10px;
+  }
+
+  .cssNotePopupCancelBtn {
+    border-radius: 20px;
+    font-size: x-small;
+    padding: 2px 10px;
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .cssNotePopupColors {
+    width: 100%;
+    padding-left: 10px;
+    place-content: center;
+    gap: 4px;
+  }
+
+  .cssTopbarNewIcon {
+    font-size: 20px;
+    padding: 0px;
+  }
+
+  .cssTopbarSearchAndNew {
+    width: 100%;
+    font-size: smaller;
+    padding: 0px;
+  }
+
+  .cssTopbarSearch {
+    padding: 1px 2px;
+  }
+
+  .cssTopbarColor {
+    width: 17px;
+    height: 17px;
+  }
+
+  .cssTopbarSearchIcon {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 310px) {
+  .cssNotesGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .cssTopbarNewIcon {
+    font-size: 16px;
+    padding: 0px;
+  }
+
+  .cssTopbarSearchAndNew {
+    width: 90%;
+    font-size: smaller;
+    padding: 0px;
+  }
+
+  .cssTopbarSearch {
+    padding: 1px 2px;
+    font-size: 12px;
+  }
+
+  .cssTopbarColors {
+    width: fit-content;
+    max-width: 90%;
+  }
+
+  .cssTopbarColor {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cssTopbarSearchIcon {
+    font-size: 16px;
+  }
+}
+
+/* sidebar animation */
+
+@keyframes sidebarIncome {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes sidebarOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-110%);
+  }
+}

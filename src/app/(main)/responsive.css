@@ -1,0 +1,46 @@
+@media screen and (max-width: 850px) {
+    .cssLogoText {
+        font-size: 36px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .cssButtons {
+        padding: 10px 30px;
+    }
+
+    .cssButtonsi {
+        margin-right: 80px;
+    }
+
+}
+
+@media screen and (max-width: 580px) {
+    .cssMain {
+        flex-direction: column;
+        height: 60vh;
+        margin-top: 20vh;
+    }
+}
+
+
+@media screen and (max-width: 400px) {
+    .cssButtons {
+        padding: 10px 30px;
+    }
+
+    .cssButtonsi {
+        margin-right: 40px;
+    }
+}
+
+
+@media screen and (max-width: 320px) {
+    .cssButtons {
+        padding: 10px 30px;
+    }
+
+    .cssButtonsi {
+        margin-right: 20px;
+    }
+}
