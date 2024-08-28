@@ -2,6 +2,10 @@
   content: "New";
 }
 
+.cssMainCompFriends {
+  width: calc(100vw - 255px);
+}
+
 /* Sidebar Responsive */
 
 @media screen and (max-width: 850px) {

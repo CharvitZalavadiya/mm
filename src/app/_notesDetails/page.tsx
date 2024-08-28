@@ -1,11 +1,9 @@
 "use client";
-import React, { useState, useEffect, useRef, Suspense } from "react";
+
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import SideBar from "@/app/_sidebar/page";
-import TopBarNotes from "../_topbarNotes/page";
 import { useAuth } from "@clerk/nextjs";
-import "./responsive.css";
-import NotesLoadingSkeleton from "./notesLoadingSkeleton";
+import TopBarNotes from "../_topbarNotes/page";
 
 interface Note {
   _id: string;
@@ -13,27 +11,26 @@ interface Note {
   title: string;
   description: string;
   color: string;
-  userId: string | null;
+  userId: string;
 }
 
 const baseUrl = "https://mind-maps-backend.onrender.com";
-  const localUrl = "http://localhost:8080";
+const localUrl = "http://localhost:8080";
 
-const Notes: React.FC = () => {
+const UserNotes: React.FC = () => {
+  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [editedTitle, setEditedTitle] = useState<string>("");
   const [editedDescription, setEditedDescription] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [selectedColor, setSelectedColor] = useState<string>("black");
+  const popupRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const popupRef = useRef<HTMLDivElement>(null);
 
   const { userId } = useAuth();
-
 
   useEffect(() => {
     // Fetching the details
@@ -44,7 +41,6 @@ const Notes: React.FC = () => {
         if (!response.ok) throw new Error("Failed to fetch users");
 
         const data: Note[] = await response.json();
-        console.log(data)
         setNotes(data);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -53,29 +49,14 @@ const Notes: React.FC = () => {
       }
     };
 
-    if (userId) {
-      fetchNotes();
-    }
-  }, [userId]);
-
-  const handleToggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const handleCloseSidebar = () => {
-    if (isSidebarVisible) {
-      setIsSidebarVisible(false);
-    }
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+    fetchNotes();
+  }, []);
 
   useEffect(() => {
     // Filter notes based on search query and selected color
     const filteredNotesBasedOnUser = notes.filter(
       (note) => note.userId === userId
     );
-
     setFilteredNotes(
       filteredNotesBasedOnUser.filter(
         (note) =>
@@ -84,7 +65,6 @@ const Notes: React.FC = () => {
       )
     );
   }, [searchQuery, notes, selectedColor, userId]);
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -159,8 +139,6 @@ const Notes: React.FC = () => {
     }
   };
 
-  // // const sidebarComp = useMemo(() => <SideBar />, []);
-
   const openPopup = (note: Note) => {
     setSelectedNote(note);
     setEditedTitle(note.title);
@@ -211,7 +189,10 @@ const Notes: React.FC = () => {
     if (!selectedNote) return;
 
     try {
-      await axios.delete(`${baseUrl}/notes/${selectedNote._id}` || `${localUrl}/notes/${selectedNote._id}`);
+      await axios.delete(
+        `${baseUrl}/notes/${selectedNote._id}` ||
+          `${localUrl}/notes/${selectedNote._id}`
+      );
       setNotes((prevNotes) =>
         prevNotes.filter((note) => note._id !== selectedNote._id)
       );
@@ -224,55 +205,43 @@ const Notes: React.FC = () => {
     }
   };
 
-
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
   const handleCreateNewNote = async () => {
-
     const newNote = {
       userId: userId,
-      title: "Title",
-      description: "Note",
-      color: "gray",
+      title: "New Note Title",
+      description: "New Note Description",
+      color: "gray", // Default color or any other logic for color selection
     };
-  
+
     try {
-      console.log(newNote)
-      const response = await axios.post<Note>(`${baseUrl}/notes/` || `${localUrl}/notes/`, newNote);
+      const response = await axios.post<Note>(
+        `${baseUrl}/notes` || `${localUrl}/notes`,
+        newNote
+      );
       const createdNote = response.data;
-      
-      
-      console.log("Created Note:", createdNote);
-      
       setNotes((prevNotes) => [...prevNotes, createdNote]);
       setFilteredNotes((prevNotes) => [...prevNotes, createdNote]);
-      
-      openPopup(createdNote);
-      
+      openPopup(createdNote); // Open the newly created note for editing
     } catch (error) {
       console.error("Error creating new note:", error);
     }
-    // window.location.reload();
   };
-  
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
   };
 
-  return (
-    <div className="flex justify-end w-screen p-3">
-      <span>
-        <Suspense fallback="siiiiiiiiii">
-          {/* {isSidebarVisible && sidebarComp} */}
-          {isSidebarVisible && (
-            <SideBar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
-          )}
-        </Suspense>
-      </span>
+  const handleToggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
+  return (
+    <>
       <main className="cssMainCompNotes bg-sidebarGradient rounded-lg tracking-wide leading-relaxed h-[95vh] overflow-y-scroll p-5 ml-3 w-full">
         <span className="top-0 sticky">
           <TopBarNotes
@@ -283,28 +252,25 @@ const Notes: React.FC = () => {
             onToggleSidebar={handleToggleSidebar}
           />
         </span>
+
         <span>
           <ul className="cssNotesGrid grid grid-cols-4 gap-4 max-h-full overflow-y-scroll">
-            {loading ? (
-              <NotesLoadingSkeleton />
-            ) : (
-              filteredNotes.map((note) => (
-                <li
-                  key={note._id}
-                  onClick={() => openPopup(note)}
-                  className={`${returnBg(
-                    note.color
-                  )} border w-46 h-32 rounded-lg p-4 select-none cursor-pointer hover:bg-opacity-50`}
-                >
-                  <h4 className="text-slate-200 font-semibold text-lgFont relative top-1/3 w-3/5 h-10 truncate">
-                    {note.title}
-                  </h4>
-                  <p className="text-slate-400 h-7 w-full relative top-1/3 truncate">
-                    {note.description}
-                  </p>
-                </li>
-              ))
-            )}
+            {filteredNotes.map((note) => (
+              <li
+                key={note._id}
+                onClick={() => openPopup(note)}
+                className={`${returnBg(
+                  note.color
+                )} border w-46 h-32 rounded-lg p-4 select-none cursor-pointer hover:bg-opacity-50`}
+              >
+                <h4 className="text-slate-200 font-semibold text-lgFont relative top-1/3 w-3/5 h-10 truncate">
+                  {note.title}
+                </h4>
+                <p className="text-slate-400 h-7 w-full relative top-1/3 truncate">
+                  {note.description}
+                </p>
+              </li>
+            ))}
           </ul>
         </span>
 
@@ -372,8 +338,8 @@ const Notes: React.FC = () => {
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 };
 
-export default Notes;
+export default UserNotes;

@@ -5,6 +5,8 @@ import SendFriendRequestLogo from "../../components/assets/user-avatar.png";
 import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
+import FriendsLoadingSkeleton from "../friends/friendsLoadingSkeleton";
+import fallbackUserImage from "@/components/assets/user.png"
 
 interface UserInfo {
   username: string | null;
@@ -106,7 +108,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
     console.log(`button clicked`);
   };
 
-  if (loading) return <p>Loading user details...</p>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -114,7 +115,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
       <div className="text-2xl select-none">
         Connect with people
         <ul className="grid grid-cols-3 gap-4 mt-4 max-h-full overflow-y-scroll">
-          {filteredUsers.length > 0 ? (
+          {loading ? (
+            <FriendsLoadingSkeleton />
+          ) : filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
               <li
                 key={user.id}
@@ -123,10 +126,20 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
               >
                 <div className="flex p-2 border-[1.5px] border-stone-600 bg-selectedFunctionalityBackgroundColor hover:bg-navBlockBackground rounded-lg">
                   <span className=" pr-4">
-                    <img
+                    {/* <img
                       src={user.imageUrl}
                       alt={user.username || "No Username"}
                       className="w-14 border-[1.5px] border-slate-500 h-14 object-cover rounded-full"
+                    /> */}
+                    <Image
+                      src={user.imageUrl}
+                      alt={user.username || "No Username"}
+                      width={56}
+                      height={56}
+                      className="w-14 border-[1.5px] border-slate-500 h-14 object-cover rounded-full"
+                      onError={(e) => {
+                        e.currentTarget.src = "../../components/assets/user.png"
+                      }}
                     />
                   </span>
                   <span className="w-4/6">
@@ -155,10 +168,17 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
             className="w-4/12 h-2/4 bg-noteEditMode rounded-lg backdrop-blur-md p-4 select-none"
           >
             <div className="h-[85%] w-full flex flex-col items-center">
-              <img
+              {/* <img
                 src={selectedUser.imageUrl}
                 alt={selectedUser.username || "No Username"}
                 className="w-24 border-2 border-slate-500 h-24 object-cover rounded-full"
+              /> */}
+              <Image
+                src={selectedUser.imageUrl}
+                alt={selectedUser.username || "No Username"}
+                width={96}
+                height={96}
+                className="border-2 border-slate-500 w-24 h-24 object-cover rounded-full"
               />
               <span className="flex flex-col w-full justify-around items-center mb-10">
                 <h2 className="text-3xl w-fit mb-4 truncate">

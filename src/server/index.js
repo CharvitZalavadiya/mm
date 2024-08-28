@@ -31,6 +31,8 @@ app.listen(8080, async () => {
 
 app.get("/notes", async (req, res) => {
   try {
+    const dbName = getDb();
+    console.log(dbN)
     const collection = db.collection("Note"); // Replace with your collection name
     const data = await collection.find({}).toArray();
     res.status(200).json(data);

@@ -100,7 +100,7 @@ const Friends = () => {
   };
 
   return (
-    <div className="flex p-3">
+    <div className="flex justify-end w-screen p-3">
       <span>
         {isSidebarVisible && (
           <SideBar isOpen={isSidebarOpen} onClose={handleToggleSidebar} />

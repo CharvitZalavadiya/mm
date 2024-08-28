@@ -95,7 +95,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
     <div className="flex gap-3 mb-3 select-none justify-evenly backdrop-blur-lg">
       {isMenuVisible && (
         <span
-          className="cssMenu material-symbols-outlined py-2 cursor-pointer"
+          className="cssMenu hidden material-symbols-outlined py-2 cursor-pointer"
           onClick={handleMenuClick}
         >
           menu

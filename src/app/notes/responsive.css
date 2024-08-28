@@ -2,6 +2,17 @@
   content: "New";
 }
 
+/* @media screen and (min-width: 851px) {
+  .cssSidebar {
+    max-width: fit-content;
+  }
+} */
+
+.cssMainCompNotes {
+  width: calc(100vw - 255px);
+  justify-content: end;
+}
+
 /* Sidebar Responsive */
 
 @media screen and (max-width: 850px) {
