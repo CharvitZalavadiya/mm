@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import FriendsLoadingSkeleton from "../friends/friendsLoadingSkeleton";
-import fallbackUserImage from "@/components/assets/user.png"
 
 interface UserInfo {
   username: string | null;
@@ -137,9 +136,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
                       width={56}
                       height={56}
                       className="w-14 border-[1.5px] border-slate-500 h-14 object-cover rounded-full"
-                      onError={(e) => {
-                        e.currentTarget.src = "../../components/assets/user.png"
-                      }}
                     />
                   </span>
                   <span className="w-4/6">
@@ -178,7 +174,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
                 alt={selectedUser.username || "No Username"}
                 width={96}
                 height={96}
-                className="border-2 border-slate-500 w-24 h-24 object-cover rounded-full"
+                className="w-24 border-2 border-slate-500 h-24 object-cover rounded-full"
               />
               <span className="flex flex-col w-full justify-around items-center mb-10">
                 <h2 className="text-3xl w-fit mb-4 truncate">
