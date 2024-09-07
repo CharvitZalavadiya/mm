@@ -1,9 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useAuth, UserButton, useUser } from "@clerk/nextjs";
-import { Suspense, useEffect, useState } from "react";
-import Loading from "./loading";
+import { Suspense, useState } from "react";
 import LoggedInUserDetails from "./loggedInUserDetails";
 
 const navLinks = [

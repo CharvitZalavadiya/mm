@@ -39,9 +39,8 @@ const Notes: React.FC = () => {
     // Fetching the details
     const fetchNotes = async () => {
       try {
-        // const response = await fetch("/api/getNotes");
-        const response = await fetch(`${baseUrl}/notes`);
-        // console.log(response);
+        const response = await fetch("/api/getNotes");
+        // const response = await fetch(`${baseUrl}/notes`);
 
         if (!response.ok) throw new Error("Failed to fetch users");
 
@@ -212,8 +211,6 @@ const Notes: React.FC = () => {
   const handleDeleteNote = async () => {
     if (!selectedNote) return;
 
-    console.log(`button clicked`)
-
     try {
       await axios.delete(`${baseUrl}/notes/${selectedNote._id}` || `${localUrl}/notes/${selectedNote._id}`);
       setNotes((prevNotes) =>
@@ -223,8 +220,6 @@ const Notes: React.FC = () => {
       setSelectedColor("black");
 
       closePopup();
-
-      console.log(`note deleted`)
     } catch (error) {
       console.error("Error deleting note:", error);
     }
@@ -246,21 +241,26 @@ const Notes: React.FC = () => {
   
     try {
       console.log(newNote)
-      const response = await axios.post<Note>(`${baseUrl}/notes` || `${localUrl}/notes`, newNote);
+      const response = await axios.post<Note>(`${baseUrl}/notes/` || `${localUrl}/notes/`, newNote);
       const createdNote = response.data;
-      
-      
-      console.log("Created Note:", createdNote);
-      
+            
       setNotes((prevNotes) => [...prevNotes, createdNote]);
       setFilteredNotes((prevNotes) => [...prevNotes, createdNote]);
       
-      openPopup(createdNote);
       
+      openPopup(createdNote);
     } catch (error) {
       console.error("Error creating new note:", error);
+    }finally{
+
+      const responsenew = await fetch(`${baseUrl}/notes`);
+  
+      if (!responsenew.ok) throw new Error("Failed to fetch users");
+  
+      const data: Note[] = await responsenew.json();
+      console.log(data)
+      setNotes(data);
     }
-    // window.location.reload();
   };
   
 
