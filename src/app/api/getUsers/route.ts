@@ -6,6 +6,8 @@ interface UserInfo {
   imageUrl: string;
   id: string;
   email: string | null; // Add email field to the interface
+  firstname: string | null;
+  lastname: string | null;
 }
 
 export async function GET() {
@@ -29,10 +31,12 @@ export async function GET() {
         imageUrl: user.imageUrl,
         id: user.id,
         email: primaryEmail,
+        firstname:user.firstName,
+        lastname: user.lastName
       };
     });
 
-    // console.log(usersInfoMapped)
+    console.log(usersInfoMapped)
 
     return NextResponse.json(usersInfoMapped);
   } catch (error) {

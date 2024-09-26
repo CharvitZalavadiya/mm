@@ -12,44 +12,36 @@ interface UserInfo {
   imageUrl: string;
   id: string;
   email: string | null;
-}
-
-interface CurrentUserInfo {
-  username: string | null | undefined;
-  firstName: string | null | undefined;
-  lastName: string | null | undefined;
-  imageUrl: string | null | undefined;
-  id: string | null | undefined;
-  email: string | null | undefined; // Add email field to the interface
+  firstname: string | null;
+  lastname: string | null;
 }
 
 interface UserDetailsProps {
   searchQuery: string;
 }
 
+const baseUrl = `https://mind-maps-backend.onrender.com`
+const localUrl = `http://localhost:8080`
+
 const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
   const [usersInfo, setUsersInfo] = useState<UserInfo[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentUser, setCurrentUser] = useState<CurrentUserInfo | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
   const popupRef = useRef<HTMLDivElement>(null);
-  
+
   const { userId } = useAuth();
-  
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch("/api/getUsers");
-        
+
         if (!response.ok) throw new Error("Failed to fetch users");
-        
+
         const data: UserInfo[] = await response.json();
         setUsersInfo(data);
-
-
-        
-        
       } catch (err) {
         console.error("Error fetching users:", err);
         setError("Failed to load user details");
@@ -57,12 +49,16 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         setLoading(false);
       }
     };
-    
+
     fetchUsers();
   }, []);
   
-  const currentUserData = usersInfo.find(user => userId === user.id);
-  console.log(currentUserData)
+  useEffect(() => {
+    const currentUserData = usersInfo.find((user) => userId === user.id);
+    if (currentUserData) {
+      setCurrentUser([currentUserData]); // Wrapping in an array since currentUser expects an array
+    }
+  }, [usersInfo, userId]); // Add usersInfo and userId as dependencies  
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -108,9 +104,11 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         toUser: selectedUser?.id,
       };
 
+      await axios.post(`${localUrl}/friends/`, currentUser);
+
       if (selectedUser) {
         await axios.post(
-          `http://localhost:8080/friends/${selectedUser.id}`,
+          `${localUrl}/friends/${selectedUser.id}`,
           friendRequest
         );
       } else {
@@ -179,36 +177,35 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div
             ref={popupRef}
-            className="w-4/12 h-2/4 bg-noteEditMode rounded-lg backdrop-blur-md p-4 select-none"
+            className="h-2/4 bg-noteEditMode rounded-lg backdrop-blur-md p-4 select-none"
           >
-            <div className="h-[85%] w-full flex flex-col items-center">
-              {/* <img
-                src={selectedUser.imageUrl}
-                alt={selectedUser.username || "No Username"}
-                className="w-24 border-2 border-slate-500 h-24 object-cover rounded-full"
-              /> */}
-              <Image
-                src={selectedUser.imageUrl}
-                alt={selectedUser.username || "No Username"}
-                width={96}
-                height={96}
-                className="w-24 border-2 border-slate-500 h-24 object-cover rounded-full"
-              />
-              <span className="flex flex-col w-full justify-around items-center mb-10">
-                <h2 className="text-3xl w-fit mb-4 truncate">
-                  {selectedUser.username || "No Username"}
-                </h2>
-                <h4 className="text-sm w-full text-center mb-1 text-slate-300 truncate">
-                  {selectedUser.email || "No EmailAddress"}
-                </h4>
-                <h4 className="text-sm w-full text-center text-slate-300 truncate">
-                  {selectedUser.id || "No UserId"}
-                </h4>
+            <div className="h-[85%] w-full flex flex-col">
+              <span className="flex w-full gap-7">
+                <Image
+                  src={selectedUser.imageUrl}
+                  alt={selectedUser.username || "No Username"}
+                  width={96}
+                  height={96}
+                  className="w-16 border-2 border-slate-500 h-16 object-cover rounded-full"
+                />
+                <span className="grid gap-1">
+                  <p className="font-semibold text-2xl">
+                    {selectedUser.username}
+                  </p>
+                  <p className="text-slate-300 gap-1 flex text-base">
+                    <p>{selectedUser.firstname}</p>
+                    <p>{selectedUser.lastname}</p>
+                  </p>
+                </span>
+              </span>
+              <span className="text-slate-300 mt-4 grid gap-2 ml-3 text-sm">
+                <p>{selectedUser.email}</p>
+                <p>{selectedUser.id}</p>
               </span>
             </div>
-            <div className="h-[15%] flex justify-evenly">
+            <div className="h-[15%] flex">
               <button
-                className="bg-blue-500 border border-slate-300 inline-flex rounded-lg px-4 py-1 mr-8 hover:bg-blue-600 items-center"
+                className="bg-blue-500 border border-slate-300 inline-flex rounded-lg px-4 py-1 mr-4 hover:bg-blue-600 items-center"
                 onClick={handleSendRequest}
               >
                 Send Request
