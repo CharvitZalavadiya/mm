@@ -4,17 +4,17 @@ import { getDb, ObjectId } from '../config/db.js';
 const router = express.Router();
 
 // Fetching the notes
-// router.get('/', async (req, res) => {
-//   try {
-//     const db = getDb();
-//     const collection = db.collection('Note'); // Replace with your collection name
-//     const data = await collection.find({}).toArray();
-//     res.status(200).json(data);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Error in fetching notes');
-//   }
-// });
+router.get('/', async (req, res) => {
+  try {
+    const db = getDb();
+    const collection = db.collection('Note'); // Replace with your collection name
+    const data = await collection.find({}).toArray();
+    res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error in fetching notes');
+  }
+});
 
 // Creating a new note
 router.post('/', async (req, res) => {
