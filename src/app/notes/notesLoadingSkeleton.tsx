@@ -1,9 +1,8 @@
 "use client";
 import { Skeleton } from "@/components/ui/skeleton";
-import "./animations.css"
 
 const NotesLoadingSkeleton = () => {
-  const arr = [1, 2, 3];
+  const arr = [1, 2, 3, 4, 5, 6];
 
   return arr.map((index) => (
     <ul key={index} className="cssNotesGrid rounded-lg">
