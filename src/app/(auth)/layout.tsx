@@ -1,6 +1,10 @@
+import "./animations.css"
+import StarBG from "@/components/comps/starBg";
+
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-screen py-6 flex items-center bg-primaryBackground justify-center">
+    <div className="authCard min-h-dvh flex items-center bg-primaryBackground justify-center">
+      <StarBG />
       {children}
     </div>
   );

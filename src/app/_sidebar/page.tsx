@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import LoggedInUserDetails from "./loggedInUserDetails";
+import "./animations.css"
 
 const navLinks = [
   // {
@@ -61,7 +62,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
   return (
     <Suspense fallback="sidebar comming">
       <span
-        className={`cssSidebar w-[220px] p-3 rounded-lg flex flex-grow bg-sidebarGradient flex-col select-none tracking-wide text-lg h-[95vh] ${
+        className={`cssSidebar sidebarIncome w-[220px] p-3 rounded-lg flex flex-grow bg-sidebarGradient flex-col select-none tracking-wide text-lg h-[95vh] ${
           isOpen && !isAnimating
             ? "sidebarIncome"
             : isAnimating

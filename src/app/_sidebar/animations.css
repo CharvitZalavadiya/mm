@@ -1,0 +1,25 @@
+@keyframes sidebarIncome {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes sidebarOut {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-110%);
+    }
+  }
+  
+  .sidebarIncome {
+    animation: sidebarIncome 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }
+  
+  .sidebarOut {
+    animation: sidebarOut 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }

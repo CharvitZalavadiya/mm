@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./animations.css"
 
 interface TopBarNotesProps {
   onSearch: (query: string) => void;
@@ -92,7 +93,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
   };
 
   return (
-    <div className="flex gap-3 mb-3 select-none justify-evenly backdrop-blur-lg">
+    <div className="flex gap-3 mb-3 select-none justify-evenly">
       {isMenuVisible && (
         <span
           className="cssMenu hidden material-symbols-outlined py-2 cursor-pointer"
@@ -101,7 +102,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
           menu
         </span>
       )}
-      <div className="cssTopbarFull flex gap-3 w-full">
+      <div className="cssTopbarFull topbarIncome flex gap-3 w-full">
         <div className="cssTopbarSearchAndNew flex gap-3 w-2/3">
           <span className="w-full bg-navBlockBackground rounded-full py-1 px-1 flex">
             <span className="cssTopbarSearchIcon material-symbols-outlined rounded-full p-1 px-2 select-none hover:cursor-pointer">

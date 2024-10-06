@@ -124,6 +124,10 @@
   margin-top: 0;
 }
 
+.cl-internal-1dauvpw {
+  display: none;
+}
+
 /* User Button */
 .cl-internal-gpirto,
 .cl-internal-11ttlho,
@@ -131,28 +135,19 @@
   display: none;
 }
 
-@keyframes sidebarIncome {
+.cl-userButtonPopoverCard {
+  animation: userBtnAnim 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes userBtnAnim {
   0% {
-    transform: translateX(-100%);
+    transform: scale(0);
+    transform-origin: 0% 100%;
+    opacity: 1;
   }
   100% {
-    transform: translateX(0);
+    transform: scale(1);
+    transform-origin: 0% 100%;
+    opacity: 1;
   }
-}
-
-@keyframes sidebarOut {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-110%);
-  }
-}
-
-.sidebarIncome {
-  animation: sidebarIncome 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-}
-
-.sidebarOut {
-  animation: sidebarOut 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
