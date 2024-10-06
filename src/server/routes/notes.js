@@ -3,11 +3,16 @@ import { getDb, ObjectId } from '../config/db.js';
 
 const router = express.Router();
 
+
+var collection;
+
+getDb().then((db) => {
+  collection = db.collection('Note');
+});
+
 // Fetching the notes
 router.get('/', async (req, res) => {
   try {
-    const db = getDb();
-    const collection = db.collection('Note'); // Replace with your collection name
     const data = await collection.find({}).toArray();
     res.status(200).json(data);
   } catch (err) {
@@ -25,8 +30,6 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    // const db = getDb();
-    // const collection = db.collection('Note'); // Replace with your collection name
     const newNote = { title, description, color, userId };
     const result = await collection.insertOne(newNote);
     res.status(201).json(result.ops[0]);
@@ -46,8 +49,6 @@ router.post('/:id', async (req, res) => {
   }
 
   try {
-    // const db = getDb();
-    // const collection = db.collection('Note'); // Replace with your collection name
     const result = await collection.updateOne(
       { _id: new ObjectId(id) },
       { $set: { title, description, color } }
@@ -74,8 +75,6 @@ router.delete('/:id', async (req, res) => {
   }
 
   try {
-    // const db = getDb();
-    // const collection = db.collection('Note'); // Replace with your collection name
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount === 0) {
