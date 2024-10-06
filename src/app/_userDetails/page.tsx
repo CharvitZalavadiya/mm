@@ -20,8 +20,8 @@ interface UserDetailsProps {
   searchQuery: string;
 }
 
-const baseUrl = `https://mind-maps-backend.onrender.com`
-const localUrl = `http://localhost:8080`
+const baseUrl = `https://mind-maps-backend.onrender.com`;
+const localUrl = `http://localhost:8080`;
 
 const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
   const [usersInfo, setUsersInfo] = useState<UserInfo[]>([]);
@@ -52,13 +52,13 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
 
     fetchUsers();
   }, []);
-  
+
   useEffect(() => {
     const currentUserData = usersInfo.find((user) => userId === user.id);
     if (currentUserData) {
       setCurrentUser([currentUserData]); // Wrapping in an array since currentUser expects an array
     }
-  }, [usersInfo, userId]); // Add usersInfo and userId as dependencies  
+  }, [usersInfo, userId]); // Add usersInfo and userId as dependencies
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -89,8 +89,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         false
     );
 
-  const openUserInfoPopup = (user: UserInfo) => {
+  const openUserInfoPopup = async (user: UserInfo) => {
     setSelectedUser(user);
+
+    console.log(`before post`, currentUser);
+    await axios.post(`${baseUrl}/friends/`, currentUser).catch((error) => {
+      console.error("Error posting data:", error);
+    });
+    console.log(`after post`, currentUser);
   };
 
   const closeUserInfoPopup = () => {
@@ -104,11 +110,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         toUser: selectedUser?.id,
       };
 
-      await axios.post(`${localUrl}/friends/`, currentUser);
-
       if (selectedUser) {
         await axios.post(
-          `${localUrl}/friends/${selectedUser.id}`,
+          `${baseUrl}/friends/${selectedUser.id}`,
           friendRequest
         );
       } else {
@@ -120,7 +124,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
       console.log(`Error occured while sending request : ${error}`);
     }
 
-    console.log(`button clicked`);
+    // console.log(`button clicked`);
   };
 
   if (error) return <p>{error}</p>;

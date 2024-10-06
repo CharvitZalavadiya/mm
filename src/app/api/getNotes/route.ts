@@ -18,7 +18,7 @@ const localUrl = "http://localhost:8080";
 
 export async function GET() {
   try {
-    const response = await axios.get<Note[]>(`${baseUrl}/notes`);
+    const response = await axios.get<Note[]>(`${baseUrl}/notes` || `${localUrl}/notes`);
     
     
     const userNotesMapped = response.data.map(note => {

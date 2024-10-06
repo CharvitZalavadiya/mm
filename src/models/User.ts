@@ -65,8 +65,18 @@ const UserSchema = new Schema({
   lastName: {
     type: String,
   },
-  connectedPeople: [{ type: String }],
-  requestedPeople: [{ type: String }],
+  connectedPeople: {
+    type: [String],
+    default: [], // Default to an empty array
+  },
+  requestSentPeople: {
+    type: [String],
+    default: [], // Default to an empty array
+  },
+  requestReceivedPeople: {
+    type: [String],
+    default: [], // Default to an empty array
+  },  
 });
 
 const User = models?.User || model("User", UserSchema);

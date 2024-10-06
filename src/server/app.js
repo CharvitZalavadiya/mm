@@ -8,11 +8,12 @@ const app = express();
 const port = 8080;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin: 'https://mind-maps-cz.vercel.app/' || 'http://localhost:3000'}));
 
 app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);
   try {
+    console.log(`connecting to db`)
     connectToDatabase();
   } catch (err) {
     console.error('Error connecting to database:', err);

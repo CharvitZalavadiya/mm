@@ -45,7 +45,7 @@ const Notes: React.FC = () => {
         if (!response.ok) throw new Error("Failed to fetch users");
 
         const data: Note[] = await response.json();
-        console.log(data)
+        // console.log(data)
         setNotes(data);
       } catch (err) {
         console.error("Error fetching users:", err);
