@@ -13,7 +13,7 @@ interface UserInfo {
 export async function GET() {
   try {
     const response = await clerkClient.users.getUserList({
-      limit: 11,
+      limit: 100,
     });
 
     const usersInfoMapped: UserInfo[] = response.data.map((user: any) => {
@@ -29,7 +29,7 @@ export async function GET() {
       };
     });
 
-    // console.log(usersInfoMapped)
+    console.log(usersInfoMapped)
 
     return NextResponse.json(usersInfoMapped);
   } catch (error) {

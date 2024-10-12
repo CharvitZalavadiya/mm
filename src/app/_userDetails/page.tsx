@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import FriendsLoadingSkeleton from "../friends/friendsLoadingSkeleton";
-import { userInfo } from "os";
+// import { userInfo } from "os";
 
 interface UserInfo {
   username: string | null;
@@ -34,25 +34,28 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
 
   const { userId } = useAuth();
 
-  const fetchUsers =() =>{ fetch("/api/getUsers")
-    .then((res) => {
-      if (!res.ok) throw new Error("Failed to fetch users cs");
+  const fetchUsers = () => {
+    fetch("/api/getUsers")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users cs");
 
-      return res.json();
-    })
-    .then((users) => {
-      // console.log(users);
+        return res.json();
+      })
+      .then((users) => {
+        // console.log(users);
 
-      setUsersInfo(users);
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.log(`fail to fetch users cs`, err);
-    });}
+        setUsersInfo(users);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(`fail to fetch users cs`, err);
+      });
+  };
 
-    
-    useEffect(() => {fetchUsers()}, []);
-    
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   useEffect(() => {
     const currentUserData = usersInfo.find((user) => userId === user.id);
     if (currentUserData) {
@@ -60,7 +63,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
     }
   }, [usersInfo, userId]); // Add usersInfo and userId as dependencies
 
-  console.log("current", currentUser)
+  console.log("current", currentUser);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
