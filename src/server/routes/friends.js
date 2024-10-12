@@ -11,37 +11,37 @@ getDb().then((db) => {
 
 
 // sending friend request
-// router.post('/:id', async (req, res) => {
-//   const { fromUser, toUser } = req.body; // assuming fromUser and toUser contain their respective IDs
-//   console.log(`from user: ${fromUser} to user: ${toUser}`);
+router.post('/:id', async (req, res) => {
+  const { fromUser, toUser } = req.body; // assuming fromUser and toUser contain their respective IDs
+  console.log(`from user: ${fromUser} to user: ${toUser}`);
 
-//   try {
+  try {
 
-//     const toUserRequest = await collection.findOne({ clerckId: toUser });
-//     const fromUserRequested = await collection.findOne({ clerckId: fromUser });
+    const toUserRequest = await collection.findOne({ clerckId: toUser });
+    const fromUserRequested = await collection.findOne({ clerckId: fromUser });
 
-//     if (!toUserRequest || !fromUserRequested) {
-//       return res.status(404).json({ error: 'One or both users not found' });
-//     }
+    if (!toUserRequest || !fromUserRequested) {
+      return res.status(404).json({ error: 'One or both users not found' });
+    }
 
-//     // Update fromUser's requestSentPeople array
-//     await collection.updateOne(
-//       { clerckId: fromUser },
-//       { $addToSet: { requestSentPeople: toUser } } // Add to array if not already present
-//     );
+    // Update fromUser's requestSentPeople array
+    await collection.updateOne(
+      { clerckId: fromUser },
+      { $addToSet: { requestSentPeople: toUser } } // Add to array if not already present
+    );
 
-//     // Update toUser's requestReceivedPeople array
-//     await collection.updateOne(
-//       { clerckId: toUser },
-//       { $addToSet: { requestReceivedPeople: fromUser } } // Add to array if not already present
-//     );
+    // Update toUser's requestReceivedPeople array
+    await collection.updateOne(
+      { clerckId: toUser },
+      { $addToSet: { requestReceivedPeople: fromUser } } // Add to array if not already present
+    );
 
-//     res.status(200).json({ message: 'Friend request sent successfully' });
-//   } catch (error) {
-//     console.error('Error sending friend request:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+    res.status(200).json({ message: 'Friend request sent successfully' });
+  } catch (error) {
+    console.error('Error sending friend request:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 // Create user
