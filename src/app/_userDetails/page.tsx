@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import FriendsLoadingSkeleton from "../friends/friendsLoadingSkeleton";
+import { userInfo } from "os";
 
 interface UserInfo {
   username: string | null;
@@ -33,32 +34,33 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
 
   const { userId } = useAuth();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("/api/getUsers");
+  const fetchUsers =() =>{ fetch("/api/getUsers")
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch users cs");
 
-        if (!response.ok) throw new Error("Failed to fetch users");
+      return res.json();
+    })
+    .then((users) => {
+      // console.log(users);
 
-        const data: UserInfo[] = await response.json();
-        setUsersInfo(data);
-      } catch (err) {
-        console.error("Error fetching users:", err);
-        setError("Failed to load user details");
-      } finally {
-        setLoading(false);
-      }
-    };
+      setUsersInfo(users);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.log(`fail to fetch users cs`, err);
+    });}
 
-    fetchUsers();
-  }, []);
-
+    
+    useEffect(() => {fetchUsers()}, []);
+    
   useEffect(() => {
     const currentUserData = usersInfo.find((user) => userId === user.id);
     if (currentUserData) {
       setCurrentUser([currentUserData]); // Wrapping in an array since currentUser expects an array
     }
   }, [usersInfo, userId]); // Add usersInfo and userId as dependencies
+
+  console.log("current", currentUser)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -93,9 +95,15 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
     setSelectedUser(user);
 
     console.log(`before post`, currentUser);
-    await axios.post(`${baseUrl}/friends/`, currentUser).catch((error) => {
-      console.error("Error posting data:", error);
-    });
+
+    await axios
+      .post(`${localUrl}/friends/`, currentUser)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.error("Error posting data:", error);
+      });
     console.log(`after post`, currentUser);
   };
 

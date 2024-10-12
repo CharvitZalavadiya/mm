@@ -48,7 +48,8 @@ router.post('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   const { username, firstname, lastname, imageUrl, id, email } = req.body[0] || {};
 
-  console.log(username);
+  console.log(req.body);
+  console.log(username, firstname, lastname, imageUrl, id, email)
 
   try {
     
