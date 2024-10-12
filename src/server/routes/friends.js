@@ -85,7 +85,7 @@ router.post('/', async (req, res) => {
 
 
 // Create users (bulk insert)
-router.post('/bulk', async (req, res) => {
+router.post('/bulk/:id', async (req, res) => {
   const users = req.body.users || [];
 
 
