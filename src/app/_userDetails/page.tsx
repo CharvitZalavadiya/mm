@@ -46,6 +46,19 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
 
         setUsersInfo(users);
         setLoading(false);
+
+        console.log(users)
+        console.log(typeof users)
+
+        // Send all users to the backend
+        axios
+          .post(`${localUrl}/friends/bulk`, {users} ) // Send users in bulk
+          .then((res) => {
+            console.log(`${res.data.message}`);
+          })
+          .catch((error) => {
+            console.error("Error storing users in the database:", error);
+          });
       })
       .catch((err) => {
         console.log(`fail to fetch users cs`, err);

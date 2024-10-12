@@ -11,37 +11,37 @@ getDb().then((db) => {
 
 
 // sending friend request
-router.post('/:id', async (req, res) => {
-  const { fromUser, toUser } = req.body; // assuming fromUser and toUser contain their respective IDs
-  console.log(`from user: ${fromUser} to user: ${toUser}`);
+// router.post('/:id', async (req, res) => {
+//   const { fromUser, toUser } = req.body; // assuming fromUser and toUser contain their respective IDs
+//   console.log(`from user: ${fromUser} to user: ${toUser}`);
 
-  try {
+//   try {
 
-    const toUserRequest = await collection.findOne({ clerckId: toUser });
-    const fromUserRequested = await collection.findOne({ clerckId: fromUser });
+//     const toUserRequest = await collection.findOne({ clerckId: toUser });
+//     const fromUserRequested = await collection.findOne({ clerckId: fromUser });
 
-    if (!toUserRequest || !fromUserRequested) {
-      return res.status(404).json({ error: 'One or both users not found' });
-    }
+//     if (!toUserRequest || !fromUserRequested) {
+//       return res.status(404).json({ error: 'One or both users not found' });
+//     }
 
-    // Update fromUser's requestSentPeople array
-    await collection.updateOne(
-      { clerckId: fromUser },
-      { $addToSet: { requestSentPeople: toUser } } // Add to array if not already present
-    );
+//     // Update fromUser's requestSentPeople array
+//     await collection.updateOne(
+//       { clerckId: fromUser },
+//       { $addToSet: { requestSentPeople: toUser } } // Add to array if not already present
+//     );
 
-    // Update toUser's requestReceivedPeople array
-    await collection.updateOne(
-      { clerckId: toUser },
-      { $addToSet: { requestReceivedPeople: fromUser } } // Add to array if not already present
-    );
+//     // Update toUser's requestReceivedPeople array
+//     await collection.updateOne(
+//       { clerckId: toUser },
+//       { $addToSet: { requestReceivedPeople: fromUser } } // Add to array if not already present
+//     );
 
-    res.status(200).json({ message: 'Friend request sent successfully' });
-  } catch (error) {
-    console.error('Error sending friend request:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//     res.status(200).json({ message: 'Friend request sent successfully' });
+//   } catch (error) {
+//     console.error('Error sending friend request:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
 
 // Create user
@@ -81,6 +81,52 @@ router.post('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+
+// Create users (bulk insert)
+router.post('/bulk', async (req, res) => {
+  const users = req.body.users || [];
+
+
+  if (users.length === 0) {
+    return res.status(400).json({ message: 'No users received' });
+  }
+
+  try {
+    const newUsers = users.map(user => ({
+      username: user.username,
+      email: user.email,
+      imageUrl: user.imageUrl,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      id: user.id,
+      connectedPeople: [],
+      requestSentPeople: [],
+      requestReceivedPeople: []
+    }));
+
+    const existingIds = newUsers.map(user => user.id);
+
+    const existingUsers = await collection.find({ id: { $in: existingIds } }).toArray();
+
+    const existingUserIds = existingUsers.map(user => user.id);
+    const usersToInsert = newUsers.filter(user => !existingUserIds.includes(user.id));
+
+    if (usersToInsert.length > 0) {
+      const result = await collection.insertMany(usersToInsert);
+      res.status(201).json({ message: `${result.insertedCount} users created` });
+    } else {
+      res.status(200).json({ message: 'All users already exist' });
+    }
+
+  } catch (error) {
+    console.error('Error creating users:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 
 
 export default router;

@@ -29,7 +29,7 @@ export async function GET() {
       };
     });
 
-    console.log(usersInfoMapped)
+    // console.log(usersInfoMapped)
 
     return NextResponse.json(usersInfoMapped);
   } catch (error) {
