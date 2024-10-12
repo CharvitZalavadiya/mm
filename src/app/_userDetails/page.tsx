@@ -106,7 +106,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
   const openUserInfoPopup = async (user: UserInfo) => {
     setSelectedUser(user);
 
-    console.log(`before post`, currentUser);
+    // console.log(`before post`, currentUser);
 
     await axios
       .post(`${baseUrl}/friends/`, currentUser)
@@ -116,7 +116,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
       .catch((error) => {
         console.error("Error posting data:", error);
       });
-    console.log(`after post`, currentUser);
+    // console.log(`after post`, currentUser);
   };
 
   const closeUserInfoPopup = () => {
@@ -124,25 +124,28 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
   };
 
   const handleSendRequest = async () => {
-    try {
-      const friendRequest = {
+    if(selectedUser) {
+      console.log(selectedUser.id)
+      try {
+        const friendRequest = {
         fromUser: userId,
         toUser: selectedUser?.id,
       };
-
+      
       if (selectedUser) {
         await axios.post(
-          `${baseUrl}/friends/${selectedUser.id}`,
+          `${baseUrl}/friends/${friendRequest.toUser}`,
           friendRequest
         );
       } else {
         console.log(`No user has been selected`);
       }
-
+      
       closeUserInfoPopup();
     } catch (error) {
       console.log(`Error occured while sending request : ${error}`);
     }
+  }
 
     // console.log(`button clicked`);
   };
