@@ -17,8 +17,8 @@ router.post('/:id', async (req, res) => {
 
   try {
 
-    const toUserRequest = await collection.findOne({ clerckId: toUser });
-    const fromUserRequested = await collection.findOne({ clerckId: fromUser });
+    const toUserRequest = await collection.findOne({ id: toUser });
+    const fromUserRequested = await collection.findOne({ id: fromUser });
 
     if (!toUserRequest || !fromUserRequested) {
       return res.status(404).json({ error: 'One or both users not found' });
@@ -26,13 +26,13 @@ router.post('/:id', async (req, res) => {
 
     // Update fromUser's requestSentPeople array
     await collection.updateOne(
-      { clerckId: fromUser },
+      { _id: fromUser },
       { $addToSet: { requestSentPeople: toUser } } // Add to array if not already present
     );
 
     // Update toUser's requestReceivedPeople array
     await collection.updateOne(
-      { clerckId: toUser },
+      { _id: toUser },
       { $addToSet: { requestReceivedPeople: fromUser } } // Add to array if not already present
     );
 
@@ -85,7 +85,7 @@ router.post('/', async (req, res) => {
 
 
 // Create users (bulk insert)
-router.post('/bulk', async (req, res) => {
+router.post('/bulk/:id', async (req, res) => {
   const users = req.body.users || [];
 
 

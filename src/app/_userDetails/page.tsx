@@ -47,12 +47,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         setUsersInfo(users);
         setLoading(false);
 
-        console.log(users)
-        console.log(typeof users)
-
         // Send all users to the backend
+
         axios
-          .post(`${baseUrl}/friends/bulk`, {users} ) // Send users in bulk
+          .post(`${localUrl}/friends/bulk/:id`, {users} ) // Send users in bulk
           .then((res) => {
             console.log(`${res.data.message}`);
           })
@@ -75,8 +73,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
       setCurrentUser([currentUserData]); // Wrapping in an array since currentUser expects an array
     }
   }, [usersInfo, userId]); // Add usersInfo and userId as dependencies
-
-  console.log("current", currentUser);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
