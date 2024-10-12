@@ -47,9 +47,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         setUsersInfo(users);
         setLoading(false);
 
-        console.log(users)
-        console.log(typeof users)
-
         // Send all users to the backend
         axios
           .post(`${baseUrl}/friends/bulk`, {users} ) // Send users in bulk
@@ -76,7 +73,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
     }
   }, [usersInfo, userId]); // Add usersInfo and userId as dependencies
 
-  console.log("current", currentUser);
+  // console.log("current", currentUser);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -110,7 +107,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
   const openUserInfoPopup = async (user: UserInfo) => {
     setSelectedUser(user);
 
-    console.log(`before post`, currentUser);
+    // console.log(`before post`, currentUser);
 
     await axios
       .post(`${baseUrl}/friends/`, currentUser)
@@ -120,7 +117,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
       .catch((error) => {
         console.error("Error posting data:", error);
       });
-    console.log(`after post`, currentUser);
+    // console.log(`after post`, currentUser);
   };
 
   const closeUserInfoPopup = () => {
@@ -128,25 +125,28 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
   };
 
   const handleSendRequest = async () => {
-    try {
-      const friendRequest = {
+    if(selectedUser) {
+      console.log(selectedUser.id)
+      try {
+        const friendRequest = {
         fromUser: userId,
         toUser: selectedUser?.id,
       };
-
+      
       if (selectedUser) {
         await axios.post(
-          `${baseUrl}/friends/${selectedUser.id}`,
+          `${baseUrl}/friends/${friendRequest.toUser}`,
           friendRequest
         );
       } else {
         console.log(`No user has been selected`);
       }
-
+      
       closeUserInfoPopup();
     } catch (error) {
       console.log(`Error occured while sending request : ${error}`);
     }
+  }
 
     // console.log(`button clicked`);
   };
