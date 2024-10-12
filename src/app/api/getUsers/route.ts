@@ -34,6 +34,6 @@ export async function GET() {
     return NextResponse.json(usersInfoMapped);
   } catch (error) {
     console.error(`Error fetching user details:`, error);
-    return new NextResponse("Failed to fetch users", { status: 500 });
+    return new NextResponse("Failed to fetch users ss", { status: 500 });
   }
 }
