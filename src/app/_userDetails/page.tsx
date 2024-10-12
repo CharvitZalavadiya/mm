@@ -97,7 +97,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
     console.log(`before post`, currentUser);
 
     await axios
-      .post(`${localUrl}/friends/`, currentUser)
+      .post(`${baseUrl}/friends/`, currentUser)
       .then((res) => {
         console.log(res);
       })
