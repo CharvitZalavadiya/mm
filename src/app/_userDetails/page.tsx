@@ -34,29 +34,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
 
   const { userId } = useAuth();
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await fetch("/api/getUsers");
-
-  //       if (!response.ok) throw new Error("Failed to fetch users");
-
-  //       const data: UserInfo[] = await response.json();
-  //       console.log(`response`)
-  //       console.log(response.json())
-  //       console.log(`data ${data}`)
-  //       setUsersInfo(data);
-  //     } catch (err) {
-  //       console.error("Error fetching users:", err);
-  //       setError("Failed to load user details");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchUsers();
-  // }, []);
-
   const fetchUsers =() =>{ fetch("/api/getUsers")
     .then((res) => {
       if (!res.ok) throw new Error("Failed to fetch users cs");
@@ -76,9 +53,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
     
     useEffect(() => {fetchUsers()}, []);
     
-    
-  // console.log("userInfo", usersInfo);
-
   useEffect(() => {
     const currentUserData = usersInfo.find((user) => userId === user.id);
     if (currentUserData) {
@@ -130,7 +104,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
       .catch((error) => {
         console.error("Error posting data:", error);
       });
-    // console.log(`after post`, currentUser);
+    console.log(`after post`, currentUser);
   };
 
   const closeUserInfoPopup = () => {
