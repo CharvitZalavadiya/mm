@@ -50,7 +50,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         // Send all users to the backend
 
         axios
-          .post(`${localUrl}/friends/bulk/:id`, {users} ) // Send users in bulk
+          .post(`${baseUrl}/friends/bulk/:id`, {users} ) // Send users in bulk
           .then((res) => {
             console.log(`response for multiple user request`);
           })
