@@ -50,9 +50,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
         // Send all users to the backend
 
         axios
-          .post(`${localUrl}/friends/bulk/:id`, {users} ) // Send users in bulk
+          .post(`${baseUrl}/friends/bulk/:id`, {users} ) // Send users in bulk
           .then((res) => {
-            console.log(`${res.data.message}`);
+            console.log(`response for multiple user request`);
           })
           .catch((error) => {
             console.error("Error storing users in the database:", error);
@@ -111,7 +111,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
     await axios
       .post(`${baseUrl}/friends/`, currentUser)
       .then((res) => {
-        console.log(res);
+        console.log("response for single user request");
       })
       .catch((error) => {
         console.error("Error posting data:", error);
@@ -137,6 +137,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
           `${baseUrl}/friends/${friendRequest.toUser}`,
           friendRequest
         );
+        console.log(`friend request sent successfully cs`)
       } else {
         console.log(`No user has been selected`);
       }
