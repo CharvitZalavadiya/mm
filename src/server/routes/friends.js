@@ -26,17 +26,17 @@ router.post('/:id', async (req, res) => {
 
     // Update fromUser's requestSentPeople array
     await collection.updateOne(
-      { _id: fromUser },
+      { id: fromUser },
       { $addToSet: { requestSentPeople: toUser } } // Add to array if not already present
     );
 
     // Update toUser's requestReceivedPeople array
     await collection.updateOne(
-      { _id: toUser },
+      { id: toUser },
       { $addToSet: { requestReceivedPeople: fromUser } } // Add to array if not already present
     );
 
-    res.status(200).json({ message: 'Friend request sent successfully' });
+    res.status(200).json({ message: 'Friend request sent successfully ss' });
   } catch (error) {
     console.error('Error sending friend request:', error);
     res.status(500).json({ error: 'Internal Server Error' });
