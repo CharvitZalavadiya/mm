@@ -124,29 +124,29 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery }) => {
   };
 
   const handleSendRequest = async () => {
-    try {
-      const friendRequest = {
+    if(selectedUser) {
+      console.log(selectedUser.id)
+      try {
+        const friendRequest = {
         fromUser: userId,
         toUser: selectedUser?.id,
       };
-
-      // console.log("from", friendRequest.fromUser);
-      // console.log("to", friendRequest.toUser);
-
+      
       if (selectedUser) {
         await axios.post(
-          `${baseUrl}/friends/${selectedUser.id}`,
+          `${baseUrl}/friends/${friendRequest.toUser}`,
           friendRequest
         );
         console.log(`friend request sent successfully cs`)
       } else {
         console.log(`No user has been selected`);
       }
-
+      
       closeUserInfoPopup();
     } catch (error) {
       console.log(`Error occured while sending request : ${error}`);
     }
+  }
 
     // console.log(`button clicked`);
   };
