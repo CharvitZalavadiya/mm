@@ -1,0 +1,33 @@
+@media screen and (max-width: 900px) {
+    .cssFriendsGrids{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cssButtonSize {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .cssFriendsGridUsername {
+        font-size: large;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    .cssFriendsGridUsername {
+        font-size: medium;
+    }
+    
+    .cssFriendsGridUserId {
+        font-size: small;
+    }
+
+}
+
+@media screen and (max-width: 420px) {
+    .cssFriendsGrids{
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}

@@ -13,7 +13,7 @@ const navLinks = [
   //   iconType: "rounded",
   // },
   { href: "/notes", icon: "edit_note", label: "Notes", iconType: "outlined" },
-  // { href: "/friends", icon: "groups", label: "Friends", iconType: "outlined" },
+  { href: "/friends", icon: "groups", label: "Friends", iconType: "outlined" },
   // {
   //   href: "/favourites",
   //   icon: "star",
@@ -62,7 +62,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
   return (
     <Suspense fallback="sidebar comming">
       <span
-        className={`cssSidebar sidebarIncome w-[220px] p-3 rounded-lg flex flex-grow bg-sidebarGradient flex-col select-none tracking-wide text-lg h-[95vh] ${
+        className={`cssSidebar w-[220px] p-3 rounded-lg flex flex-grow bg-sidebarGradient flex-col select-none tracking-wide text-lg h-[95vh] ${
           isOpen && !isAnimating
             ? "sidebarIncome"
             : isAnimating

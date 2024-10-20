@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+::selection {
+  background-color: #1fb3c4;
+  color: #fff;
+}
+
 :root {
   /* Gradients */
   --authButtonGradientBackground: linear-gradient(40deg, #0012b0, #a900f1);
@@ -68,6 +73,10 @@
   
   --noteBorderCyan: #20c7d3;
   --noteBackgroundCyan: #20c7d31e;
+  
+  /* Friends */
+
+  --tagSelectorGradient: linear-gradient(90deg, #135a7e, #173f47);
 }
 
 /* Scrollbar */
@@ -137,6 +146,10 @@
 
 .cl-userButtonPopoverCard {
   animation: userBtnAnim 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+.cl-userButtonPopoverFooter, .cl-footer {
+  display: none;
 }
 
 @keyframes userBtnAnim {

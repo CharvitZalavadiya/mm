@@ -1,6 +1,5 @@
 .topbarIncome {
-    animation: topbarIncome 0.7s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
-    animation-delay: 1s;
+    animation: topbarIncome 1.5s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
 }
 
 @keyframes topbarIncome {
