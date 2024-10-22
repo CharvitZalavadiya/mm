@@ -2,7 +2,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 const RequestedFriendsLoadingSkeleton = () => {
-  const arr = [1, 2, 3, 4, 5, 6];
+  const arr = [1, 2];
 
   return arr.map((index) => (
     <ul key={index} className="cssRequestedFriendsGrids rounded-lg">

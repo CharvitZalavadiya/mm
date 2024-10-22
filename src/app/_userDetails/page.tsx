@@ -19,6 +19,18 @@ interface UserInfo {
   lastname: string | null;
 }
 
+interface User {
+  username: string;
+  imageUrl: string;
+  id: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+  connectedPeople: string[];
+  requestSentPeople: string[];
+  requestReceivedPeople: string[];
+}
+
 interface UserDetailsProps {
   searchQuery: string;
   selectedTab: string;
@@ -162,7 +174,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
             <Suspense fallback={<RequestedFriendsLoadingSkeleton />}>
               <FriendRequestUsers currentUser={currentUser} />
             </Suspense>
-          )}
+          )}  
         </>
         {selectedTab === "connectToMore" && (
           <>

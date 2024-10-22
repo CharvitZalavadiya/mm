@@ -31,7 +31,7 @@ interface FriendRequestUsersProps {
 }
 
 const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
-  currentUser,
+  currentUser
 }) => {
   const [requestUsers, setRequestUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,10 +55,10 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   };
 
   useEffect(() => {
-    setTimeout(() =>{
+    // setTimeout(() =>{
 
       fetchUsers();
-    }, 5000)
+    // }, 5000)
   }, []);
 
   const currentUserId = currentUser[0]?.id;
