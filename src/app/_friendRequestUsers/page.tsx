@@ -109,7 +109,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
     <>
       {/* Section for Requests Received */}
         <section className="overflow-hidden">
-          <h3 className="text-2xl text-slate-100 mb-4">Requests Received</h3>
+          <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">Requests Received</h3>
           <ul className="cssRequestedFriendsGrids grid grid-cols-3 gap-4 max-h-full">
             {loading ? (
               <RequestedFriendsLoadingSkeleton />
@@ -142,7 +142,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
                 </li>
               ))
             ) : (
-              <p className="text-xl text-slate-400 w-[72vw] h-20 flex items-center">
+              <p className="cssRequestSentHeading text-xl text-slate-400 w-[72vw] h-20 flex items-center">
                 No Received Requests
               </p>
             )}
@@ -151,7 +151,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
 
         {/* Section for Requests Sent */}
         <section className="mt-8">
-          <h3 className="text-2xl text-slate-100 mb-4">Requests Sent</h3>
+          <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">Requests Sent</h3>
           <ul className="cssRequestedFriendsGrids grid grid-cols-3 gap-4 max-h-full">
             {loading ? (
               <RequestedFriendsLoadingSkeleton />
@@ -195,18 +195,18 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div
             ref={popupRef}
-            className="h-2/4 bg-noteEditMode rounded-lg backdrop-blur-md p-4 select-none"
+            className="bg-noteEditMode rounded-lg backdrop-blur-md p-4"
           >
             <div className="h-[85%] w-full flex flex-col">
-              <span className="flex w-full gap-7">
+              <span className="cssFriendsPopup flex w-full gap-7">
                 <Image
                   src={selectedUser.imageUrl}
                   alt={selectedUser.username || "No Username"}
                   width={96}
                   height={96}
-                  className="w-16 border-2 border-slate-500 h-16 object-cover rounded-full"
+                  className="w-16 border-2 border-slate-500 h-16 object-cover select-none rounded-full"
                 />
-                <span className="grid gap-1">
+                <span className="cssFriendsPopupUsername grid gap-1">
                   <p className="font-semibold text-2xl">
                     {selectedUser.username}
                   </p>
@@ -216,12 +216,12 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
                   </p>
                 </span>
               </span>
-              <span className="text-slate-300 mt-4 grid gap-2 ml-3 text-sm">
+              <span className="cssFriendsPopupDetails text-slate-300 my-6 grid gap-2 truncate text-sm">
                 <p>{selectedUser.email}</p>
                 <p>{selectedUser.id}</p>
               </span>
             </div>
-            <div className="h-[15%] flex text-sm">
+            <div className="cssFriendsPopupButtons h-[15%] flex text-sm">
               <span className="bg-blue-400 border border-slate-300 text-slate-300 inline-flex rounded-lg px-4 py-1 mr-4 items-center cursor-not-allowed">
                 <span className="animate-spin w-4 h-4 border-2 border-t-transparent border-slate-300 rounded-full mr-2" />
                 Pending

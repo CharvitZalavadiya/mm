@@ -6,6 +6,10 @@
     .cssButtonSize {
         font-size: 16px;
     }
+
+    .cssFriendsPopupButtons {
+        font-size: 16px;
+    }
 }
 
 @media screen and (max-width: 650px) {
@@ -13,6 +17,9 @@
         font-size: large;
     }
 
+    .cssRequestSentHeading {
+        font-size: large;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -24,10 +31,30 @@
         font-size: small;
     }
 
+    
+    .cssFriendsPopupButtons {
+        font-size: 14px;
+    }
+
 }
 
 @media screen and (max-width: 420px) {
     .cssFriendsGrids{
         grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .cssFriendsPopup {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .cssFriendsPopupUsername {
+        place-items: center;
+        margin-left: 0px;
+    }
+    
+    .cssFriendsPopupDetails {
+        font-size: small;
     }
 }
