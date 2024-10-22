@@ -24,6 +24,7 @@ const config = {
         "sidebarGradient": "var(--sidebarGradient)",
         "dividerGradient": "var(--dividerGradient)",
         "noteBackgroundGradient": "var(--noteBackgroundGradient)",
+        "tagSelectorGradient": "var(--tagSelectorGradient)",
       },
       colors: {
         "navBlockBackground": "var(--navBlockBackground)",

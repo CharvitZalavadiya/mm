@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Poppins } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import "./globalicons.css";
 import { ClerkProvider } from "@clerk/nextjs";

@@ -9,6 +9,16 @@ getDb().then((db) => {
   collection = db.collection('User');
 });
 
+// getting all users from database
+router.get('/', async (req, res) => {
+  try {
+    const users = await collection.find({}).toArray();
+    res.status(200).json(users)
+  } catch (error) {
+    console.log(`Error while fetching users from database: `, error)    
+  }
+})
+
 
 // sending friend request
 router.post('/:id', async (req, res) => {
@@ -52,7 +62,7 @@ router.post('/', async (req, res) => {
   // console.log(username, firstname, lastname, imageUrl, id, email)
 
   try {
-    
+
     const newUser = {
       username,
       email,
