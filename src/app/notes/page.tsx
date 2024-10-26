@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import axios from "axios";
-import SideBar from "@/app/_sidebar/page";
-import TopBarNotes from "../_topbarNotes/page";
+import SideBar from "@/app/(partial_components)/_sidebar/page";
+import TopBarNotes from "../(partial_components)/_topbarNotes/page";
 import { useAuth } from "@clerk/nextjs";
 import "./responsive.css";
 import NotesLoadingSkeleton from "./notesLoadingSkeleton";
@@ -188,7 +188,7 @@ const Notes: React.FC = () => {
         color: selectedColor,
       };
 
-      await axios.post(
+      await axios.patch(
         `${baseUrl}/notes/${selectedNote._id}` ||
           `${localUrl}/notes/${selectedNote._id}`,
         updatedNote

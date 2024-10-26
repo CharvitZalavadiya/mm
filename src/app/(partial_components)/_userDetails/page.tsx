@@ -1,14 +1,14 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
-import SendFriendRequestLogo from "../../components/assets/user-avatar.png";
+import SendFriendRequestLogo from "@/components/assets/user-avatar.png";
 import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import "./responsive.css";
 import FriendRequestUsers from "../_friendRequestUsers/page";
 import RequestedFriendsLoadingSkeleton from "../_friendRequestUsers/requestedFriendsLoadingSkeleton";
-import FriendsLoadingSkeleton from "../friends/friendsLoadingSkeleton";
+import FriendsLoadingSkeleton from "../../friends/friendsLoadingSkeleton";
 
 interface UserInfo {
   username: string | null;
@@ -147,7 +147,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
         };
 
         if (selectedUser) {
-          await axios.post(
+          await axios.patch(
             `${baseUrl}/friends/${friendRequest.toUser}`,
             friendRequest
           );
