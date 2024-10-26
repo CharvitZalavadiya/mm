@@ -129,7 +129,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
         };
 
         await axios
-          .patch(`${localUrl}/friends/acceptRequest/:id`, acceptRequest)
+          .patch(`${baseUrl}/friends/acceptRequest/:id`, acceptRequest)
           .then((response) => {
             console.log(`Request accepted: ${response}`);
           })
