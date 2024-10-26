@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
 });
 
 // Updating a note
-router.post('/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   const { id } = req.params;
   const { title, description, color } = req.body;
 

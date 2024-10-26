@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import SideBar from "../_sidebar/page";
-import UserDetails from "../_userDetails/page";
-import TopbarFriends from "../_topbarFriends/page";
+import SideBar from "../(partial_components)/_sidebar/page";
+import UserDetails from "../(partial_components)/_userDetails/page";
+import TopbarFriends from "../(partial_components)/_topbarFriends/page";
 import "./responsive.css";
 
 const Friends = () => {

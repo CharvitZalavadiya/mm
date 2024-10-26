@@ -19,9 +19,44 @@ router.get('/', async (req, res) => {
   }
 })
 
+// accepting friend request
+router.patch('/acceptRequest/:id', async (req, res) => {
+  const { currentUser, friendUser } = req.body; // assuming currentUser and friendUser contain their respective IDs
+
+  try {
+
+    const friendUserId = await collection.findOne({ id: friendUser });
+    const currentUserId = await collection.findOne({ id: currentUser });
+
+    if (!friendUserId || !currentUserId) {
+      return res.status(404).json({ error: 'One or both users not found' });
+    }
+
+    // Update currentUser's requestSentPeople array
+    await collection.updateOne(
+      { id: currentUser },
+      { $addToSet: { connectedPeople: friendUser } }, // Add to array if not already present
+      { $pull: { requestReceivedPeople: friendUser } }, // Remove friendUser from the array of requestRecievedPeople of currentUser
+      {returnOriginal: false}, // Return the updated document
+    );
+
+    // Update friendUser's requestReceivedPeople array
+    await collection.updateOne(
+      { id: friendUser },
+      { $addToSet: { connectedPeople: currentUser } }, // Add to array if not already present
+      { $pull: { requestSentPeople: currentUser } }, // Remove currentUser from the array of requestSentPeople of friendUser
+      {returnOriginal: false} // Return the updated document
+    );
+
+    res.status(200).json({ message: 'Friend request accepted by currentUser ss' });
+  } catch (error) {
+    console.error('Error accepting friend request:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
 
 // sending friend request
-router.post('/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   const { fromUser, toUser } = req.body; // assuming fromUser and toUser contain their respective IDs
   console.log(`from user: ${fromUser} to user: ${toUser}`);
 

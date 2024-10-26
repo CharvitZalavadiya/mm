@@ -1,14 +1,14 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
-import SendFriendRequestLogo from "../../components/assets/user-avatar.png";
+import SendFriendRequestLogo from "@/components/assets/user-avatar.png";
 import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import "./responsive.css";
 import FriendRequestUsers from "../_friendRequestUsers/page";
 import RequestedFriendsLoadingSkeleton from "../_friendRequestUsers/requestedFriendsLoadingSkeleton";
-import FriendsLoadingSkeleton from "../friends/friendsLoadingSkeleton";
+import FriendsLoadingSkeleton from "../../friends/friendsLoadingSkeleton";
 
 interface UserInfo {
   username: string | null;
@@ -147,7 +147,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
         };
 
         if (selectedUser) {
-          await axios.post(
+          await axios.patch(
             `${baseUrl}/friends/${friendRequest.toUser}`,
             friendRequest
           );
@@ -178,8 +178,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
         </>
         {selectedTab === "connectToMore" && (
           <>
-            Connect with people
-            <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-[80%]">
+            <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">Connect with people</h3>
+            <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-[87%]">
               {loading ? (
                 <FriendsLoadingSkeleton />
               ) : randomLimitedUsers.length > 0 ? (
@@ -211,7 +211,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
                   </li>
                 ))
               ) : (
-                <p className="text-3xl text-slate-400 w-[72vw] h-20 flex items-center">
+                <p className="cssRequestSentHeading text-3xl text-slate-400 w-[72vw] h-20 flex items-center">
                   No users found!
                 </p>
               )}
@@ -223,10 +223,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div
               ref={popupRef}
-              className="h-2/4 bg-noteEditMode rounded-lg backdrop-blur-md p-4"
+              className="bg-noteEditMode rounded-lg backdrop-blur-md p-4"
             >
               <div className="h-[85%] w-full flex flex-col">
-                <span className="flex w-full gap-7">
+                <span className="cssFriendsPopup flex w-full gap-7">
                   <Image
                     src={selectedUser.imageUrl}
                     alt={selectedUser.username || "No Username"}
@@ -234,7 +234,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
                     height={96}
                     className="w-16 border-2 border-slate-500 h-16 object-cover select-none rounded-full"
                   />
-                  <span className="grid gap-1">
+                  <span className="cssFriendsPopupUsername grid gap-1">
                     <p className="font-semibold text-2xl">
                       {selectedUser.username}
                     </p>
@@ -244,14 +244,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
                     </p>
                   </span>
                 </span>
-                <span className="text-slate-300 mt-4 grid gap-2 ml-3 text-sm">
+                <span className="cssFriendsPopupDetails text-slate-300 my-6 grid gap-2 ml-2 text-sm">
                   <p>{selectedUser.email}</p>
                   <p>{selectedUser.id}</p>
                 </span>
               </div>
-              <div className="h-[15%] flex">
+              <div className="cssFriendsPopupButtons text-base h-[15%] flex items-center justify-center">
                 <button
-                  className="bg-blue-500 border flex-1 justify-center border-slate-300 inline-flex rounded-lg px-4 py-1 mr-4 hover:bg-blue-600 items-center"
+                  className="bg-blue-500 border flex-1 justify-center border-slate-300 inline-flex rounded-lg py-0.5 mr-4 hover:bg-blue-600 items-center"
                   onClick={handleSendRequest}
                 >
                   Send Request
@@ -264,7 +264,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
                   />
                 </button>
                 <button
-                  className="bg-transparent border border-slate-500 bg-zinc-600 items-center rounded-lg px-4 py-1 hover:bg-zinc-700"
+                  className="bg-transparent border border-slate-500 bg-zinc-600 items-center rounded-lg px-4 py-0.5 hover:bg-zinc-700"
                   onClick={closeUserInfoPopup}
                 >
                   Cancel
