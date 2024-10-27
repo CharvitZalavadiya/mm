@@ -49,7 +49,6 @@
 @media screen and (max-width: 500px) {
   .cssTopbarFull {
     flex-direction: column;
-    padding-bottom: 10px;
     justify-content: center;
   }
 
@@ -77,6 +76,14 @@
     position: relative;
     margin-right: 4px;
     margin-left: 4px;
+  }
+}
+
+@media screen and (max-width:410px){
+  .cssHeadingAndDropdown{
+    flex-direction: column;
+    align-items:baseline;
+    gap: 5px;
   }
 }
 

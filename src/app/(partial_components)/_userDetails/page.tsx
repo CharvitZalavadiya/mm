@@ -9,6 +9,8 @@ import "./responsive.css";
 import FriendRequestUsers from "../_friendRequestUsers/page";
 import RequestedFriendsLoadingSkeleton from "../_friendRequestUsers/requestedFriendsLoadingSkeleton";
 import FriendsLoadingSkeleton from "../../friends/friendsLoadingSkeleton";
+import ConnectedFriends from "../_connectedFriends/page";
+import { DropdownMenuRadioGroupDemo } from "@/components/comps/dropdown";
 
 interface UserInfo {
   username: string | null;
@@ -38,7 +40,10 @@ interface UserDetailsProps {
 
 const baseUrl = `https://mind-maps-backend.onrender.com`;
 
-const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) => {
+const UserDetails: React.FC<UserDetailsProps> = ({
+  searchQuery,
+  selectedTab,
+}) => {
   const [usersInfo, setUsersInfo] = useState<UserInfo[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -119,7 +124,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
     );
 
   const shuffledUsers = shuffleArray(filteredUsers);
-  const randomLimitedUsers = shuffledUsers.slice(0, 10);
+  const randomLimitedUsers = shuffledUsers.slice(0, 16);
 
   const openUserInfoPopup = async (user: UserInfo) => {
     setSelectedUser(user);
@@ -172,14 +177,20 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
         <>
           {selectedTab === "requests" && (
             <Suspense fallback={<RequestedFriendsLoadingSkeleton />}>
-              <FriendRequestUsers currentUser={currentUser} />
+              <FriendRequestUsers
+                currentUser={currentUser}
+                searchQuery={searchQuery}
+              />
             </Suspense>
-          )}  
+          )}
         </>
+
         {selectedTab === "connectToMore" && (
           <>
-            <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">Connect with people</h3>
-            <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-[87%]">
+            {/* <h3 className="cssRequestSentHeading h-full text-2xl text-slate-100 mb-4">
+              Connect with people
+            </h3> */}
+            <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-full">
               {loading ? (
                 <FriendsLoadingSkeleton />
               ) : randomLimitedUsers.length > 0 ? (
@@ -218,6 +229,17 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
             </ul>
           </>
         )}
+
+        <>
+          {selectedTab === "friends" && (
+            <Suspense fallback={<RequestedFriendsLoadingSkeleton />}>
+              <ConnectedFriends
+                currentUser={currentUser}
+                searchQuery={searchQuery}
+              />
+            </Suspense>
+          )}
+        </>
 
         {selectedUser && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -274,34 +296,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ searchQuery, selectedTab }) =
           </div>
         )}
       </main>
-      {/* <section className="fixed">
-        <span className="cssButtonSize flex justify-around">
-          <button
-            className={`px-4 py-1 rounded ${
-              selectedTab === "friends" ? "bg-blue-600" : "bg-gray-600"
-            }`}
-            onClick={() => setSelectedTab("friends")}
-          >
-            Friends
-          </button>
-          <button
-            className={`px-4 py-1 rounded ${
-              selectedTab === "requests" ? "bg-blue-600" : "bg-gray-600"
-            }`}
-            onClick={() => setSelectedTab("requests")}
-          >
-            Requests
-          </button>
-          <button
-            className={`px-4 py-1 rounded ${
-              selectedTab === "connectToMore" ? "bg-blue-600" : "bg-gray-600"
-            }`}
-            onClick={() => setSelectedTab("connectToMore")}
-          >
-            Connect
-          </button>
-        </span>
-      </section> */}
     </>
   );
 };

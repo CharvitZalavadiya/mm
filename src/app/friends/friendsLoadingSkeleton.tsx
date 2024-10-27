@@ -2,7 +2,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 const FriendsLoadingSkeleton = () => {
-  const arr = [1, 2, 3, 4, 5, 6];
+  const arr = [1, 2, 3, 4, 5, 6, 7, 8];
 
   return arr.map((index) => (
     <ul key={index} className="cssNotesGrid rounded-lg">

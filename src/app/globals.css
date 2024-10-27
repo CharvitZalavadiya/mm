@@ -77,6 +77,10 @@
   /* Friends */
 
   --tagSelectorGradient: linear-gradient(90deg, #135a7e, #173f47);
+
+  /* Chat */
+
+  --chatMainPopupBackground: #252525;
 }
 
 /* Scrollbar */
