@@ -53,6 +53,7 @@ const config = {
         "noteBackgroundRed": "var(--noteBackgroundRed)",
         "noteBackgroundPink": "var(--noteBackgroundPink)",
         "noteBackgroundCyan": "var(--noteBackgroundCyan)",
+        "chatMainPopupBackground": "var(--chatMainPopupBackground)",
       },
       borderRadius: {
         "smRadius": "var(--smRadius)",

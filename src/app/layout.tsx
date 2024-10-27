@@ -5,7 +5,6 @@ import "./globalicons.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
-
 const poppins = Montserrat({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -32,9 +31,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="bg-primaryBackground text-white"
       >
-        <body className={poppins.className}>
-            {children}
-        </body>
+        <body className={poppins.className}>{children}</body>
       </html>
     </ClerkProvider>
   );

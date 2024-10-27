@@ -29,6 +29,7 @@ interface UserInfo {
 
 interface FriendRequestUsersProps {
   currentUser: UserInfo[]; // Adjust this based on how you want to structure currentUser
+  searchQuery: string;
 }
 
 const baseUrl = `https://mind-maps-backend.onrender.com`;
@@ -36,6 +37,7 @@ const localUrl = `http://localhost:8080`;
 
 const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   currentUser,
+  searchQuery,
 }) => {
   const [requestUsers, setRequestUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,8 +58,6 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
       .then((users) => {
         setRequestUsers(users);
         setLoading(false);
-
-        // localStorage.setItem("requestedUsers", JSON.stringify(users));
       })
       .catch((err) => {
         console.log("failed to fetch friend request users", err);
@@ -71,17 +71,29 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   const currentUserId = currentUser[0]?.id;
 
   // Separate requests into received and sent arrays
-  const receivedRequests = requestUsers.filter(
-    (user) =>
-      user.requestSentPeople.length > 0 &&
-      user.requestSentPeople.includes(currentUserId)
-  );
+  const receivedRequests = requestUsers
+    .filter(
+      (user) =>
+        user.requestSentPeople.length > 0 &&
+        user.requestSentPeople.includes(currentUserId)
+    )
+    .filter(
+      (user) =>
+        user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ??
+        false
+    );
 
-  const sentRequests = requestUsers.filter(
-    (user) =>
-      user.requestReceivedPeople.length > 0 &&
-      user.requestReceivedPeople.includes(currentUserId)
-  );
+  const sentRequests = requestUsers
+    .filter(
+      (user) =>
+        user.requestReceivedPeople.length > 0 &&
+        user.requestReceivedPeople.includes(currentUserId)
+    )
+    .filter(
+      (user) =>
+        user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ??
+        false
+    );
 
   const openUserInfoPopupSent = async (user: User) => {
     setSelectedUser(user);
@@ -148,14 +160,12 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
     <>
       {/* Section for Requests Received */}
       <section
-        className={`overflow-hidden ${
-          receivedRequests.length > 0 ? "" : "hidden"
-        }`}
+        className={`overflow-hidden`}
       >
-        <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">
+        {/* <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">
           Requests Received
-        </h3>
-        <ul className="cssRequestedFriendsGrids grid grid-cols-3 gap-4 max-h-full">
+        </h3> */}
+        <ul className="cssRequestedFriendsGrids grid grid-cols-3 gap-4 mt-4 max-h-full">
           {loading ? (
             <RequestedFriendsLoadingSkeleton />
           ) : receivedRequests.length > 0 ? (
@@ -187,16 +197,16 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
               </li>
             ))
           ) : (
-            <p className="cssRequestSentHeading text-xl text-slate-400 w-[72vw] h-20 flex items-center">
-              No Received Requests
+            <p className="cssRequestSentHeading text-lg text-slate-400 w-[72vw] flex items-center">
+              You havn&apos;t received the request
             </p>
           )}
         </ul>
       </section>
 
       {/* Section for Requests Sent */}
-      <section className={`mt-8 ${sentRequests.length > 0 ? "" : `hidden`}`}>
-        <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">
+      <section className={`mt-8`}>
+        <h3 className={`cssRequestSentHeading text-2xl text-slate-100 mb-4`}>
           Requests Sent
         </h3>
         <ul className="cssRequestedFriendsGrids grid grid-cols-3 gap-4 max-h-full">
@@ -231,8 +241,8 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
               </li>
             ))
           ) : (
-            <p className="text-xl text-slate-400 w-[72vw] h-20 flex items-center">
-              No Sent Requests
+            <p className="text-smFont text-slate-400 w-[72vw] flex items-center">
+              You haven&apos;t sent any requests yet !
             </p>
           )}
         </ul>

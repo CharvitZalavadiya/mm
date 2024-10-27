@@ -18,7 +18,7 @@ const localUrl = "http://localhost:8080";
 
 export async function GET() {
   try {
-    // const response = await axios.get<User[]>(`${baseUrl}/friends`);
+    // const response = await axios.get<User[]>(`${localUrl}/friends`);
     const response = await axios.get<User[]>(`${baseUrl}/friends`);
     
     
