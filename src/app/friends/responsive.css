@@ -6,6 +6,10 @@
   width: calc(100vw - 255px);
 }
 
+.cssMenu {
+  display: none;
+}
+
 /* Sidebar Responsive */
 
 @media screen and (max-width: 850px) {
@@ -74,8 +78,6 @@
   .cssMainCompFriends {
     width: 100%;
     position: relative;
-    margin-right: 4px;
-    margin-left: 4px;
   }
 }
 

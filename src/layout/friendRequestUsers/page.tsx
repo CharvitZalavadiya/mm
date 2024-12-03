@@ -49,7 +49,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
 
   const fetchUsers = () => {
-    fetch("api/requestedUser")
+    fetch("api/dbUsers")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch friend request users cs");
 
@@ -143,11 +143,14 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
         await axios
           .patch(`${baseUrl}/friends/acceptRequest/:id`, acceptRequest)
           .then((response) => {
-            console.log(`Request accepted: ${response}`);
+            console.log(`Request accepted:`);
+            console.log(response)
           })
           .catch((error) => {
             console.log(`Error accecpting request: ${error}`);
           });
+
+        closeUserInfoPopup();
       } catch (error) {
         console.log(
           `error sending post request for accepting other user friend request: ${error}`

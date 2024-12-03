@@ -8,6 +8,7 @@
 }
 
 :root {
+  box-sizing: border-box;
   /* Gradients */
   --authButtonGradientBackground: linear-gradient(40deg, #0012b0, #a900f1);
   --headingTextGradient: linear-gradient(45deg, #00d1ff, #722acd 70%);
@@ -81,6 +82,9 @@
   /* Chat */
 
   --chatMainPopupBackground: #252525;
+  --chatFriendDetailsGradient: linear-gradient(90deg, #3f3f3f, #262626);
+  --chatSectionInputField: #4d4d4d;
+
 }
 
 /* Scrollbar */

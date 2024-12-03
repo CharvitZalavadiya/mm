@@ -11,7 +11,7 @@ COPY /package*.json ./
 RUN npm install --force
 
 # Copy the rest of your application code
-COPY src/app .
+COPY src .
 
 # Expose the port your Next.js app runs on
 EXPOSE 3000

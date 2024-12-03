@@ -1,4 +1,4 @@
-import { UserProvider } from "../context/UserContext";
+import { UserProvider } from "@/context/UserContext";
 
 const FriendsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
