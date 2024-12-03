@@ -15,18 +15,23 @@ router.get('/', async (req, res) => {
     const users = await collection.find({}).toArray();
     res.status(200).json(users)
   } catch (error) {
-    console.log(`Error while fetching users from database: `, error)    
+    console.log(`Error while fetching users from database: `, error)
   }
 })
 
 // accepting friend request
 router.patch('/acceptRequest/:id', async (req, res) => {
   const { currentUser, friendUser } = req.body; // assuming currentUser and friendUser contain their respective IDs
+  // console.log(currentUser)
+  // console.log(friendUser)
 
   try {
 
     const friendUserId = await collection.findOne({ id: friendUser });
     const currentUserId = await collection.findOne({ id: currentUser });
+
+    // console.log(friendUserId)
+    // console.log(currentUserId)
 
     if (!friendUserId || !currentUserId) {
       return res.status(404).json({ error: 'One or both users not found' });
@@ -35,17 +40,21 @@ router.patch('/acceptRequest/:id', async (req, res) => {
     // Update currentUser's requestSentPeople array
     await collection.updateOne(
       { id: currentUser },
-      { $addToSet: { connectedPeople: friendUser } }, // Add to array if not already present
-      { $pull: { requestReceivedPeople: friendUser } }, // Remove friendUser from the array of requestRecievedPeople of currentUser
-      {returnOriginal: false}, // Return the updated document
+      {
+        $addToSet: { connectedPeople: friendUser }, // Add to array if not already present
+        $pull: { requestReceivedPeople: friendUser }
+      }, // Remove friendUser from the array of requestRecievedPeople of currentUser
+      { returnOriginal: false }, // Return the updated document
     );
 
     // Update friendUser's requestReceivedPeople array
     await collection.updateOne(
       { id: friendUser },
-      { $addToSet: { connectedPeople: currentUser } }, // Add to array if not already present
-      { $pull: { requestSentPeople: currentUser } }, // Remove currentUser from the array of requestSentPeople of friendUser
-      {returnOriginal: false} // Return the updated document
+      {
+        $addToSet: { connectedPeople: currentUser }, // Add to array if not already present
+        $pull: { requestSentPeople: currentUser }
+      }, // Remove currentUser from the array of requestSentPeople of friendUser
+      { returnOriginal: false } // Return the updated document
     );
 
     res.status(200).json({ message: 'Friend request accepted by currentUser ss' });

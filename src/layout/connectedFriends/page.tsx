@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useUserContext } from "../../context/UserContext"; // Import the context
-import RequestedFriendsLoadingSkeleton from "../_friendRequestUsers/requestedFriendsLoadingSkeleton";
+import { useUserContext } from "@/context/UserContext"; // Import the context
+import RequestedFriendsLoadingSkeleton from "../friendRequestUsers/requestedFriendsLoadingSkeleton";
 
 interface User {
   username: string;
@@ -42,7 +42,7 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   const router = useRouter();
 
   const fetchUsers = () => {
-    fetch("api/requestedUser")
+    fetch("api/dbUsers")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch friend request users");
         return res.json();

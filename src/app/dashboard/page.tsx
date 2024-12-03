@@ -1,10 +1,10 @@
-import SideBar from "../(partial_components)/_sidebar/page";
+// import SideBar from "@/layout/sidebar/page";
 
 export default function Dashboard() {
   return (
     <div className="flex p-3">
       <header className="">
-        <SideBar />
+        {/* <SideBar /> */}
 
       </header>
 

@@ -1,0 +1,37 @@
+@media screen and (max-width: 850px) {
+  .cssMenu {
+    display: block;
+  }
+
+  .cssSidebar {
+    position: absolute;
+    z-index: 10;
+    left: 25px;
+    top: 12px;
+    background: #2d2d2d;
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .sidebarIncome {
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .sidebarOut {
+    animation: sidebarOut 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .cssMenuCloseButton {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 450px) {
+    .cssSidebar {
+      position: absolute;
+      z-index: 10;
+      left: 16px;
+      top: 12px;
+      background: #2d2d2d;
+      animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
+}

@@ -25,6 +25,7 @@ const config = {
         "dividerGradient": "var(--dividerGradient)",
         "noteBackgroundGradient": "var(--noteBackgroundGradient)",
         "tagSelectorGradient": "var(--tagSelectorGradient)",
+        "chatFriendDetailsGradient": "var(--chatFriendDetailsGradient)",
       },
       colors: {
         "navBlockBackground": "var(--navBlockBackground)",
@@ -33,6 +34,7 @@ const config = {
         "primaryBackground": "var(--primaryBackground)",
         "noteBackground": "var(--noteBackground)",
         "noteEditMode": "var(--noteEditMode)",
+        "chatSectionInputField": "var(--chatSectionInputField)",
       },
       borderColor: {
         "noteBorderWhite": "var(--noteBorderWhite)",

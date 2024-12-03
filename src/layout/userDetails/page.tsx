@@ -6,11 +6,11 @@ import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import "./responsive.css";
-import FriendRequestUsers from "../_friendRequestUsers/page";
-import RequestedFriendsLoadingSkeleton from "../_friendRequestUsers/requestedFriendsLoadingSkeleton";
-import FriendsLoadingSkeleton from "../../friends/friendsLoadingSkeleton";
-import ConnectedFriends from "../_connectedFriends/page";
-import { DropdownMenuRadioGroupDemo } from "@/components/comps/dropdown";
+import FriendRequestUsers from "../friendRequestUsers/page";
+import RequestedFriendsLoadingSkeleton from "../friendRequestUsers/requestedFriendsLoadingSkeleton";
+import FriendsLoadingSkeleton from "@/app/friends/friendsLoadingSkeleton";
+import ConnectedFriends from "../connectedFriends/page";
+// import { DropdownMenuRadioGroupDemo } from "@/components/comps/dropdown";
 
 interface UserInfo {
   username: string | null;
@@ -124,7 +124,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     );
 
   const shuffledUsers = shuffleArray(filteredUsers);
-  const randomLimitedUsers = shuffledUsers.slice(0, 16);
+  const randomLimitedUsers = shuffledUsers.slice(0, 8);
 
   const openUserInfoPopup = async (user: UserInfo) => {
     setSelectedUser(user);

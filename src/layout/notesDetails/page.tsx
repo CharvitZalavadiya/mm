@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
-import TopBarNotes from "../_topbarNotes/page";
+import TopBarNotes from "@/layout/topbarNotes/page";
 
 interface Note {
   _id: string;
