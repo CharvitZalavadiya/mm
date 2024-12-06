@@ -1,116 +1,48 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
+// Define the User interface
 interface User {
-    username: string;
-    imageUrl: string;
-    id: string;
-    email: string;
-    firstname: string;
-    lastname: string;
-    connectedPeople: string[];
-    requestSentPeople: string[];
-    requestReceivedPeople: string[];
-  }
+  username: string;
+  imageUrl: string;
+  id: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+  connectedPeople: string[];
+  requestSentPeople: string[];
+  requestReceivedPeople: string[];
+}
 
+// Define API base URLs
 const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
 
+// Fetch users from the backend API
 export async function GET() {
   try {
-    // const response = await axios.get<User[]>(`${localUrl}/friends`);
+    // Replace with the correct API URL based on environment
     const response = await axios.get<User[]>(`${baseUrl}/friends`);
-    
-    
-    const usersMapped = response.data.map(user => {
-      return {
-        id: user.id,
-        username: user.username,
-        imageUrl: user.imageUrl,
-        email: user.email,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        connectedPeople: user.connectedPeople,
-        requestSentPeople: user.requestSentPeople,
-        requestReceivedPeople: user.requestReceivedPeople,
-      }
-    })
-    
-    // console.log(usersMapped)
-    return NextResponse.json(usersMapped);
+
+    // Map the response data
+    const usersMapped = response.data.map((user) => ({
+      id: user.id,
+      username: user.username,
+      imageUrl: user.imageUrl,
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      connectedPeople: user.connectedPeople,
+      requestSentPeople: user.requestSentPeople,
+      requestReceivedPeople: user.requestReceivedPeople,
+    }));
+
+    // Return the response with no-cache headers
+    const nextResponse = NextResponse.json(usersMapped);
+    nextResponse.headers.set("Cache-Control", "no-store");
+    return nextResponse;
   } catch (error) {
-    console.log(`error fetching users : ${error}`);
+    console.error(`Error fetching users: ${error}`);
     return new NextResponse("Failed to fetch users", { status: 500 });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { NextResponse } from "next/server";
-
-// // Define the user interface
-// interface User {
-//   username: string;
-//   imageUrl: string;
-//   id: string;
-//   email: string;
-//   firstname: string;
-//   lastname: string;
-//   connectedPeople: string[];
-//   requestSentPeople: string[];
-//   requestReceivedPeople: string[];
-// }
-
-// const baseUrl = "https://mind-maps-backend.onrender.com";
-// const localUrl = "http://localhost:8080";
-
-// // Server-side function to fetch users
-// export async function GET(request: Request) {
-//   try {
-//     // Fetching data from the backend API using the native fetch API
-//     const response = await fetch(`${baseUrl}/friends`, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-
-//     // If the response is not OK, throw an error
-//     if (!response.ok) {
-//       throw new Error(`Failed to fetch users, status: ${response.status}`);
-//     }
-
-//     // Parse the JSON response
-//     const data: User[] = await response.json();
-
-//     // Map through the response to structure the user data
-//     const usersMapped = data.map((user) => ({
-//       id: user.id,
-//       username: user.username,
-//       imageUrl: user.imageUrl,
-//       email: user.email,
-//       firstname: user.firstname,
-//       lastname: user.lastname,
-//       connectedPeople: user.connectedPeople,
-//       requestSentPeople: user.requestSentPeople,
-//       requestReceivedPeople: user.requestReceivedPeople,
-//     }));
-
-//     // Return the mapped user data as a JSON response
-//     return NextResponse.json(usersMapped);
-//   } catch (error) {
-//     console.log(`Error fetching users: ${error}`);
-//     return new NextResponse("Failed to fetch users", { status: 500 });
-//   }
-// }
