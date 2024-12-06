@@ -10,6 +10,7 @@ import FriendRequestUsers from "../friendRequestUsers/page";
 import RequestedFriendsLoadingSkeleton from "../friendRequestUsers/requestedFriendsLoadingSkeleton";
 import FriendsLoadingSkeleton from "@/app/friends/friendsLoadingSkeleton";
 import ConnectedFriends from "../connectedFriends/page";
+import { useUserContext } from "@/context/UserContext";
 // import { DropdownMenuRadioGroupDemo } from "@/components/comps/dropdown";
 
 interface UserInfo {
@@ -52,6 +53,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   // const [selectedTab, setSelectedTab] = useState("connectToMore");
   const popupRef = useRef<HTMLDivElement>(null);
 
+  const {setLoggedinUser} = useUserContext();
+
   const { userId } = useAuth();
 
   const fetchUsers = () => {
@@ -83,10 +86,23 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     fetchUsers();
   }, []);
 
+  const convertToUser = (userInfo: UserInfo): User => ({
+    username: userInfo.username || '', // Provide a default value
+    imageUrl: userInfo.imageUrl,
+    id: userInfo.id,
+    email: userInfo.email || '',
+    firstname: userInfo.firstname || '',
+    lastname: userInfo.lastname || '',
+    connectedPeople: [],
+    requestSentPeople: [],
+    requestReceivedPeople: []
+  });
+
   useEffect(() => {
     const currentUserData = usersInfo.find((user) => userId === user.id);
     if (currentUserData) {
       setCurrentUser([currentUserData]);
+      setLoggedinUser(convertToUser(currentUserData));
     }
   }, [usersInfo, userId]);
 

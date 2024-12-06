@@ -8,25 +8,23 @@ interface User {
   email: string;
   firstname: string;
   lastname: string;
-  connectedPeople: string[];
-  requestSentPeople: string[];
-  requestReceivedPeople: string[];
 }
 
 interface UserContextType {
   selectedUser: User | null;
-  setSelectedUser: (user: User) => void;
+  setSelectedUser: (user: User | null) => void;
+  loggedinUser: User | null;
+  setLoggedinUser: (user: User | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-  console.log(selectedUser?.email)
+  const [loggedinUser, setLoggedinUser] = useState<User | null>(null);
 
   return (
-    <UserContext.Provider value={{ selectedUser, setSelectedUser }}>
+    <UserContext.Provider value={{ selectedUser, setSelectedUser, loggedinUser, setLoggedinUser }}>
       {children}
     </UserContext.Provider>
   );
