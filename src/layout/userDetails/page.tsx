@@ -45,27 +45,61 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   searchQuery,
   selectedTab,
 }) => {
-  const [usersInfo, setUsersInfo] = useState<UserInfo[]>([]);
+  const [notConnected, setNotConnected] = useState<UserInfo[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
-  // const [selectedTab, setSelectedTab] = useState("connectToMore");
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const {setLoggedinUser} = useUserContext();
+  const { setLoggedinUser } = useUserContext();
 
   const { userId } = useAuth();
 
-  const fetchUsers = () => {
-    fetch("/api/getUsers")
+  // const fetchUsers = () => {
+  //   fetch("/api/getUsers")
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Failed to fetch users");
+
+  //       return res.json();
+  //     })
+  //     .then((users) => {
+  //       setUsersInfo(users);
+  //       setLoading(false);
+
+  //       axios
+  //         .post(`${baseUrl}/friends/bulk/:id`, { users })
+  //         .then((res) => {
+  //           console.log("response for multiple user request");
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error storing users in the database:", error);
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       console.log("fail to fetch users", err);
+  //     });
+  // };
+
+  useEffect(() => {
+    axios.post('http://localhost:8080/api/friends/', { userId }) // Send userId as part of an object
+      .then(response => {
+        console.log('UserId sent successfully:', response);
+      })
+      .catch(error => {
+        console.error('Error sending userId:', error);
+      });
+  }, [userId]);
+
+  const ncUsers = () => {
+    fetch("api/getNotConnectedUsers")
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch users");
+        if (!res.ok) throw new Error("Failed to fetch notConnected users");
 
         return res.json();
       })
       .then((users) => {
-        setUsersInfo(users);
+        setNotConnected(users);
         setLoading(false);
 
         axios
@@ -78,33 +112,34 @@ const UserDetails: React.FC<UserDetailsProps> = ({
           });
       })
       .catch((err) => {
-        console.log("fail to fetch users", err);
+        console.log("failed to fetch friend request users", err);
       });
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    ncUsers();
+    // fetchUsers();
+  }, []);  
 
   const convertToUser = (userInfo: UserInfo): User => ({
-    username: userInfo.username || '', // Provide a default value
+    username: userInfo.username || "", // Provide a default value
     imageUrl: userInfo.imageUrl,
     id: userInfo.id,
-    email: userInfo.email || '',
-    firstname: userInfo.firstname || '',
-    lastname: userInfo.lastname || '',
+    email: userInfo.email || "",
+    firstname: userInfo.firstname || "",
+    lastname: userInfo.lastname || "",
     connectedPeople: [],
     requestSentPeople: [],
-    requestReceivedPeople: []
+    requestReceivedPeople: [],
   });
 
   useEffect(() => {
-    const currentUserData = usersInfo.find((user) => userId === user.id);
+    const currentUserData = notConnected.find((user) => userId === user.id);
     if (currentUserData) {
       setCurrentUser([currentUserData]);
       setLoggedinUser(convertToUser(currentUserData));
     }
-  }, [usersInfo, userId, setLoggedinUser]);
+  }, [notConnected, userId, setLoggedinUser]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -127,20 +162,13 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     };
   }, [selectedUser]);
 
-  const shuffleArray = (array: UserInfo[]) => {
-    return array.sort(() => Math.random() - 0.5);
-  };
-
-  const filteredUsers = usersInfo
+  const filteredUsers = notConnected
     .filter((user) => userId !== user.id)
     .filter(
       (user) =>
         user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ??
         false
     );
-
-  const shuffledUsers = shuffleArray(filteredUsers);
-  const randomLimitedUsers = shuffledUsers.slice(0, 8);
 
   const openUserInfoPopup = async (user: UserInfo) => {
     setSelectedUser(user);
@@ -209,8 +237,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-full">
               {loading ? (
                 <FriendsLoadingSkeleton />
-              ) : randomLimitedUsers.length > 0 ? (
-                randomLimitedUsers.map((user) => (
+              ) : filteredUsers.length > 0 ? (
+                filteredUsers.map((user) => (
                   <li
                     key={user.id}
                     className="w-full select-none hover:cursor-pointer"

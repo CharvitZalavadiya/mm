@@ -42,7 +42,7 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   const router = useRouter();
 
   const fetchUsers = () => {
-    fetch("api/dbUsers")
+    fetch("api/getConnectedUsers")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch friend request users");
         return res.json();
@@ -51,25 +51,21 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
         setConnectedUsers(users);
         setLoading(false);
       })
-      .catch((err) => console.error("Failed to fetch friend request users", err));
+      .catch((err) =>
+        console.error("Failed to fetch friend request users", err)
+      );
   };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const currentUserId = currentUser[0]?.id;
+  // const currentUserId = currentUser[0]?.id;
 
-  const connectedFriends = connectedUsers
-    .filter(
-      (user) =>
-        user.connectedPeople.length > 0 &&
-        user.connectedPeople.includes(currentUserId)
-    )
-    .filter(
-      (user) =>
-        user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false
-    );
+  const connectedFriends = connectedUsers.filter(
+    (user) =>
+      user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false
+  );
 
   const handleFriendForChat = (user: User) => {
     setSelectedUser(user); // Set the selected user in context
@@ -103,7 +99,8 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
                     {user.username || "No Username"}
                   </h2>
                   <h4 className="text-sm text-slate-400 w-full text-center truncate">
-                    {user.firstname || "No firstname"} {user.lastname || "No lastname"}
+                    {user.firstname || "No firstname"}{" "}
+                    {user.lastname || "No lastname"}
                   </h4>
                 </span>
               </div>

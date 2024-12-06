@@ -3,6 +3,7 @@ import cors from 'cors';
 import notesRoutes from './routes/notes.js';
 import friendsRoutes from './routes/friends.js';
 import chatRoutes from './routes/chat.js';
+import apiRoutes from './routes/api.js';
 import { connectToDatabase } from '../server/config/db.js';
 
 const app = express();
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 app.use('/notes', notesRoutes);
 app.use('/friends', friendsRoutes);
 app.use('/chat', chatRoutes);
+app.use('/api', apiRoutes);
 
 
 process.on("SIGINT", async () => {

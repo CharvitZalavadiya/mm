@@ -39,7 +39,8 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   currentUser,
   searchQuery,
 }) => {
-  const [requestUsers, setRequestUsers] = useState<User[]>([]);
+  const [requestSentUsers, setRequestSentUsers] = useState<User[]>([]);
+  const [requestReceivedUsers, setRequestReceivedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedUserRequestSent, setSelectedUserRequestSent] =
@@ -48,15 +49,31 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
     useState<User | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const fetchUsers = () => {
-    fetch("api/dbUsers")
+  const sUsers = () => {
+    fetch("api/getRequestSentUsers")
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch friend request users cs");
+        if (!res.ok) throw new Error("Failed to fetch requestSent users");
 
         return res.json();
       })
       .then((users) => {
-        setRequestUsers(users);
+        setRequestSentUsers(users);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("failed to fetch friend request users", err);
+      });
+  };
+
+  const rUsers = () => {
+    fetch("api/getRequestReceivedUsers")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch requestReceived users");
+
+        return res.json();
+      })
+      .then((users) => {
+        setRequestReceivedUsers(users);
         setLoading(false);
       })
       .catch((err) => {
@@ -65,35 +82,22 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   };
 
   useEffect(() => {
-    fetchUsers();
+    sUsers();
+    rUsers();
   }, []);
 
   const currentUserId = currentUser[0]?.id;
 
   // Separate requests into received and sent arrays
-  const receivedRequests = requestUsers
-    .filter(
-      (user) =>
-        user.requestSentPeople.length > 0 &&
-        user.requestSentPeople.includes(currentUserId)
-    )
-    .filter(
-      (user) =>
-        user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ??
-        false
-    );
+  const receivedRequests = requestReceivedUsers.filter(
+    (user) =>
+      user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false
+  );
 
-  const sentRequests = requestUsers
-    .filter(
-      (user) =>
-        user.requestReceivedPeople.length > 0 &&
-        user.requestReceivedPeople.includes(currentUserId)
-    )
-    .filter(
-      (user) =>
-        user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ??
-        false
-    );
+  const sentRequests = requestSentUsers.filter(
+    (user) =>
+      user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false
+  );
 
   const openUserInfoPopupSent = async (user: User) => {
     setSelectedUser(user);
@@ -144,7 +148,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
           .patch(`${baseUrl}/friends/acceptRequest/:id`, acceptRequest)
           .then((response) => {
             console.log(`Request accepted:`);
-            console.log(response)
+            console.log(response);
           })
           .catch((error) => {
             console.log(`Error accecpting request: ${error}`);
@@ -162,9 +166,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   return (
     <>
       {/* Section for Requests Received */}
-      <section
-        className={`overflow-hidden`}
-      >
+      <section className={`overflow-hidden`}>
         {/* <h3 className="cssRequestSentHeading text-2xl text-slate-100 mb-4">
           Requests Received
         </h3> */}
