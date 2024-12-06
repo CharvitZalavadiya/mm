@@ -3,6 +3,8 @@ import cors from 'cors';
 import notesRoutes from './routes/notes.js';
 import friendsRoutes from './routes/friends.js';
 import { connectToDatabase } from '../server/config/db.js';
+import { createWebSocketServer } from './webSocketServer.js';
+// import { setupChatHandler } from './handlers/chatHandler.js';
 
 const app = express();
 const port = 8080;
@@ -19,6 +21,10 @@ app.listen(port, async () => {
     console.error('Error connecting to database:', err);
   }
 });
+
+// Setup WebSocket Server and Chat Handler
+// createWebSocketServer(server);
+// setupChatHandler();
 
 // routes
 app.get('/', (req, res) => {
