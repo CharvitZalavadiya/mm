@@ -104,7 +104,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
       setCurrentUser([currentUserData]);
       setLoggedinUser(convertToUser(currentUserData));
     }
-  }, [usersInfo, userId]);
+  }, [usersInfo, userId, setLoggedinUser]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
