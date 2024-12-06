@@ -1,44 +1,45 @@
-// import Message from './models/Message.js';
-// import { getWebSocketServer } from './websocketServer.js';
+import Message from '../../models/Message.js';
+import { getWebSocketServer } from '../webSocketServer.js';
 
-// const clients = new Map();
+const clients = new Map();
 
-// export function setupChatHandler() {
-//   const wss = getWebSocketServer();
+export function setupChatHandler() {
 
-//   wss.on('connection', (ws, req) => {
-//     const userId = req.url.split('?userId=')[1]; // Extract userId from the query string
-//     if (userId) clients.set(userId, ws);
+    const wss = getWebSocketServer();
 
-//     ws.on('message', async (message) => {
-//       try {
-//         const data = JSON.parse(message); // Expect JSON format { to, content }
-//         const { to, content } = data;
+    wss.on('connection', (ws, req) => {
+        const userId = loggedinUser.userId; // Extract userId from the query string
+        if (userId) clients.set(userId, ws);
 
-//         // Save the message in MongoDB
-//         const newMessage = await Message.create({
-//           from: userId,
-//           to,
-//           content,
-//           timestamp: new Date(),
-//         });
+        ws.on('message', async (message) => {
+            try {
+                const data = JSON.parse(message); // Expect JSON format { to, content }
+                const { to, content } = data;
 
-//         // Send the message to the recipient if connected
-//         if (clients.has(to)) {
-//           const recipientSocket = clients.get(to);
-//           recipientSocket.send(JSON.stringify({ from: userId, content }));
-//         } else {
-//           ws.send(JSON.stringify({ error: 'Recipient is not connected' }));
-//         }
-//       } catch (err) {
-//         console.error('Error processing message:', err);
-//       }
-//     });
+                // Save the message in MongoDB
+                const newMessage = await Message.create({
+                    from: loggedinUser,
+                    to: selectedUser,
+                    content,
+                    timestamp: new Date(),
+                });
 
-//     ws.on('close', () => {
-//       if (userId) clients.delete(userId);
-//     });
-//   });
+                // Send the message to the recipient if connected
+                if (clients.has(to)) {
+                    const recipientSocket = clients.get(to);
+                    recipientSocket.send(JSON.stringify({ from: userId, content }));
+                } else {
+                    ws.send(JSON.stringify({ error: 'Recipient is not connected' }));
+                }
+            } catch (err) {
+                console.error('Error processing message:', err);
+            }
+        });
 
-//   console.log('Chat handler is set up');
-// }
+        ws.on('close', () => {
+            if (userId) clients.delete(userId);
+        });
+    });
+
+    console.log('Chat handler is set up');
+}
