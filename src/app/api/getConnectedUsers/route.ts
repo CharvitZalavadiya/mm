@@ -22,7 +22,7 @@ const localUrl = "http://localhost:8080";
 export async function GET() {
   try {
     // Replace with the correct API URL based on environment
-    const response = await axios.get<User[]>(`${localUrl}/api/friends/connected`);
+    const response = await axios.get<User[]>(`${baseUrl}/api/friends/connected`);
 
     // Map the response data
     const usersMapped = response.data.map((user) => ({
