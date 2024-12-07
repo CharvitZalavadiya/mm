@@ -10,7 +10,7 @@ const Friends = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [selectedTab, setSelectedTab] = useState("friends");
+  const [selectedTab, setSelectedTab] = useState("connectToMore");
 
   const handleToggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
