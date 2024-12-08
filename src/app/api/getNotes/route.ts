@@ -18,7 +18,7 @@ const localUrl = "http://localhost:8080";
 
 export async function GET() {
   try {
-    const response = await axios.get<Note[]>(`${baseUrl}/notes` || `${localUrl}/notes`);
+    const response = await axios.get<Note[]>(`${baseUrl}/notes`);
     
     
     const userNotesMapped = response.data.map(note => {
@@ -62,7 +62,7 @@ export async function GET() {
 
 // export async function GET() {
 //   try {
-//     const res = await fetch(`${baseUrl}/notes` || `${localUrl}/notes`);
+//     const res = await fetch(`${baseUrl}/notes`);
 
 //     if (!res.ok) {
 //       throw new Error(`Failed to fetch notes, status code: ${res.status}`);

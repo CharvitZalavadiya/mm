@@ -165,8 +165,7 @@ const UserNotes: React.FC = () => {
       };
 
       await axios.post(
-        `${baseUrl}/notes/${selectedNote._id}` ||
-          `${localUrl}/notes/${selectedNote._id}`,
+        `${baseUrl}/notes/${selectedNote._id}`,
         updatedNote
       );
 
@@ -190,8 +189,7 @@ const UserNotes: React.FC = () => {
 
     try {
       await axios.delete(
-        `${baseUrl}/notes/${selectedNote._id}` ||
-          `${localUrl}/notes/${selectedNote._id}`
+        `${baseUrl}/notes/${selectedNote._id}`
       );
       setNotes((prevNotes) =>
         prevNotes.filter((note) => note._id !== selectedNote._id)
@@ -219,7 +217,7 @@ const UserNotes: React.FC = () => {
 
     try {
       const response = await axios.post<Note>(
-        `${baseUrl}/notes` || `${localUrl}/notes`,
+        `${baseUrl}/notes`,
         newNote
       );
       const createdNote = response.data;

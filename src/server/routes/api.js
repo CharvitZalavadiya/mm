@@ -10,6 +10,7 @@ getDb().then((db) => {
 });
 
 var currentUserId;
+var selectedUserId;
 
 router.post('/friends', (req, res) => {
     try {

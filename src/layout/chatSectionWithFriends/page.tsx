@@ -1,24 +1,41 @@
-import "@/context/UserContext"
+import "@/context/UserContext";
 import { useUserContext } from "@/context/UserContext";
+import axios from "axios";
+import { useEffect } from "react";
+
+const localUrl = "http://localhost:8080";
 
 const ChatSectionWithFriends = () => {
   const { selectedUser, loggedinUser } = useUserContext();
+  
+  useEffect(() => {
+    const bothUserDetails = {
+      from: loggedinUser?.id,
+      to: selectedUser?.id,
+    };
+
+    axios
+      .post(`${localUrl}/chat/bothUserDetails`, bothUserDetails)
+      .then((response) => {
+        console.log(`Both user details sent`, response);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, []);
+
   return (
     <div className="py-1 px-3 h-[85vh]">
-      <p className="text-zinc-500 text-xl w-full h-full flex justify-center items-center">Share your thoughts with {selectedUser?.username}</p>
+      {loggedinUser?.username}
+      {selectedUser?.username}
+      <p className="text-zinc-500 text-xl w-full h-full flex justify-center items-center">
+        Share your thoughts with {selectedUser?.username}
+      </p>
     </div>
   );
 };
 
 export default ChatSectionWithFriends;
-
-
-
-
-
-
-
-
 
 // import { useEffect, useState } from 'react';
 // import { useUserContext } from '@/context/UserContext';
