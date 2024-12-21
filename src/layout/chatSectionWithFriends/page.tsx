@@ -1,37 +1,76 @@
 import "@/context/UserContext";
 import { useUserContext } from "@/context/UserContext";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
 
-const ChatSectionWithFriends = () => {
-  const { selectedUser, loggedinUser } = useUserContext();
-  
-  useEffect(() => {
-    const bothUserDetails = {
-      from: loggedinUser?.id,
-      to: selectedUser?.id,
-    };
+interface Message {
+  from: string;
+  to: string;
+  content: string;
+  timestamp: string;
+}
 
-    axios
-      .post(`${baseUrl}/chat/bothUserDetails`, bothUserDetails)
+const ChatSectionWithFriends = () => {
+  const [messageHistory, setMessageHistory] = useState<Message[]>([]);
+
+  const { selectedUser, loggedinUser } = useUserContext();
+
+  useEffect(() => {
+    if (loggedinUser && selectedUser) {
+      const bothUserDetails = {
+        from: loggedinUser.id,
+        to: selectedUser.id,
+      };
+
+      try {
+        axios
+          .post(`${baseUrl}/chat/bothUserDetails`, bothUserDetails)
+          .then((response) => {
+            console.log(`Both user details sent`);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [loggedinUser, selectedUser]);
+
+  const fetchMessageHistory = () => {
+    fetch(`/api/messageHistory`)
       .then((response) => {
-        console.log(`Both user details sent`, response);
+        if (!response.ok) throw new Error("Failed to fetching message");
+        console.log("Message History : ", response);
+        return response.json();
+      })
+      .then((msgs) => {
+        setMessageHistory(msgs);
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log("Failed to fetch message history", error);
       });
+  };
+
+  useEffect(() => {
+    fetchMessageHistory();
   }, []);
+
+  console.log(messageHistory);
 
   return (
     <div className="py-1 px-3 h-[85vh]">
-      {loggedinUser?.username}
-      {selectedUser?.username}
-      <p className="text-zinc-500 text-xl w-full h-full flex justify-center items-center">
+      {messageHistory.map((msg, index) => (
+        <li key={index} className="border border-chatSectionMessageBorder rounded-md px-3 py-1 bg-chatSectionMessageBG">
+          {msg.content}
+        </li>
+      ))}
+      {/* <p className="text-zinc-500 text-xl w-full h-full flex justify-center items-center">
         Share your thoughts with {selectedUser?.username}
-      </p>
+      </p> */}
     </div>
   );
 };
