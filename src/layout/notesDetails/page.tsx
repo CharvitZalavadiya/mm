@@ -64,7 +64,9 @@ const UserNotes: React.FC = () => {
           (note.color === selectedColor || selectedColor === "black")
       )
     );
+    console.log(selectedColor)
   }, [searchQuery, notes, selectedColor, userId]);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -165,8 +167,7 @@ const UserNotes: React.FC = () => {
       };
 
       await axios.post(
-        `${baseUrl}/notes/${selectedNote._id}` ||
-          `${localUrl}/notes/${selectedNote._id}`,
+        `${baseUrl}/notes/${selectedNote._id}`,
         updatedNote
       );
 
@@ -190,8 +191,7 @@ const UserNotes: React.FC = () => {
 
     try {
       await axios.delete(
-        `${baseUrl}/notes/${selectedNote._id}` ||
-          `${localUrl}/notes/${selectedNote._id}`
+        `${baseUrl}/notes/${selectedNote._id}`
       );
       setNotes((prevNotes) =>
         prevNotes.filter((note) => note._id !== selectedNote._id)
@@ -214,12 +214,12 @@ const UserNotes: React.FC = () => {
       userId: userId,
       title: "New Note Title",
       description: "New Note Description",
-      color: "gray", // Default color or any other logic for color selection
+      color: selectedColor || "gray", // Default color or any other logic for color selection
     };
-
+    
     try {
       const response = await axios.post<Note>(
-        `${baseUrl}/notes` || `${localUrl}/notes`,
+        `${baseUrl}/notes`,
         newNote
       );
       const createdNote = response.data;

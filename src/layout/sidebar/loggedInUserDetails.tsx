@@ -30,7 +30,7 @@ export default function LoggedInUserDetails() {
           <span className="flex border-2 border-slate-500 hover:bg-opacity-50 rounded-full">
             <UserButton afterSignOutUrl="/sign-in" />
           </span>
-          <span className="flex select-none">{userDisplayName}</span>
+          <span className="select-none w-28 truncate">{userDisplayName}</span>
         </Suspense>
       </div>
     </section>

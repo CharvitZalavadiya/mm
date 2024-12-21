@@ -5,9 +5,28 @@ import { getDb } from '../config/db.js';
 const router = express.Router();
 
 var collection;
+var currentUserId;
+var selectedUserId;
 
 getDb().then((db) => {
     collection = db.collection('Chat');
+});
+
+router.get('/bothUserDetails', async (req, res) => {
+    try {
+        const { from, to } = req.body;
+        currentUserId = from
+        selectedUserId = to
+
+        if (!selectedUserId) {
+            return res.status(400).json({ message: 'UserId is required for selectedUser' });
+        }
+
+        res.status(200).json({ message: 'UserId received successfully' });
+    } catch (error) {
+        console.error('Error fetching current user or selected user:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 });
 
 // POST route to handle sending a message
@@ -41,5 +60,16 @@ router.post('/sendMessage', async (req, res) => {
         res.status(500).json({ error: 'Failed to send message' });
     }
 });
+
+router.get('/fetchMessages', async (req, res) => {
+    try {
+        console.log(`currentUserId : ${currentUserId}`)
+        console.log(`selectedUserId : ${selectedUserId}`)
+        const chats = await collection.find({ from: currentUserId, to: selectedUserId }).toArray();
+        res.status(200).json(chats)
+    } catch (error) {
+        console.log(`Error while fetching chats from database: `, error)
+    }
+})
 
 export default router;

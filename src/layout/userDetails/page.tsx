@@ -82,9 +82,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   // };
 
   useEffect(() => {
-    axios.post(`${baseUrl}/api/friends/`, { userId }) // Send userId as part of an object
+    userId && axios.post(`${baseUrl}/api/friends/`, { userId }) // Send userId as part of an object
       .then(response => {
-        console.log('UserId sent successfully:', response);
+        console.log('UserId sent successfully:');
       })
       .catch(error => {
         console.error('Error sending userId:', error);

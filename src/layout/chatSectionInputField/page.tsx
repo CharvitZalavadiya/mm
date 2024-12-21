@@ -42,6 +42,7 @@ import EmojiPicker from "@/components/comps/EmojiPicker";
 import axios from "axios"; // Import axios
 import { useUserContext } from "@/context/UserContext";
 
+const baseUrl = "https://mind-maps-backend.onrender.com"
 const localUrl = "http://localhost:8080"
 
 const ChatSectionInputField: React.FC = () => {
@@ -59,7 +60,7 @@ const ChatSectionInputField: React.FC = () => {
 
     try {
       // Send the message to the backend using axios
-      await axios.post(`${localUrl}/chat/sendMessage`, {
+      await axios.post(`${baseUrl}/chat/sendMessage`, {
         from: loggedinUser?.id, // Sender's user ID
         to: selectedUser?.id, // Receiver's user ID
         content: message, // Message content
