@@ -45,6 +45,7 @@ const config = {
         "noteBorderRed": "var(--noteBorderRed)",
         "noteBorderPink": "var(--noteBorderPink)",
         "noteBorderCyan": "var(--noteBorderCyan)",
+        "chatSectionMessageBorder": "var(--chatSectionMessageBorder)",
       },
       backgroundColor: {
         "noteBackgroundWhite": "var(--noteBackgroundWhite)",
@@ -56,6 +57,7 @@ const config = {
         "noteBackgroundPink": "var(--noteBackgroundPink)",
         "noteBackgroundCyan": "var(--noteBackgroundCyan)",
         "chatMainPopupBackground": "var(--chatMainPopupBackground)",
+        "chatSectionMessageBG": "var(--chatSectionMessageBG)",
       },
       borderRadius: {
         "smRadius": "var(--smRadius)",

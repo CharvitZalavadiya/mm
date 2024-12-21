@@ -40,6 +40,7 @@ interface UserDetailsProps {
 }
 
 const baseUrl = `https://mind-maps-backend.onrender.com`;
+const localUrl = `http://localhost:8080`;
 
 const UserDetails: React.FC<UserDetailsProps> = ({
   searchQuery,
@@ -82,7 +83,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   // };
 
   useEffect(() => {
-    userId && axios.post(`${baseUrl}/api/friends/`, { userId }) // Send userId as part of an object
+    userId && axios.post(`${baseUrl}/api/friends`, { userId }) // Send userId as part of an object
       .then(response => {
         console.log('UserId sent successfully:');
       })

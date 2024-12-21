@@ -84,6 +84,8 @@
   --chatMainPopupBackground: #252525;
   --chatFriendDetailsGradient: linear-gradient(90deg, #3f3f3f, #262626);
   --chatSectionInputField: #4d4d4d;
+  --chatSectionMessageBG: #555555;
+  --chatSectionMessageBorder: #141414;
 
 }
 
