@@ -74,8 +74,9 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   );
 
   const handleFriendForChat = (user: User) => {
-    setSelectedUser(user); // Set the selected user in context
     router.push("/friends/chat"); // Navigate to the chat page
+    console.log(user)
+    setSelectedUser(user); // Set the selected user in context
   };
 
   return (

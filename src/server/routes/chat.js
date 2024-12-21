@@ -12,7 +12,7 @@ getDb().then((db) => {
     collection = db.collection('Chat');
 });
 
-router.get('/bothUserDetails', async (req, res) => {
+router.post('/bothUserDetails', async (req, res) => {
     try {
         const { from, to } = req.body;
         currentUserId = from
