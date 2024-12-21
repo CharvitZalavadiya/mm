@@ -15,7 +15,7 @@ const ChatSectionWithFriends = () => {
       to: selectedUser?.id,
     };
 
-    bothUserDetails && axios
+    axios
       .post(`${baseUrl}/chat/bothUserDetails`, bothUserDetails)
       .then((response) => {
         console.log(`Both user details sent`, response);
