@@ -63,8 +63,8 @@ router.post('/sendMessage', async (req, res) => {
 
 router.get('/fetchMessages', async (req, res) => {
     try {
-        console.log(currentUserId)
-        console.log(selectedUserId)
+        console.log(`currentUserId : ${currentUserId}`)
+        console.log(`selectedUserId : ${selectedUserId}`)
         const chats = await collection.find({ from: currentUserId, to: selectedUserId }).toArray();
         res.status(200).json(chats)
     } catch (error) {

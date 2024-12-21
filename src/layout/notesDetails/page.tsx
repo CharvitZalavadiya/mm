@@ -64,7 +64,9 @@ const UserNotes: React.FC = () => {
           (note.color === selectedColor || selectedColor === "black")
       )
     );
+    console.log(selectedColor)
   }, [searchQuery, notes, selectedColor, userId]);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -212,9 +214,9 @@ const UserNotes: React.FC = () => {
       userId: userId,
       title: "New Note Title",
       description: "New Note Description",
-      color: "gray", // Default color or any other logic for color selection
+      color: selectedColor || "gray", // Default color or any other logic for color selection
     };
-
+    
     try {
       const response = await axios.post<Note>(
         `${baseUrl}/notes`,

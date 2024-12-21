@@ -3,6 +3,7 @@ import { useUserContext } from "@/context/UserContext";
 import axios from "axios";
 import { useEffect } from "react";
 
+const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
 
 const ChatSectionWithFriends = () => {
@@ -14,8 +15,8 @@ const ChatSectionWithFriends = () => {
       to: selectedUser?.id,
     };
 
-    axios
-      .post(`${localUrl}/chat/bothUserDetails`, bothUserDetails)
+    bothUserDetails && axios
+      .post(`${baseUrl}/chat/bothUserDetails`, bothUserDetails)
       .then((response) => {
         console.log(`Both user details sent`, response);
       })

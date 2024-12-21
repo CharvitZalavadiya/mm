@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useUserContext } from "@/context/UserContext"; // Import the context
 import RequestedFriendsLoadingSkeleton from "../friendRequestUsers/requestedFriendsLoadingSkeleton";
-import axios from "axios";
+// import axios from "axios";
 
 interface User {
   username: string;
@@ -33,8 +33,8 @@ interface ConnectedFriendsProps {
   searchQuery: string;
 }
 
-const baseUrl = "https://mind-maps-backend.onrender.com";
-const localUrl = "http://localhost:8080";
+// const baseUrl = "https://mind-maps-backend.onrender.com";
+// const localUrl = "http://localhost:8080";
 
 const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   currentUser,
@@ -45,7 +45,7 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   const { setSelectedUser } = useUserContext(); // Access setSelectedUser
   const router = useRouter();
 
-  const { selectedUser, loggedinUser } = useUserContext();
+  // const { selectedUser, loggedinUser } = useUserContext();
 
   const fetchUsers = () => {
     fetch("api/getConnectedUsers")
