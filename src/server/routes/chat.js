@@ -18,6 +18,9 @@ router.post('/bothUserDetails', async (req, res) => {
         currentUserId = from
         selectedUserId = to
 
+        console.log(currentUserId)
+        console.log(selectedUserId)
+
         if (!selectedUserId) {
             return res.status(400).json({ message: 'UserId is required for selectedUser' });
         }
@@ -65,7 +68,12 @@ router.get('/fetchMessages', async (req, res) => {
     try {
         console.log(`currentUserId : ${currentUserId}`)
         console.log(`selectedUserId : ${selectedUserId}`)
-        const chats = await collection.find({ from: currentUserId, to: selectedUserId }).toArray();
+        const chats = await collection.find({
+            $or: [
+                { from: currentUserId, to: selectedUserId },
+                { from: selectedUserId, to: currentUserId }
+            ]
+        }).toArray();
         res.status(200).json(chats)
     } catch (error) {
         console.log(`Error while fetching chats from database: `, error)

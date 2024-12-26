@@ -54,9 +54,9 @@ const Chat = () => {
             <ChatDetailsOfFriends />
           </section>
           <ChatSectionWithFriends />
-          <section className="sticky bottom-0">
+          {/* <section className="sticky bottom-0">
             <ChatSectionInputField />
-          </section>
+          </section> */}
         </main>
       </div>
     </div>
