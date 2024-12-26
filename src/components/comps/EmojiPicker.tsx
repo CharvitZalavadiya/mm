@@ -16,7 +16,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect }) => {
 
   return (
     
-    <div className="relative">
+    <div className="cssEmojiPicker relative">
       <button
         className="bg-chatSectionInputField rounded-md py-2 px-3 ml-2 focus:outline-none"
         onClick={() => setShowPicker((prev) => !prev)}

@@ -195,6 +195,7 @@ import "@/context/UserContext";
 import { useUserContext } from "@/context/UserContext";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
+import "./responsive.css"
 
 import EmojiPicker from "@/components/comps/EmojiPicker";
 
@@ -388,10 +389,10 @@ const ChatSectionWithFriends = () => {
                 <li
                   className={`border border-chatSectionMessageBorder text-smFont rounded-lg px-3 py-1 my-1 max-w-[60%] bg-chatSectionMessageBG ${
                     msg.from === loggedinUser?.id ? "justify-end" : "justify-start"
-                  } break-words overflow-hidden flex`}
+                  } break-words overflow-hidden`}
                 >
-                  <div>{msg.content}</div>
-                  <div className="text-xs text-gray-400 flex items-end pl-2 text-end mt-1 font-light select-none">
+                  <div className="cssChatMessageMessage">{msg.content}</div>
+                  <div className="cssChatMessageTime text-xs text-gray-400 flex items-end justify-end text-end mt-1 font-light select-none">
                     {new Date(msg.timestamp).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -411,7 +412,7 @@ const ChatSectionWithFriends = () => {
       <section className="flex items-center h-14">
         <EmojiPicker onEmojiSelect={handleEmojiSelect} />
         <input
-          className="text-slate-200 text-md mx-2 my-2 bg-chatSectionInputField outline-none rounded-md px-3 py-2 flex-grow"
+          className="cssChatInputSection text-slate-200 text-md mx-2 my-2 bg-chatSectionInputField outline-none rounded-md px-3 py-2 flex-grow"
           type="text"
           placeholder="Type a message ..."
           value={message}
@@ -419,7 +420,7 @@ const ChatSectionWithFriends = () => {
           onKeyDown={handleKeyPress} // Handle Enter key press
         />
         <button className="outline-none" onClick={handleSendMessage}>
-          <span className="material-symbols-rounded mr-2 flex px-3 py-[9px] items-center bg-chatSectionInputField rounded-md">
+          <span className="cssChatSendButton material-symbols-rounded mr-3 flex px-3 py-[9px] items-center bg-chatSectionInputField rounded-md">
             send
           </span>
         </button>

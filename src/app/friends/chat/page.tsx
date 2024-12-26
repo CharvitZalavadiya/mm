@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import TopbarChat from "@/layout/topbarChat/page";
 import ChatDetailsOfFriends from "@/layout/chatDetailsOfFriends/page";
 import ChatSectionWithFriends from "@/layout/chatSectionWithFriends/page";
-import ChatSectionInputField from "@/layout/chatSectionInputField/page";
 
 const Chat = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -54,9 +53,6 @@ const Chat = () => {
             <ChatDetailsOfFriends />
           </section>
           <ChatSectionWithFriends />
-          {/* <section className="sticky bottom-0">
-            <ChatSectionInputField />
-          </section> */}
         </main>
       </div>
     </div>
