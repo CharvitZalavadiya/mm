@@ -290,7 +290,7 @@ const Notes: React.FC = () => {
           />
         </span>
         <span>
-          <ul className="cssNotesGrid grid grid-cols-4 gap-4 max-h-full overflow-y-scroll">
+          <ul className="cssNotesGrid gap-4 max-h-full overflow-y-scroll">
             {loading ? (
               <NotesLoadingSkeleton />
             ) : (
