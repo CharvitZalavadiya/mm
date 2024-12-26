@@ -30,7 +30,7 @@ const ChatSectionWithFriends = () => {
 
       try {
         axios
-          .post(`${localUrl}/chat/bothUserDetails`, bothUserDetails)
+          .post(`${baseUrl}/chat/bothUserDetails`, bothUserDetails)
           .then((response) => {
             console.log(`Both user details sent`);
           })
@@ -86,7 +86,7 @@ const ChatSectionWithFriends = () => {
 
     try {
       // Send the message to the backend using axios
-      await axios.post(`${localUrl}/chat/sendMessage`, {
+      await axios.post(`${baseUrl}/chat/sendMessage`, {
         from: loggedinUser?.id, // Sender's user ID
         to: selectedUser?.id, // Receiver's user ID
         content: message, // Message content
