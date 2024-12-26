@@ -84,8 +84,8 @@
   --chatMainPopupBackground: #252525;
   --chatFriendDetailsGradient: linear-gradient(90deg, #3f3f3f, #262626);
   --chatSectionInputField: #4d4d4d;
-  --chatSectionMessageBG: #555555;
-  --chatSectionMessageBorder: #141414;
+  --chatSectionMessageBG: #414141;
+  --chatSectionMessageBorder: #2d2d2d;
 
 }
 
@@ -95,6 +95,7 @@
   width: 3px;
   height: 3px;
   color: #00d1ff;
+  display: none;
 }
 /* 
 ::-webkit-scrollbar-track {
