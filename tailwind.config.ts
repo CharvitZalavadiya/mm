@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       backgroundImage: {
+        'allColor': 'conic-gradient(gray, blue, violet, red, orange, yellow, green, cyan, pink, gray)',
         "authButtonGradientBackground": "var(--authButtonGradientBackground)",
         "headingTextGradient": "var(--headingTextGradient)",
         "sidebarGradient": "var(--sidebarGradient)",

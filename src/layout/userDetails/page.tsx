@@ -46,6 +46,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   searchQuery,
   selectedTab,
 }) => {
+  const [usersInfo, setUsersInfo] = useState<UserInfo[]>([]);
   const [notConnected, setNotConnected] = useState<UserInfo[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,30 +58,30 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
   const { userId } = useAuth();
 
-  // const fetchUsers = () => {
-  //   fetch("/api/getUsers")
-  //     .then((res) => {
-  //       if (!res.ok) throw new Error("Failed to fetch users");
+  const fetchUsers = () => {
+    fetch("/api/getUsers")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
 
-  //       return res.json();
-  //     })
-  //     .then((users) => {
-  //       setUsersInfo(users);
-  //       setLoading(false);
+        return res.json();
+      })
+      .then((users) => {
+        setUsersInfo(users);
+        setLoading(false);
 
-  //       axios
-  //         .post(`${baseUrl}/friends/bulk/:id`, { users })
-  //         .then((res) => {
-  //           console.log("response for multiple user request");
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error storing users in the database:", error);
-  //         });
-  //     })
-  //     .catch((err) => {
-  //       console.log("fail to fetch users", err);
-  //     });
-  // };
+        axios
+          .post(`${baseUrl}/friends/bulk/:id`, { users })
+          .then((res) => {
+            console.log("response for multiple user request");
+          })
+          .catch((error) => {
+            console.error("Error storing users in the database:", error);
+          });
+      })
+      .catch((err) => {
+        console.log("fail to fetch users", err);
+      });
+  };
 
   useEffect(() => {
     userId && axios.post(`${baseUrl}/api/friends`, { userId }) // Send userId as part of an object
@@ -119,7 +120,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
   useEffect(() => {
     ncUsers();
-    // fetchUsers();
+    fetchUsers();
   }, []);  
 
   const convertToUser = (userInfo: UserInfo): User => ({

@@ -7,6 +7,7 @@ import { useAuth } from "@clerk/nextjs";
 import "./responsive.css";
 import NotesLoadingSkeleton from "./notesLoadingSkeleton";
 import "./animations.css"
+import { decryptData, encryptData } from "@/utils/cryptojs";
 
 interface Note {
   _id: string;
@@ -27,7 +28,7 @@ const Notes: React.FC = () => {
   const [editedDescription, setEditedDescription] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
-  const [selectedColor, setSelectedColor] = useState<string>("black");
+  const [selectedColor, setSelectedColor] = useState<string>("allColor");
   const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -46,8 +47,16 @@ const Notes: React.FC = () => {
         if (!response.ok) throw new Error("Failed to fetch users");
 
         const data: Note[] = await response.json();
-        // console.log(data)
-        setNotes(data);
+
+        const decryptedNotes = data.map((note) => ({
+          ...note,
+          title: decryptData(note.title), // Decrypt title
+          description: decryptData(note.description), // Decrypt description
+          color: decryptData(note.color), // Decrypt color for frontend
+        }));
+  
+        setNotes(decryptedNotes);
+
       } catch (err) {
         console.error("Error fetching users:", err);
       } finally {
@@ -82,7 +91,7 @@ const Notes: React.FC = () => {
       filteredNotesBasedOnUser.filter(
         (note) =>
           note.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-          (note.color === selectedColor || selectedColor === "black")
+          (note.color === selectedColor || selectedColor === "allColor")
       )
     );
   }, [searchQuery, notes, selectedColor, userId]);
@@ -174,7 +183,7 @@ const Notes: React.FC = () => {
     setSelectedNote(null);
     setEditedTitle("");
     setEditedDescription("");
-    setSelectedColor("black");
+    setSelectedColor("allColor");
   };
 
   const handleSaveChanges = async () => {
@@ -183,9 +192,9 @@ const Notes: React.FC = () => {
     try {
       const updatedNote = {
         ...selectedNote,
-        title: editedTitle,
-        description: editedDescription,
-        color: selectedColor,
+        title: encryptData(editedTitle),
+        description: encryptData(editedDescription),
+        color: encryptData(selectedColor),
       };
 
       await axios.patch(
@@ -194,13 +203,21 @@ const Notes: React.FC = () => {
       );
 
       // Update notes and reset filteredNotes to include all notes
+
+      const decryptedUpdatedNote = {
+        ...updatedNote,
+        title: decryptData(updatedNote.title),
+        description: decryptData(updatedNote.description),
+        color: decryptData(updatedNote.color), // Decrypt color for frontend
+      };
+      
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
-          note._id === updatedNote._id ? updatedNote : note
+          note._id === decryptedUpdatedNote._id ? decryptedUpdatedNote : note
         )
       );
 
-      setSelectedColor("black");
+      setSelectedColor("allColor");
 
       closePopup();
     } catch (error) {
@@ -217,7 +234,7 @@ const Notes: React.FC = () => {
         prevNotes.filter((note) => note._id !== selectedNote._id)
       );
 
-      setSelectedColor("black");
+      setSelectedColor("allColor");
 
       closePopup();
     } catch (error) {
@@ -234,21 +251,28 @@ const Notes: React.FC = () => {
 
     const newNote = {
       userId: userId,
-      title: "Title",
-      description: "Note",
-      color: "gray",
+      title: encryptData("Title"),
+      description: encryptData("Note"),
+      color: selectedColor === "allColor" ? encryptData("gray") : encryptData(selectedColor),
     };
   
     try {
       console.log(newNote)
       const response = await axios.post<Note>(`${baseUrl}/notes/`, newNote);
       const createdNote = response.data;
+
+      const decryptedNote = {
+        ...createdNote,
+        title: decryptData(createdNote.title), // Decrypt title for frontend
+        description: decryptData(createdNote.description), // Decrypt description for frontend
+        color: decryptData(createdNote.color), // Decrypt color for frontend
+      };
             
-      setNotes((prevNotes) => [...prevNotes, createdNote]);
-      setFilteredNotes((prevNotes) => [...prevNotes, createdNote]);
+      setNotes((prevNotes) => [...prevNotes, decryptedNote]);
+      setFilteredNotes((prevNotes) => [...prevNotes, decryptedNote]);
       
       
-      openPopup(createdNote);
+      openPopup(decryptedNote);
     } catch (error) {
       console.error("Error creating new note:", error);
     }finally{
@@ -258,8 +282,17 @@ const Notes: React.FC = () => {
       if (!responsenew.ok) throw new Error("Failed to fetch users");
   
       const data: Note[] = await responsenew.json();
-      console.log(data)
-      setNotes(data);
+      // console.log(data)
+      // setNotes(data);
+
+      const decryptedNotes = data.map((note) => ({
+        ...note,
+        title: decryptData(note.title), // Decrypt title
+        description: decryptData(note.description), // Decrypt description
+        color: decryptData(note.color), // Decrypt color for frontend
+      }));
+
+      setNotes(decryptedNotes);
     }
   };
   
@@ -290,10 +323,10 @@ const Notes: React.FC = () => {
           />
         </span>
         <span>
-          <ul className="cssNotesGrid gap-4 max-h-full overflow-y-scroll">
+          <ul className="cssNotesGrid grid grid-cols-4 gap-4 max-h-full overflow-y-scroll">
             {loading ? (
               <NotesLoadingSkeleton />
-            ) : (
+            ) : filteredNotes.length > 0 ? (
               filteredNotes.map((note) => (
                 <li
                   key={note._id}
@@ -310,6 +343,8 @@ const Notes: React.FC = () => {
                   </p>
                 </li>
               ))
+            ) : (
+              <p className="text-mdFont text-slate-400 w-[72vw] flex items-center">Start taking notes by clicking + icon</p>
             )}
           </ul>
         </span>
@@ -337,7 +372,7 @@ const Notes: React.FC = () => {
                   placeholder="Description"
                 />
               </div>
-              <div className="cssNotePopupNotText flex h-[10%]">
+              <div className="cssNotePopupNotText flex items-center h-[8%]">
                 <span className="cssNotePopupColors rounded py-1 px-3 w-1/2 overflow-x-auto flex gap-2">
                   {colorArray.map((color) => (
                     <ul className="py-1" key={color}>
@@ -353,22 +388,22 @@ const Notes: React.FC = () => {
                   ))}
                 </span>
 
-                <span className="cssNotePopupButtons flex justify-between w-1/2">
+                <span className="cssNotePopupButtons flex items-center justify-between w-1/2">
                   <button
                     onClick={handleDeleteNote}
-                    className="cssNotePopupDeleteBtn bg-red-500 text-white px-4 py-1 rounded"
+                    className="cssNotePopupDeleteBtn h-fit bg-red-500 text-white px-4 py-1 rounded"
                   >
                     Delete
                   </button>
                   <button
                     onClick={handleSaveChanges}
-                    className="cssNotePopupSaveBtn bg-blue-500 text-white px-4 py-1 rounded"
+                    className="cssNotePopupSaveBtn h-fit bg-blue-500 text-white px-4 py-1 rounded"
                   >
                     Save
                   </button>
                   <button
                     onClick={closePopup}
-                    className="cssNotePopupCancelBtn bg-gray-300 text-gray-700 px-4 py-1 rounded"
+                    className="cssNotePopupCancelBtn h-fit bg-gray-300 text-gray-700 px-4 py-1 rounded"
                   >
                     Cancel
                   </button>
