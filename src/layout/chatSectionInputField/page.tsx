@@ -31,7 +31,7 @@ const ChatSectionInputField: React.FC = () => {
 
     try {
       // Send the message to the backend using axios
-      await axios.post(`${localUrl}/chat/sendMessage`, {
+      await axios.post(`${baseUrl}/chat/sendMessage`, {
         from: loggedinUser?.id, // Sender's user ID
         to: selectedUser?.id, // Receiver's user ID
         content: message, // Message content
