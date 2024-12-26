@@ -3,6 +3,8 @@ import { useUserContext } from "@/context/UserContext";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+import EmojiPicker from "@/components/comps/EmojiPicker";
+
 const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
 
@@ -15,6 +17,7 @@ interface Message {
 
 const ChatSectionWithFriends = () => {
   const [messageHistory, setMessageHistory] = useState<Message[]>([]);
+  const [message, setMessage] = useState<string>("");
 
   const { selectedUser, loggedinUser } = useUserContext();
 
@@ -27,7 +30,7 @@ const ChatSectionWithFriends = () => {
 
       try {
         axios
-          .post(`${baseUrl}/chat/bothUserDetails`, bothUserDetails)
+          .post(`${localUrl}/chat/bothUserDetails`, bothUserDetails)
           .then((response) => {
             console.log(`Both user details sent`);
           })
@@ -61,81 +64,106 @@ const ChatSectionWithFriends = () => {
 
   console.log(messageHistory);
 
+  const handleEmojiSelect = (emoji: string) => {
+    setMessage((prevMessage) => prevMessage + emoji); // Append emoji to message
+  };
+
+  const handleSendMessage = async () => {
+    if (message.trim() === "") return; // Do not send empty messages
+
+    // const timestamp = new Date().toISOString(); // Generate timestamp
+    const now = new Date();
+
+    // Convert the current UTC time to IST using `toLocaleString` with the 'Asia/Kolkata' timezone
+    const istDate = new Date(
+      now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    );
+
+    // Convert IST date to ISO string
+    const timestamp = istDate.toISOString(); // Format as ISO string in IST
+
+    console.log("Generated IST Timestamp:", timestamp);
+
+    try {
+      // Send the message to the backend using axios
+      await axios.post(`${localUrl}/chat/sendMessage`, {
+        from: loggedinUser?.id, // Sender's user ID
+        to: selectedUser?.id, // Receiver's user ID
+        content: message, // Message content
+        timestamp: timestamp, // Timestamp
+      });
+
+      if (loggedinUser && selectedUser) {
+        setMessageHistory((prevMessages) => [
+          ...prevMessages,
+          {
+            from: loggedinUser.id,
+            to: selectedUser.id,
+            content: message,
+            timestamp,
+          },
+        ]);
+      }
+
+      // Optionally, clear the message input field after sending
+      setMessage("");
+
+      // Re-fetch message history after sending
+      fetchMessageHistory();
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && message.trim() !== "") {
+      handleSendMessage();
+    }
+  };
+
   return (
-    <div className="py-1 px-3 h-[85vh]">
-      {messageHistory.map((msg, index) => (
-        <li key={index} className="border border-chatSectionMessageBorder rounded-md px-3 py-1 bg-chatSectionMessageBG">
-          {msg.content}
-        </li>
-      ))}
-      {/* <p className="text-zinc-500 text-xl w-full h-full flex justify-center items-center">
+    <>
+      <div className="py-1 px-3 h-[81vh]">
+        {messageHistory.map((msg, index) => (
+          <ul
+          key={index}
+            className={`w-full flex flex-wrap ${
+              msg.from === loggedinUser?.id ? "justify-end" : "justify-start"
+            }`}
+          >
+            <li
+              key={index}
+              className={`border border-chatSectionMessageBorder rounded-md px-3 py-1 my-1 flex max-w-28 text-wrap bg-chatSectionMessageBG ${
+                msg.from === loggedinUser?.id ? "justify-end" : "justify-start"
+              }`}
+            >
+              {msg.content}
+            </li>
+          </ul>
+        ))}
+        {/* <p className="text-zinc-500 text-xl w-full h-full flex justify-center items-center">
         Share your thoughts with {selectedUser?.username}
       </p> */}
-    </div>
+      </div>
+
+      <div className="flex items-center">
+        <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+        <input
+          className="text-slate-200 text-md mx-2 my-2 bg-chatSectionInputField outline-none rounded-md px-3 py-2 flex-grow"
+          type="text"
+          placeholder="Type a message ..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)} // Update message state
+          onKeyDown={handleKeyPress} // Handle Enter key press
+        />
+        <button className="outline-none" onClick={handleSendMessage}>
+          <span className="material-symbols-rounded mr-2 flex px-3 py-2 items-center bg-chatSectionInputField rounded-md">
+            send
+          </span>
+        </button>
+      </div>
+    </>
   );
 };
 
 export default ChatSectionWithFriends;
-
-// import { useEffect, useState } from 'react';
-// import { useUserContext } from '@/context/UserContext';
-
-// const ChatSectionWithFriends = () => {
-//   const { selectedUser, currentUser } = useUserContext();
-//   const [messages, setMessages] = useState<{ from: string; content: string }[]>([]);
-//   const [message, setMessage] = useState('');
-//   const [ws, setWs] = useState<WebSocket | null>(null);
-
-//   useEffect(() => {
-//     if (!selectedUser?.userId || !currentUser?.userId) return;
-
-//     const socket = new WebSocket(`ws://localhost:8080/friends/chat?userId=${currentUser.userId}`);
-//     setWs(socket);
-
-//     socket.onmessage = (event) => {
-//       const data = JSON.parse(event.data);
-//       setMessages((prevMessages) => [...prevMessages, data]);
-//     };
-
-//     return () => {
-//       socket.close();
-//     };
-//   }, [selectedUser, currentUser]);
-
-//   const sendMessage = () => {
-//     if (ws && message.trim()) {
-//       ws.send(JSON.stringify({ to: selectedUser.userId, content: message }));
-//       setMessages((prevMessages) => [...prevMessages, { from: currentUser.userId, content: message }]);
-//       setMessage('');
-//     }
-//   };
-
-//   return (
-//     <div className="py-1 px-3 h-[85vh] flex flex-col">
-//       <div className="flex-grow overflow-y-auto">
-//         {messages.map((msg, index) => (
-//           <div
-//             key={index}
-//             className={`p-2 my-2 max-w-[70%] ${msg.from === currentUser.userId ? 'self-end bg-blue-200' : 'self-start bg-gray-200'}`}
-//           >
-//             {msg.content}
-//           </div>
-//         ))}
-//       </div>
-//       <div className="flex items-center mt-2">
-//         <input
-//           type="text"
-//           value={message}
-//           onChange={(e) => setMessage(e.target.value)}
-//           className="flex-grow border rounded p-2"
-//           placeholder={`Message ${selectedUser?.userId}`}
-//         />
-//         <button onClick={sendMessage} className="ml-2 px-4 py-2 bg-blue-500 text-white rounded">
-//           Send
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ChatSectionWithFriends;

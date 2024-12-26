@@ -17,7 +17,7 @@ const localUrl = "http://localhost:8080";
 export async function GET() {
   try {
     // Replace with the correct API URL based on environment
-    const response = await axios.get<Message[]>(`${baseUrl}/chat/fetchMessages`);
+    const response = await axios.get<Message[]>(`${localUrl}/chat/fetchMessages`);
 
     // Map the response data
     const messagesMapped = response.data.map((msg) => ({
