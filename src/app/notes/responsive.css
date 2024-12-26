@@ -12,13 +12,31 @@
   width: calc(100vw - 255px);
   justify-content: end;
 }
-
+/* 
 .cssNotesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
+} */
 
 /* Sidebar Responsive */
+/* 
+@media screen and (min-width: 2001px) and (max-width: 2500px) {
+  .cssNotesGrid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1501px) and (max-width: 2000px) {
+  .cssNotesGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 851px) and (max-width: 1500px) {
+  .cssNotesGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+} */
 
 @media screen and (max-width: 850px) {
   .cssMenu {
@@ -44,6 +62,10 @@
 
   .cssMenuCloseButton {
     display: block;
+  }
+
+  .cssNotesGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .cssMainCompNotes {
@@ -78,9 +100,9 @@
     padding-left: 10px;
   }
 
-  /* .cssNotesGrid {
+  .cssNotesGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  } */
+  }
 
   .cssTopbarNew::after {
     content: "";
@@ -123,9 +145,9 @@
     width: 100%;
   }
 
-  /* .cssNotesGrid {
+  .cssNotesGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  } */
+  }
 
   .cssTopbarFull {
     flex-direction: column;
@@ -235,9 +257,9 @@
 }
 
 @media screen and (max-width: 310px) {
-  /* .cssNotesGrid {
+  .cssNotesGrid {
     grid-template-columns: repeat(1, minmax(0, 1fr));
-  } */
+  }
 
   .cssTopbarNewIcon {
     font-size: 16px;

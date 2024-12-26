@@ -39,7 +39,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
   }, []);
 
   const colorArray = [
-    "black",
+    "allColor",
     "pink",
     "green",
     "yellow",
@@ -58,8 +58,8 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
 
     const baseClass = `${pickColor === selectedColor ? `border${selectedColorBorderWidth}` : ""}`;
     switch (pickColor) {
-      case "black":
-        return `${baseClass} bg-black/50 hover:bg-black/70`;
+      case "allColor":
+        return `${baseClass} bg-allColor`;
       case "pink":
         return `${baseClass} bg-pink-500/50 hover:bg-pink-500/70`;
       case "green":
@@ -102,7 +102,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
           menu
         </span>
       )}
-      <div className="cssTopbarFull topbarIncome flex gap-3 w-full">
+      <div className="cssTopbarFull flex gap-3 w-full">
         <div className="cssTopbarSearchAndNew flex gap-3 w-2/3">
           <span className="w-full bg-navBlockBackground rounded-full py-1 px-1 flex">
             <span className="cssTopbarSearchIcon material-symbols-outlined rounded-full p-1 px-2 select-none hover:cursor-pointer">
