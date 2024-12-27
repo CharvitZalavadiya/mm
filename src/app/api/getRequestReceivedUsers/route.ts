@@ -38,8 +38,15 @@ export async function GET() {
     }));
 
     // Return the response with no-cache headers
-    const nextResponse = NextResponse.json(usersMapped);
-    nextResponse.headers.set("Cache-Control", "no-store");
+
+    const headers = new Headers({
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+
+    const nextResponse = NextResponse.json(usersMapped, {headers});
+    // nextResponse.headers.set("Cache-Control", "no-store");
     return nextResponse;
   } catch (error) {
     console.error(`Error fetching users: ${error}`);
