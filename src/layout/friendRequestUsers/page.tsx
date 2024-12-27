@@ -50,7 +50,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
 
   const sUsers = () => {
-    fetch("api/getRequestSentUsers")
+    fetch("api/getRequestSentUsers", { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch requestSent users");
 
@@ -66,7 +66,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   };
 
   const rUsers = () => {
-    fetch("api/getRequestReceivedUsers")
+    fetch("api/getRequestReceivedUsers", { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch requestReceived users");
 

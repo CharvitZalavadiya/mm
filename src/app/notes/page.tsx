@@ -42,7 +42,7 @@ const Notes: React.FC = () => {
     const fetchNotes = async () => {
       try {
         // const response = await fetch("/api/getNotes");
-        const response = await fetch(`${baseUrl}/notes`);
+        const response = await fetch(`${baseUrl}/notes`, { cache: 'no-store' });
 
         if (!response.ok) throw new Error("Failed to fetch users");
 
@@ -277,7 +277,7 @@ const Notes: React.FC = () => {
       console.error("Error creating new note:", error);
     }finally{
 
-      const responsenew = await fetch(`${baseUrl}/notes`);
+      const responsenew = await fetch(`${baseUrl}/notes`, { cache: 'no-store' });
   
       if (!responsenew.ok) throw new Error("Failed to fetch users");
   
