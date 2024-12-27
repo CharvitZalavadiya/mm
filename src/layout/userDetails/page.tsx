@@ -194,7 +194,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
       try {
         const friendRequest = {
           fromUser: userId,
-          toUser: selectedUser?.id,
+          toUser: selectedUser.id,
         };
 
         if (selectedUser) {

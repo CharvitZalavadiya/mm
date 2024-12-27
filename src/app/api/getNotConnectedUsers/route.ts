@@ -22,6 +22,7 @@ const localUrl = "http://localhost:8080";
 export async function GET() {
   try {
     // Replace with the correct API URL based on environment
+    // const response = await axios.get<User[]>(`${baseUrl}/api/friends/notConnected`);
     const response = await axios.get<User[]>(`${baseUrl}/api/friends/notConnected`);
 
     // Map the response data
@@ -38,8 +39,14 @@ export async function GET() {
     }));
 
     // Return the response with no-cache headers
-    const nextResponse = NextResponse.json(usersMapped);
-    nextResponse.headers.set("Cache-Control", "no-store");
+    const headers = new Headers({
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+
+    const nextResponse = NextResponse.json(usersMapped, {headers});
+    // nextResponse.headers.set("Cache-Control", "no-store");
     return nextResponse;
   } catch (error) {
     console.error(`Error fetching users: ${error}`);

@@ -33,7 +33,14 @@ export async function GET() {
     })
     
     // console.log(userNotesMapped)
-    return NextResponse.json(userNotesMapped);
+
+    const headers = new Headers({
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+
+    return NextResponse.json(userNotesMapped, {headers});
   } catch (error) {
     console.log(`error fetching notes : ${error}`);
     return new NextResponse("Failed to fetch users", { status: 500 });

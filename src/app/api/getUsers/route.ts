@@ -2,18 +2,18 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 interface UserInfo {
-  username: string | null;
+  username: string;
   imageUrl: string;
   id: string;
-  email: string | null; // Add email field to the interface
-  firstname: string | null;
-  lastname: string | null;
+  email: string; // Add email field to the interface
+  firstname: string;
+  lastname: string;
 }
 
 export async function GET() {
   try {
     const response = await clerkClient.users.getUserList({
-      limit: 100,
+      limit: 30,
     });
 
     const usersInfoMapped: UserInfo[] = response.data.map((user: any) => {
@@ -31,7 +31,14 @@ export async function GET() {
 
     // console.log(usersInfoMapped)
 
-    return NextResponse.json(usersInfoMapped);
+    // Prevent caching using headers
+    const headers = new Headers({
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+
+    return NextResponse.json(usersInfoMapped, {headers});
   } catch (error) {
     console.error(`Error fetching user details:`, error);
     return new NextResponse("Failed to fetch users ss", { status: 500 });

@@ -75,10 +75,17 @@ export async function GET() {
     }));
 
     // Return the response with no-cache headers
-    const nextResponse = NextResponse.json(messagesMapped);
-    nextResponse.headers.set("Cache-Control", "no-store");
-    nextResponse.headers.set("Pragma", "no-cache");
-    nextResponse.headers.set("Expires", "0");
+
+    const headers = new Headers({
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+
+    const nextResponse = NextResponse.json(messagesMapped, {headers});
+    // nextResponse.headers.set("Cache-Control", "no-store");
+    // nextResponse.headers.set("Pragma", "no-cache");
+    // nextResponse.headers.set("Expires", "0");
     
     return nextResponse;
   } catch (error) {

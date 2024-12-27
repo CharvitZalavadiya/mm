@@ -80,7 +80,6 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
           </span>
         </section>
 
-        <span className="w-full h-px rounded-full my-2 bg-dividerGradient"></span>
         <section className="w-full text-nowrap bg-navBlockBackground flex-grow rounded-md py-2 my-2">
           <ul className="mx-3">
             {navLinks.map(({ href, icon, label, iconType }) => (
