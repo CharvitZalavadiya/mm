@@ -268,9 +268,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                   </li>
                 ))
               ) : (
-                <p className="cssRequestSentHeading text-3xl text-slate-400 w-[72vw] h-20 flex items-center">
-                  No users found!
-                </p>
+                // <p className="cssRequestSentHeading text-3xl text-slate-400 w-[72vw] h-20 flex items-center">
+                //   No users found!
+                // </p>
+                <FriendsLoadingSkeleton />
               )}
             </ul>
           </>
