@@ -48,7 +48,7 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   // const { selectedUser, loggedinUser } = useUserContext();
 
   const fetchUsers = () => {
-    fetch("api/getConnectedUsers")
+    fetch("api/getConnectedUsers", { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch friend request users");
         return res.json();

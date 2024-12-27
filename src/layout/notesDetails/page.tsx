@@ -36,7 +36,7 @@ const UserNotes: React.FC = () => {
     // Fetching the details
     const fetchNotes = async () => {
       try {
-        const response = await fetch("/api/getNotes");
+        const response = await fetch("/api/getNotes", { cache: 'no-store' });
 
         if (!response.ok) throw new Error("Failed to fetch users");
 
