@@ -11,7 +11,6 @@ import RequestedFriendsLoadingSkeleton from "../friendRequestUsers/requestedFrie
 import FriendsLoadingSkeleton from "@/app/friends/friendsLoadingSkeleton";
 import ConnectedFriends from "../connectedFriends/page";
 import { useUserContext } from "@/context/UserContext";
-// import { DropdownMenuRadioGroupDemo } from "@/components/comps/dropdown";
 
 interface UserInfo {
   username: string | null;
@@ -54,7 +53,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const { setLoggedinUser } = useUserContext();
+  const { setLoggedinUser, loggedinUser } = useUserContext();
 
   const { userId } = useAuth();
 
@@ -135,6 +134,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     requestReceivedPeople: [],
   });
 
+  
   useEffect(() => {
     const currentUserData = notConnected.find((user) => userId === user.id);
     if (currentUserData) {
@@ -143,6 +143,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     }
   }, [notConnected, userId, setLoggedinUser]);
 
+  
+  localStorage.setItem('currentUser', JSON.stringify(loggedinUser))
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -281,7 +284,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
           {selectedTab === "friends" && (
             <Suspense fallback={<RequestedFriendsLoadingSkeleton />}>
               <ConnectedFriends
-                currentUser={currentUser}
+                // currentUser={currentUser}
                 searchQuery={searchQuery}
               />
             </Suspense>

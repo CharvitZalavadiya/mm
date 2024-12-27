@@ -19,33 +19,30 @@ interface User {
   requestReceivedPeople: string[];
 }
 
-interface UserInfo {
-  username: string | null;
-  imageUrl: string;
-  id: string;
-  email: string | null;
-  firstname: string | null;
-  lastname: string | null;
-}
+// interface UserInfo {
+//   username: string | null;
+//   imageUrl: string;
+//   id: string;
+//   email: string | null;
+//   firstname: string | null;
+//   lastname: string | null;
+// }
 
 interface ConnectedFriendsProps {
-  currentUser: UserInfo[];
+  // currentUser: UserInfo[];
   searchQuery: string;
 }
 
-// const baseUrl = "https://mind-maps-backend.onrender.com";
-// const localUrl = "http://localhost:8080";
-
 const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
-  currentUser,
+  // currentUser,
   searchQuery,
 }) => {
   const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { setSelectedUser } = useUserContext(); // Access setSelectedUser
+  const { setSelectedUser, setLoggedinUser } = useUserContext(); // Access setSelectedUser
   const router = useRouter();
 
-  // const { selectedUser, loggedinUser } = useUserContext();
+  const { selectedUser, loggedinUser } = useUserContext();
 
   const fetchUsers = () => {
     fetch("api/getConnectedUsers", { cache: 'no-store' })
@@ -74,9 +71,9 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   );
 
   const handleFriendForChat = (user: User) => {
-    router.push("/friends/chat"); // Navigate to the chat page
     console.log(user)
     setSelectedUser(user); // Set the selected user in context
+    router.push("/friends/chat"); // Navigate to the chat page
   };
 
   return (
@@ -102,7 +99,7 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
                   />
                 </span>
                 <span className="w-5/6 overflow-hidden">
-                  <h2 className="cssFriendsGridUsername text-xl text-slate-100 truncate">
+                  <h2 className="cssFriendsGridUsername text-center text-xl text-slate-100 truncate">
                     {user.username || "No Username"}
                   </h2>
                   <h4 className="text-sm text-slate-400 w-full text-center truncate">

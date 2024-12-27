@@ -2,13 +2,13 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 const RequestedFriendsLoadingSkeleton = () => {
-  const arr = [1, 2];
+  const arr = [1, 2, 3];
 
   return arr.map((index) => (
     <ul key={index} className="cssRequestedFriendsGrids rounded-lg">
       <li
         key={index}
-        className={`cssRequestPeopleCard border border-navBlockBackground rounded-lg p-2`}
+        className={`cssRequestPeopleCard border border-navBlockBackground rounded-lg p-4`}
       >
         <div className="w-5/6 grid place-items-center">
           <Skeleton className="h-14 w-14 mb-3 rounded-full animate-pulse bg-navBlockBackgroundHover" />

@@ -1,0 +1,168 @@
+.cssTopbarNew::after {
+  content: "New";
+}
+
+.cssMainCompFriends {
+  width: calc(100vw - 255px);
+}
+
+.cssMenu {
+  display: none;
+}
+
+/* Sidebar Responsive */
+
+@media screen and (max-width: 850px) {
+  .cssMenu {
+    display: block;
+  }
+
+  .cssSidebar {
+    position: absolute;
+    z-index: 10;
+    left: 25px;
+    top: 12px;
+    background: #2d2d2d;
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .sidebarIncome {
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .sidebarOut {
+    animation: sidebarOut 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .cssMenuCloseButton {
+    display: block;
+  }
+
+  .cssMainCompFriends {
+    width: 100%;
+    position: relative;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .cssTopbarNew::after {
+    content: "";
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .cssTopbarFull {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cssTopbarSearchAndNew {
+    width: 100%;
+  }
+
+  .cssTopbarColors {
+    width: fit-content;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .cssSidebar {
+    position: absolute;
+    z-index: 10;
+    left: 16px;
+    top: 12px;
+    background: #2d2d2d;
+    animation: sidebarIncome 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .cssMainCompFriends {
+    width: 100%;
+    position: relative;
+  }
+}
+
+@media screen and (max-width:410px){
+  .cssHeadingAndDropdown{
+    flex-direction: column;
+    align-items:baseline;
+    gap: 5px;
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .cssTopbarNewIcon {
+    font-size: 20px;
+    padding: 0px;
+  }
+
+  .cssTopbarSearchAndNew {
+    width: 100%;
+    font-size: smaller;
+    padding: 0px;
+  }
+
+  .cssTopbarSearch {
+    padding: 1px 2px;
+  }
+
+  .cssTopbarColor {
+    width: 17px;
+    height: 17px;
+  }
+
+  .cssTopbarSearchIcon {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 310px) {
+  .cssTopbarNewIcon {
+    font-size: 16px;
+    padding: 0px;
+  }
+
+  .cssTopbarSearchAndNew {
+    width: 90%;
+    font-size: smaller;
+    padding: 0px;
+  }
+
+  .cssTopbarSearch {
+    padding: 1px 2px;
+    font-size: 12px;
+  }
+
+  .cssTopbarColors {
+    width: fit-content;
+    max-width: 90%;
+  }
+
+  .cssTopbarColor {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cssTopbarSearchIcon {
+    font-size: 16px;
+  }
+}
+
+/* sidebar animation */
+
+@keyframes sidebarIncome {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes sidebarOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-110%);
+  }
+}

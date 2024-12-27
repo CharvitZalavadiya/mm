@@ -2,12 +2,12 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface User {
-  username: string;
+  username: string | null;
   imageUrl: string;
   id: string;
-  email: string;
-  firstname: string;
-  lastname: string;
+  email: string | null;
+  firstname: string | null;
+  lastname: string | null;
 }
 
 interface UserContextType {
