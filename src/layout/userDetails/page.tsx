@@ -51,6 +51,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
+  const [isFriendsRequesting, setIsFriendsRequesting] = useState(true); // Loading state for the friends request
   const popupRef = useRef<HTMLDivElement>(null);
 
   const { setLoggedinUser, loggedinUser } = useUserContext();
@@ -86,6 +87,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     userId && axios.post(`${baseUrl}/api/friends`, { userId }) // Send userId as part of an object
       .then(response => {
         console.log('UserId sent successfully:');
+        setIsFriendsRequesting(false); // Successfully completed the friends request
       })
       .catch(error => {
         console.error('Error sending userId:', error);
@@ -281,7 +283,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         )}
 
         <>
-          {selectedTab === "friends" && (
+          {selectedTab === "friends" && !isFriendsRequesting && (
             <Suspense fallback={<RequestedFriendsLoadingSkeleton />}>
               <ConnectedFriends
                 // currentUser={currentUser}

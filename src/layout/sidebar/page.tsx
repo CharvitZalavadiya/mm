@@ -13,7 +13,7 @@ const navLinks = [
   //   iconType: "rounded",
   // },
   { href: "/notes", icon: "edit_note", label: "Notes", iconType: "outlined" },
-  { href: "/friends", icon: "groups", label: "Friends", iconType: "outlined" },
+  // { href: "/friends", icon: "groups", label: "Friends", iconType: "outlined" },
   // {
   //   href: "/favourites",
   //   icon: "star",
