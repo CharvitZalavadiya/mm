@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000 8080
 
 # Use `concurrently` to run both frontend (Next.js) and backend (Express.js) services
-CMD ["npx", "concurrently", "npm run dev\", "node --watch src/server/app\"]
+CMD ["npx", "concurrently", "npm run dev:frontend", "npm run dev:backend"]
