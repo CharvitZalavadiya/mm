@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "npx concurrently \"npm run dev\" \"node --watch src/server/app\"",
-    "lint": "next lint"
+    "start": "next start",
+    "lint": "next lint",
+    "dev:frontend": "npm run dev",
+    "dev:backend": "node --watch src/server/app"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.1.6",
