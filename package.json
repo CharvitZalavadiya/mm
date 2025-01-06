@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npx concurrently \"npm run dev\" \"node --watch src/server/app\"",
     "lint": "next lint"
   },
   "dependencies": {
@@ -47,6 +47,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/ws": "^8.5.13",
+    "concurrently": "^9.1.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",

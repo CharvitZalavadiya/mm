@@ -11,7 +11,6 @@ import RequestedFriendsLoadingSkeleton from "../friendRequestUsers/requestedFrie
 import FriendsLoadingSkeleton from "@/app/friends/friendsLoadingSkeleton";
 import ConnectedFriends from "../connectedFriends/page";
 import { useUserContext } from "@/context/UserContext";
-// import { DropdownMenuRadioGroupDemo } from "@/components/comps/dropdown";
 
 interface UserInfo {
   username: string | null;
@@ -52,9 +51,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
+  const [isFriendsRequesting, setIsFriendsRequesting] = useState(true); // Loading state for the friends request
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const { setLoggedinUser } = useUserContext();
+  const { setLoggedinUser, loggedinUser } = useUserContext();
 
   const { userId } = useAuth();
 
@@ -87,6 +87,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     userId && axios.post(`${baseUrl}/api/friends`, { userId }) // Send userId as part of an object
       .then(response => {
         console.log('UserId sent successfully:');
+        setIsFriendsRequesting(false); // Successfully completed the friends request
       })
       .catch(error => {
         console.error('Error sending userId:', error);
@@ -135,6 +136,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     requestReceivedPeople: [],
   });
 
+  
   useEffect(() => {
     const currentUserData = notConnected.find((user) => userId === user.id);
     if (currentUserData) {
@@ -143,6 +145,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     }
   }, [notConnected, userId, setLoggedinUser]);
 
+  
+  localStorage.setItem('currentUser', JSON.stringify(loggedinUser))
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -278,10 +283,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         )}
 
         <>
-          {selectedTab === "friends" && (
+          {selectedTab === "friends" && !isFriendsRequesting && (
             <Suspense fallback={<RequestedFriendsLoadingSkeleton />}>
               <ConnectedFriends
-                currentUser={currentUser}
+                // currentUser={currentUser}
                 searchQuery={searchQuery}
               />
             </Suspense>
