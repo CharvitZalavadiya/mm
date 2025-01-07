@@ -1,5 +1,3 @@
-// import SideBar from "@/layout/sidebar/page";
-
 export default function Dashboard() {
   return (
     <div className="flex p-3">

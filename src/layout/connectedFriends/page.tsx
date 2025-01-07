@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useUserContext } from "@/context/UserContext"; // Import the context
+import { useUserContext } from "@/context/UserContext";
 import RequestedFriendsLoadingSkeleton from "../friendRequestUsers/requestedFriendsLoadingSkeleton";
-// import axios from "axios";
 
 interface User {
   username: string;
@@ -19,19 +18,12 @@ interface User {
   requestReceivedPeople: string[];
 }
 
-// interface UserInfo {
-//   username: string | null;
-//   imageUrl: string;
-//   id: string;
-//   email: string | null;
-//   firstname: string | null;
-//   lastname: string | null;
-// }
-
 interface ConnectedFriendsProps {
   // currentUser: UserInfo[];
   searchQuery: string;
 }
+
+const baseUrl = "https://mind-maps-backend.onrender.com";
 
 const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   // currentUser,
@@ -39,13 +31,13 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
 }) => {
   const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { setSelectedUser, setLoggedinUser } = useUserContext(); // Access setSelectedUser
+  const { setSelectedUser, setLoggedinUser } = useUserContext();
   const router = useRouter();
 
   const { selectedUser, loggedinUser } = useUserContext();
 
   const fetchUsers = () => {
-    fetch("api/getConnectedUsers", { cache: 'no-store' })
+    fetch(`${baseUrl}/api/friends/connected`, { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch friend request users");
         return res.json();
@@ -63,17 +55,14 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
     fetchUsers();
   }, []);
 
-  // const currentUserId = currentUser[0]?.id;
-
   const connectedFriends = connectedUsers.filter(
     (user) =>
       user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false
   );
 
   const handleFriendForChat = (user: User) => {
-    console.log(user)
-    setSelectedUser(user); // Set the selected user in context
-    router.push("/friends/chat"); // Navigate to the chat page
+    setSelectedUser(user);
+    router.push("/friends/chat");
   };
 
   return (

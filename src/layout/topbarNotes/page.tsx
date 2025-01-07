@@ -6,7 +6,7 @@ interface TopBarNotesProps {
   onCreateNote: () => void;
   onColorChange: (color: string) => void;
   selectedColor: string;
-  onToggleSidebar: () => void; // Prop to handle sidebar toggle
+  onToggleSidebar: () => void;
 }
 
 const TopBarNotes: React.FC<TopBarNotesProps> = ({
@@ -14,15 +14,14 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
   onCreateNote,
   onColorChange,
   selectedColor,
-  onToggleSidebar, // Destructure the new prop
+  onToggleSidebar,
 }) => {
   const [searchText, setSearchText] = useState("");
-  const [isMenuVisible, setIsMenuVisible] = useState(true); // Manage visibility of the menu icon
-  const [placeholderText, setPlaceholderText] = useState("Search by Title"); // Manage the placeholder text
+  const [isMenuVisible, setIsMenuVisible] = useState(true);
+  const [placeholderText, setPlaceholderText] = useState("Search by Title");
   const [selectedColorBorderWidth, setSelectedColorBorderWidth] =
     useState("-2");
 
-  // width based css changes
   useEffect(() => {
     const handleResize = () => {
       setIsMenuVisible(window.innerWidth < 850);
@@ -33,7 +32,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
     };
 
     window.addEventListener("resize", handleResize);
-    handleResize(); // Check on initial load
+    handleResize(); 
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -50,11 +49,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
   ];
 
   const returnBg = (pickColor: string) => {
-    // const baseClass = `${
-    //   pickColor === selectedColor
-    //     ? `border-${selectedColorBorderWidthText}`
-    //     : ""
-    // }`;
+   
 
     const baseClass = `${pickColor === selectedColor ? `border${selectedColorBorderWidth}` : ""}`;
     switch (pickColor) {
@@ -85,11 +80,11 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
   };
 
   const handleColorClick = (color: string) => {
-    onColorChange(color); // Notify parent of color change
+    onColorChange(color);
   };
 
   const handleMenuClick = () => {
-    onToggleSidebar(); // Call the parent function to toggle sidebar
+    onToggleSidebar();
   };
 
   return (
@@ -113,7 +108,7 @@ const TopBarNotes: React.FC<TopBarNotesProps> = ({
               value={searchText}
               onChange={handleSearchChange}
               className="cssTopbarSearch w-full px-2 bg-transparent focus:outline-none"
-              placeholder={placeholderText} // Set placeholder based on screen width
+              placeholder={placeholderText}
             />
           </span>
           <button

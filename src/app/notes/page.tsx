@@ -19,7 +19,7 @@ interface Note {
 }
 
 const baseUrl = "https://mind-maps-backend.onrender.com";
-  const localUrl = "http://localhost:8080";
+const localUrl = "http://localhost:8080";
 
 const Notes: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -38,10 +38,8 @@ const Notes: React.FC = () => {
 
 
   useEffect(() => {
-    // Fetching the details
     const fetchNotes = async () => {
       try {
-        // const response = await fetch("/api/getNotes");
         const response = await fetch(`${baseUrl}/notes`, { cache: 'no-store' });
 
         if (!response.ok) throw new Error("Failed to fetch users");
@@ -50,9 +48,9 @@ const Notes: React.FC = () => {
 
         const decryptedNotes = data.map((note) => ({
           ...note,
-          title: decryptData(note.title), // Decrypt title
-          description: decryptData(note.description), // Decrypt description
-          color: decryptData(note.color), // Decrypt color for frontend
+          title: decryptData(note.title),
+          description: decryptData(note.description),
+          color: decryptData(note.color),
         }));
   
         setNotes(decryptedNotes);
@@ -82,7 +80,6 @@ const Notes: React.FC = () => {
   };
 
   useEffect(() => {
-    // Filter notes based on search query and selected color
     const filteredNotesBasedOnUser = notes.filter(
       (note) => note.userId === userId
     );
@@ -170,8 +167,6 @@ const Notes: React.FC = () => {
     }
   };
 
-  // // const sidebarComp = useMemo(() => <SideBar />, []);
-
   const openPopup = (note: Note) => {
     setSelectedNote(note);
     setEditedTitle(note.title);
@@ -202,13 +197,11 @@ const Notes: React.FC = () => {
         updatedNote
       );
 
-      // Update notes and reset filteredNotes to include all notes
-
       const decryptedUpdatedNote = {
         ...updatedNote,
         title: decryptData(updatedNote.title),
         description: decryptData(updatedNote.description),
-        color: decryptData(updatedNote.color), // Decrypt color for frontend
+        color: decryptData(updatedNote.color),
       };
       
       setNotes((prevNotes) =>
@@ -257,15 +250,14 @@ const Notes: React.FC = () => {
     };
   
     try {
-      console.log(newNote)
       const response = await axios.post<Note>(`${baseUrl}/notes/`, newNote);
       const createdNote = response.data;
 
       const decryptedNote = {
         ...createdNote,
-        title: decryptData(createdNote.title), // Decrypt title for frontend
-        description: decryptData(createdNote.description), // Decrypt description for frontend
-        color: decryptData(createdNote.color), // Decrypt color for frontend
+        title: decryptData(createdNote.title),
+        description: decryptData(createdNote.description),
+        color: decryptData(createdNote.color),
       };
             
       setNotes((prevNotes) => [...prevNotes, decryptedNote]);
@@ -282,14 +274,12 @@ const Notes: React.FC = () => {
       if (!responsenew.ok) throw new Error("Failed to fetch users");
   
       const data: Note[] = await responsenew.json();
-      // console.log(data)
-      // setNotes(data);
 
       const decryptedNotes = data.map((note) => ({
         ...note,
-        title: decryptData(note.title), // Decrypt title
-        description: decryptData(note.description), // Decrypt description
-        color: decryptData(note.color), // Decrypt color for frontend
+        title: decryptData(note.title),
+        description: decryptData(note.description),
+        color: decryptData(note.color),
       }));
 
       setNotes(decryptedNotes);
@@ -318,7 +308,7 @@ const Notes: React.FC = () => {
             onSearch={handleSearch}
             onCreateNote={handleCreateNewNote}
             onColorChange={handleColorChange}
-            selectedColor={selectedColor} // Pass the current selected color to TopBar
+            selectedColor={selectedColor}
             onToggleSidebar={handleToggleSidebar}
           />
         </span>

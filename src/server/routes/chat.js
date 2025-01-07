@@ -1,5 +1,5 @@
 import express from 'express';
-import Message from '../../models/Message.js'; // Import the Message model
+import Message from '../../models/Message.js';
 import { getDb } from '../config/db.js';
 
 const router = express.Router();
@@ -18,9 +18,6 @@ router.post('/bothUserDetails', async (req, res) => {
         currentUserId = from
         selectedUserId = to
 
-        console.log(currentUserId)
-        console.log(selectedUserId)
-
         if (!selectedUserId) {
             return res.status(400).json({ message: 'UserId is required for selectedUser' });
         }
@@ -32,17 +29,14 @@ router.post('/bothUserDetails', async (req, res) => {
     }
 });
 
-// POST route to handle sending a message
 router.post('/sendMessage', async (req, res) => {
-    const { from, to, content, timestamp } = req.body; // Extract data from the request body
+    const { from, to, content, timestamp } = req.body;
 
-    // Validation: Ensure that all required fields are present
     if (!from || !to || !content || !timestamp) {
         return res.status(400).json({ error: "All fields are required." });
     }
 
     try {
-        // Create a new message and save it to the database
         const newMessage = new Message({
             from,
             to,
@@ -50,13 +44,10 @@ router.post('/sendMessage', async (req, res) => {
             timestamp,
         });
 
-        // await newMessage.save(); // Save the message to MongoDB
 
         const result = await collection.insertOne(newMessage);
         res.status(201).json(result);
-        console.log(`New Message created: ${newMessage}`);
 
-        // Respond with a success message
         console.log({ message: "Message sent successfully" });
     } catch (error) {
         console.error('Error saving message:', error);

@@ -1,35 +1,16 @@
-// /** @type {import('next').NextConfig} */
-// // import cors from 'cors';
-
-// const nextConfig = {
-//     reactStrictMode: true,
-//     images: {
-//         domains: ['img.clerk.com']
-//     },
-//     typescript: {
-//         ignoreBuildErrors: true
-//     }
-// };
-
-// export default nextConfig;
-
-
-
-
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ['img.clerk.com'], // Specify allowed image domains
+        domains: ['img.clerk.com'],
     },
     typescript: {
-        ignoreBuildErrors: true, // Allow builds despite TS errors
+        ignoreBuildErrors: true,
     },
     async headers() {
         return [
             {
-                // Apply headers to all API routes
                 source: "/api/:path*",
                 headers: [
                     {
@@ -46,7 +27,7 @@ const nextConfig = {
                     },
                     {
                         key: "Access-Control-Allow-Origin",
-                        value: "*", // Allow cross-origin requests (adjust as needed)
+                        value: "*",
                     },
                     {
                         key: "Access-Control-Allow-Methods",

@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Message schema definition
 const MessageSchema = new mongoose.Schema(
   {
     from: {
@@ -17,14 +16,13 @@ const MessageSchema = new mongoose.Schema(
     },
     timestamp: {
       type: Date,
-      default: Date.now, // Automatically sets the current date/time if not provided
+      default: Date.now,
       required: true,
     },
   },
-  { timestamps: true } // Automatically adds `createdAt` and `updatedAt` fields
+  { timestamps: true }
 );
 
-// Create and export the Message model
 const Message = mongoose.models.Message || mongoose.model('Message', MessageSchema);
 
 export default Message;

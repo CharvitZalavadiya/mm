@@ -51,7 +51,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
-  const [isFriendsRequesting, setIsFriendsRequesting] = useState(true); // Loading state for the friends request
+  const [isFriendsRequesting, setIsFriendsRequesting] = useState(true);
   const popupRef = useRef<HTMLDivElement>(null);
 
   const { setLoggedinUser, loggedinUser } = useUserContext();
@@ -59,7 +59,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const { userId } = useAuth();
 
   const fetchUsers = () => {
-    fetch("/api/getUsers", { cache: 'no-store' })
+    fetch("/api/getUsers", { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch users");
 
@@ -84,48 +84,51 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   };
 
   useEffect(() => {
-    userId && axios.post(`${baseUrl}/api/friends`, { userId }) // Send userId as part of an object
-      .then(response => {
-        console.log('UserId sent successfully:');
-        setIsFriendsRequesting(false); // Successfully completed the friends request
-      })
-      .catch(error => {
-        console.error('Error sending userId:', error);
-      });
+    userId &&
+      axios
+        .post(`${baseUrl}/api/friends`, { userId })
+        .then((response) => {
+          console.log("UserId sent successfully:");
+          setIsFriendsRequesting(false);
+          
+          fetch(`${baseUrl}/api/friends/notConnected`, { cache: "no-store" })
+            .then((res) => {
+              if (!res.ok)
+                throw new Error("Failed to fetch notConnected users");
+
+              return res.json();
+            })
+            .then((users) => {
+              setNotConnected(users);
+              setLoading(false);
+
+              axios
+                .post(`${baseUrl}/friends/bulk/:id`, { users })
+                .then((res) => {
+                  console.log("response for multiple user request");
+                })
+                .catch((error) => {
+                  console.error("Error storing users in the database:", error);
+                });
+            })
+            .catch((err) => {
+              console.log("failed to fetch friend request users", err);
+            });
+        })
+        .catch((error) => {
+          console.error("Error sending userId:", error);
+        });
   }, [userId]);
 
-  const ncUsers = () => {
-    fetch("api/getNotConnectedUsers", { cache: 'no-store' })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch notConnected users");
-
-        return res.json();
-      })
-      .then((users) => {
-        setNotConnected(users);
-        setLoading(false);
-
-        axios
-          .post(`${baseUrl}/friends/bulk/:id`, { users })
-          .then((res) => {
-            console.log("response for multiple user request");
-          })
-          .catch((error) => {
-            console.error("Error storing users in the database:", error);
-          });
-      })
-      .catch((err) => {
-        console.log("failed to fetch friend request users", err);
-      });
-  };
+  const ncUsers = () => {};
 
   useEffect(() => {
-    ncUsers();
+    // ncUsers();
     fetchUsers();
-  }, []);  
+  }, []);
 
   const convertToUser = (userInfo: UserInfo): User => ({
-    username: userInfo.username || "", // Provide a default value
+    username: userInfo.username || "",
     imageUrl: userInfo.imageUrl,
     id: userInfo.id,
     email: userInfo.email || "",
@@ -136,7 +139,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     requestReceivedPeople: [],
   });
 
-  
   useEffect(() => {
     const currentUserData = notConnected.find((user) => userId === user.id);
     if (currentUserData) {
@@ -145,9 +147,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     }
   }, [notConnected, userId, setLoggedinUser]);
 
-  
-  localStorage.setItem('currentUser', JSON.stringify(loggedinUser))
-  
+  localStorage.setItem("currentUser", JSON.stringify(loggedinUser));
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -238,9 +239,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
         {selectedTab === "connectToMore" && (
           <>
-            {/* <h3 className="cssRequestSentHeading h-full text-2xl text-slate-100 mb-4">
-              Connect with people
-            </h3> */}
             <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-full">
               {loading ? (
                 <FriendsLoadingSkeleton />
@@ -273,9 +271,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                   </li>
                 ))
               ) : (
-                // <p className="cssRequestSentHeading text-3xl text-slate-400 w-[72vw] h-20 flex items-center">
-                //   No users found!
-                // </p>
                 <FriendsLoadingSkeleton />
               )}
             </ul>
