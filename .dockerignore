@@ -1,1 +1,11 @@
+# Ignore .next and node_modules folders
+.next
+node_modules
+
+# Optional: Ignore other unnecessary files/folders
+.DS_Store
 .env
+.git
+.gitignore
+npm-debug.log
+yarn.lock

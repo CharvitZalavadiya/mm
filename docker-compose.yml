@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    container_name: mm_app_container
+    container_name: Mindmaps
     build:
       context: .  # Build context pointing to the current directory
     ports:
@@ -10,6 +10,13 @@ services:
       - "8080:8080"  # Map the backend port
     environment:
       NODE_ENV: development  # Environment variable for the app
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_c2FjcmVkLWFudGVhdGVyLTc3LmNsZXJrLmFjY291bnRzLmRldiQ
+      CLERK_SECRET_KEY: sk_test_nMtVpAdSB5aGDGpkglWWxRObWfJK0ElgdoLQeGCRbR
+      NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+      NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
+      NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /notes
+      NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /notes
+
     volumes:
       - .:/MM  # Mount the project directory into the container
       - /MM/node_modules  # Prevent overwriting node_modules in the container

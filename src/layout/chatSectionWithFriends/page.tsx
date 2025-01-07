@@ -46,7 +46,7 @@ const ChatSectionWithFriends = () => {
   }, [loggedinUser, selectedUser]);
 
   const fetchMessageHistory = () => {
-    fetch(`/api/messageHistory`, { cache: 'no-store' })
+    fetch(`${baseUrl}/chat/fetchMessages`, { cache: 'no-store' })
       .then((response) => {
         if (!response.ok) throw new Error("Failed to fetch messages");
         return response.json();
