@@ -28,7 +28,7 @@ interface UserInfo {
 }
 
 interface FriendRequestUsersProps {
-  currentUser: UserInfo[]; // Adjust this based on how you want to structure currentUser
+  currentUser: UserInfo[];
   searchQuery: string;
 }
 
@@ -88,7 +88,6 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
 
   const currentUserId = currentUser[0]?.id;
 
-  // Separate requests into received and sent arrays
   const receivedRequests = requestReceivedUsers.filter(
     (user) =>
       user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false
@@ -148,7 +147,6 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
           .patch(`${baseUrl}/friends/acceptRequest/:id`, acceptRequest)
           .then((response) => {
             console.log(`Request accepted:`);
-            console.log(response);
           })
           .catch((error) => {
             console.log(`Error accecpting request: ${error}`);

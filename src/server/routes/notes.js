@@ -10,7 +10,6 @@ getDb().then((db) => {
   collection = db.collection('Note');
 });
 
-// Fetching the notes
 router.get('/', async (req, res) => {
   try {
     const data = await collection.find({}).toArray();
@@ -21,7 +20,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Creating a new note
 router.post('/', async (req, res) => {
   const { title, description, color, userId } = req.body;
 
@@ -39,7 +37,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Updating a note
 router.patch('/:id', async (req, res) => {
   const { id } = req.params;
   const { title, description, color } = req.body;
@@ -66,7 +63,6 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-// Deleting a note
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 

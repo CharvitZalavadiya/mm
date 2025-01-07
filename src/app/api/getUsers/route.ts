@@ -5,7 +5,7 @@ interface UserInfo {
   username: string;
   imageUrl: string;
   id: string;
-  email: string; // Add email field to the interface
+  email: string;
   firstname: string;
   lastname: string;
 }
@@ -28,10 +28,7 @@ export async function GET() {
         lastname: user.lastName,
       };
     });
-
-    // console.log(usersInfoMapped)
-
-    // Prevent caching using headers
+    
     const headers = new Headers({
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
       Pragma: "no-cache",

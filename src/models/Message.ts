@@ -1,10 +1,10 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
 interface IMessage extends Document {
-  from: string; // Sender's user ID
-  to: string;   // Receiver's user ID
-  content: string; // Message content
-  timestamp: Date; // Time the message was sent
+  from: string;
+  to: string;
+  content: string;
+  timestamp: Date;
 }
 
 const MessageSchema: Schema = new Schema(
@@ -23,11 +23,11 @@ const MessageSchema: Schema = new Schema(
     },
     timestamp: {
       type: Date,
-      default: Date.now, // Automatically sets the current date/time if not provided
+      default: Date.now,
       required: true,
     },
   },
-  { timestamps: true } // Automatically adds `createdAt` and `updatedAt` fields
+  { timestamps: true }
 );
 
 const Message: Model<IMessage> = mongoose.models.Message || mongoose.model<IMessage>('Message', MessageSchema);

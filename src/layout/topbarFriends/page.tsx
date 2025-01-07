@@ -18,7 +18,6 @@ const TopbarFriends: React.FC<TopbarFriendsProps> = ({
   const [selectedColorBorderWidth, setSelectedColorBorderWidth] =
     useState<string>("-2");
 
-  // Handle dynamic layout changes based on window width
   useEffect(() => {
     const handleResize = () => {
       setIsMenuVisible(window.innerWidth < 850);

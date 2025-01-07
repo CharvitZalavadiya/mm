@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-// Define the User interface
 interface User {
   username: string;
   imageUrl: string;
@@ -14,17 +13,13 @@ interface User {
   requestReceivedPeople: string[];
 }
 
-// Define API base URLs
 const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
 
-// Fetch users from the backend API
 export async function GET() {
   try {
-    // Replace with the correct API URL based on environment
     const response = await axios.get<User[]>(`${baseUrl}/friends`);
 
-    // Map the response data
     const usersMapped = response.data.map((user) => ({
       id: user.id,
       username: user.username,
@@ -37,7 +32,6 @@ export async function GET() {
       requestReceivedPeople: user.requestReceivedPeople,
     }));
 
-    // Return the response with no-cache headers
     const nextResponse = NextResponse.json(usersMapped);
     nextResponse.headers.set("Cache-Control", "no-store");
     return nextResponse;

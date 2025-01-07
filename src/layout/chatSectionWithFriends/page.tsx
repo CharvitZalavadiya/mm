@@ -21,7 +21,7 @@ const ChatSectionWithFriends = () => {
   const [messageHistory, setMessageHistory] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const { selectedUser, loggedinUser } = useUserContext();
-  const messagesEndRef = useRef<HTMLDivElement | null>(null); // Reference to scroll to the bottom
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (loggedinUser && selectedUser) {
@@ -57,7 +57,7 @@ const ChatSectionWithFriends = () => {
   
           return {
             ...msg,
-            content: decryptedContent, // Replace with decrypted content
+            content: decryptedContent,
           };
         });
 
@@ -76,32 +76,28 @@ const ChatSectionWithFriends = () => {
   }, []);
 
   const handleEmojiSelect = (emoji: string) => {
-    setMessage((prevMessage) => prevMessage + emoji); // Append emoji to message
+    setMessage((prevMessage) => prevMessage + emoji);
   };
 
   const handleSendMessage = async () => {
-    if (message.trim() === "") return; // Do not send empty messages
+    if (message.trim() === "") return;
 
     const now = new Date();
 
-    // Convert the current UTC time to IST using `toLocaleString` with the 'Asia/Kolkata' timezone
     const istDate = new Date(
       now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
     );
 
-    // Convert IST date to ISO string
-    const timestamp = istDate.toISOString(); // Format as ISO string in IST
+    const timestamp = istDate.toISOString();
 
-    console.log("Generated IST Timestamp:", timestamp);
 
 
     try {
-      // Send the message to the backend using axios
       await axios.post(`${baseUrl}/chat/sendMessage`, {
-        from: loggedinUser?.id, // Sender's user ID
-        to: selectedUser?.id, // Receiver's user ID
-        content: encryptData(message), // Message content
-        timestamp: timestamp, // Timestamp
+        from: loggedinUser?.id,
+        to: selectedUser?.id,
+        content: encryptData(message),
+        timestamp: timestamp,
       });
 
       if (loggedinUser && selectedUser) {
@@ -116,10 +112,8 @@ const ChatSectionWithFriends = () => {
         ]);
       }
 
-      // Clear the message input field after sending
       setMessage("");
 
-      // Re-fetch message history after sending
       fetchMessageHistory();
     } catch (error) {
       console.error("Error sending message:", error);
@@ -132,7 +126,6 @@ const ChatSectionWithFriends = () => {
     }
   };
 
-  // Function to format the timestamp
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const options: Intl.DateTimeFormatOptions = {
@@ -144,15 +137,14 @@ const ChatSectionWithFriends = () => {
       minute: "2-digit",
       hour12: true,
     };
-    return date.toLocaleString("en-IN", options); // Customize date format as per your needs
+    return date.toLocaleString("en-IN", options);
   };
 
-  // Group messages by date
   const groupMessagesByDate = (messages: Message[]) => {
     const groupedMessages: { [key: string]: Message[] } = {};
     messages.forEach((msg) => {
       const date = new Date(msg.timestamp);
-      const dateKey = date.toLocaleDateString(); // Use the date only (e.g., "Dec 26, 2024")
+      const dateKey = date.toLocaleDateString();
       if (!groupedMessages[dateKey]) {
         groupedMessages[dateKey] = [];
       }
@@ -161,7 +153,6 @@ const ChatSectionWithFriends = () => {
     return groupedMessages;
   };
 
-  // Format date for display
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp);
     const options: Intl.DateTimeFormatOptions = {
@@ -173,30 +164,29 @@ const ChatSectionWithFriends = () => {
     return date.toLocaleDateString("en-IN", options);
   };
 
-  // Get grouped messages
   const groupedMessages = groupMessagesByDate(messageHistory);
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to bottom when message history updates
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messageHistory]);
 
   return (
     <div className="h-[calc(95vh-7rem)]">
       <section className="py-1 px-3 h-full overflow-scroll">
-        {/* Iterate over grouped messages */}
+        
         {Object.keys(groupedMessages).map((date, index) => (
           <div key={index}>
-            {/* Date Tag */}
+            
             <div className="flex justify-center">
               <span className="text-sm flex justify-center font-medium w-fit text-gray-100 bg-noteBackgroundCyan border border-noteBorderCyan rounded-full py-1 px-4 my-3">
                 {formatDate(groupedMessages[date][0].timestamp)}{" "}
-                {/* Display date */}
+                
               </span>
             </div>
 
-            {/* Messages for the specific date */}
+            
             {groupedMessages[date].map((msg, index) => (
               <ul
                 key={index}
@@ -215,7 +205,7 @@ const ChatSectionWithFriends = () => {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}{" "}
-                    {/* Display only time */}
+                    
                   </div>
                 </li>
               </ul>
@@ -223,7 +213,7 @@ const ChatSectionWithFriends = () => {
           </div>
         ))}
 
-        {/* Placeholder to scroll to bottom */}
+        
         <div ref={messagesEndRef} />
       </section>
 
@@ -234,8 +224,8 @@ const ChatSectionWithFriends = () => {
           type="text"
           placeholder="Type a message ..."
           value={message}
-          onChange={(e) => setMessage(e.target.value)} // Update message state
-          onKeyDown={handleKeyPress} // Handle Enter key press
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
         />
         <button className="outline-none" onClick={handleSendMessage}>
           <span className="cssChatSendButton material-symbols-rounded mr-3 flex px-3 py-[9px] items-center bg-chatSectionInputField rounded-md">

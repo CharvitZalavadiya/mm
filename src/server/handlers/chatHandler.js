@@ -8,15 +8,14 @@ export function setupChatHandler() {
     const wss = getWebSocketServer();
 
     wss.on('connection', (ws, req) => {
-        const userId = loggedinUser.userId; // Extract userId from the query string
+        const userId = loggedinUser.userId;
         if (userId) clients.set(userId, ws);
 
         ws.on('message', async (message) => {
             try {
-                const data = JSON.parse(message); // Expect JSON format { to, content }
+                const data = JSON.parse(message);
                 const { to, content } = data;
 
-                // Save the message in MongoDB
                 const newMessage = await Message.create({
                     from: loggedinUser,
                     to: selectedUser,
@@ -24,7 +23,6 @@ export function setupChatHandler() {
                     timestamp: new Date(),
                 });
 
-                // Send the message to the recipient if connected
                 if (clients.has(to)) {
                     const recipientSocket = clients.get(to);
                     recipientSocket.send(JSON.stringify({ from: userId, content }));

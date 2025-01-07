@@ -33,7 +33,6 @@ const UserNotes: React.FC = () => {
   const { userId } = useAuth();
 
   useEffect(() => {
-    // Fetching the details
     const fetchNotes = async () => {
       try {
         const response = await fetch("/api/getNotes", { cache: 'no-store' });
@@ -53,7 +52,6 @@ const UserNotes: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Filter notes based on search query and selected color
     const filteredNotesBasedOnUser = notes.filter(
       (note) => note.userId === userId
     );
@@ -64,7 +62,6 @@ const UserNotes: React.FC = () => {
           (note.color === selectedColor || selectedColor === "black")
       )
     );
-    console.log(selectedColor)
   }, [searchQuery, notes, selectedColor, userId]);
 
 
@@ -171,7 +168,6 @@ const UserNotes: React.FC = () => {
         updatedNote
       );
 
-      // Update notes and reset filteredNotes to include all notes
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
           note._id === updatedNote._id ? updatedNote : note
@@ -214,7 +210,7 @@ const UserNotes: React.FC = () => {
       userId: userId,
       title: "New Note Title",
       description: "New Note Description",
-      color: selectedColor || "gray", // Default color or any other logic for color selection
+      color: selectedColor || "gray",
     };
     
     try {
@@ -225,7 +221,7 @@ const UserNotes: React.FC = () => {
       const createdNote = response.data;
       setNotes((prevNotes) => [...prevNotes, createdNote]);
       setFilteredNotes((prevNotes) => [...prevNotes, createdNote]);
-      openPopup(createdNote); // Open the newly created note for editing
+      openPopup(createdNote);
     } catch (error) {
       console.error("Error creating new note:", error);
     }
@@ -248,7 +244,7 @@ const UserNotes: React.FC = () => {
             onSearch={handleSearch}
             onCreateNote={handleCreateNewNote}
             onColorChange={handleColorChange}
-            selectedColor={selectedColor} // Pass the current selected color to TopBar
+            selectedColor={selectedColor}
             onToggleSidebar={handleToggleSidebar}
           />
         </span>

@@ -1,4 +1,3 @@
-// src/components/comps/emojiPicker.tsx
 import React, { useState } from "react";
 import Picker, { EmojiClickData } from "emoji-picker-react";
 
@@ -11,7 +10,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect }) => {
 
   const handleEmojiClick = (emojiObject: EmojiClickData) => {
     onEmojiSelect(emojiObject.emoji);
-    setShowPicker(false); // Hide picker after selecting emoji
+    setShowPicker(false);
   };
 
   return (

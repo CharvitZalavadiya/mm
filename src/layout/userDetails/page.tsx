@@ -51,7 +51,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
-  const [isFriendsRequesting, setIsFriendsRequesting] = useState(true); // Loading state for the friends request
+  const [isFriendsRequesting, setIsFriendsRequesting] = useState(true);
   const popupRef = useRef<HTMLDivElement>(null);
 
   const { setLoggedinUser, loggedinUser } = useUserContext();
@@ -84,10 +84,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   };
 
   useEffect(() => {
-    userId && axios.post(`${baseUrl}/api/friends`, { userId }) // Send userId as part of an object
+    userId && axios.post(`${baseUrl}/api/friends`, { userId })
       .then(response => {
         console.log('UserId sent successfully:');
-        setIsFriendsRequesting(false); // Successfully completed the friends request
+        setIsFriendsRequesting(false);
       })
       .catch(error => {
         console.error('Error sending userId:', error);
@@ -125,7 +125,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   }, []);  
 
   const convertToUser = (userInfo: UserInfo): User => ({
-    username: userInfo.username || "", // Provide a default value
+    username: userInfo.username || "",
     imageUrl: userInfo.imageUrl,
     id: userInfo.id,
     email: userInfo.email || "",
@@ -238,9 +238,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
         {selectedTab === "connectToMore" && (
           <>
-            {/* <h3 className="cssRequestSentHeading h-full text-2xl text-slate-100 mb-4">
-              Connect with people
-            </h3> */}
             <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-full">
               {loading ? (
                 <FriendsLoadingSkeleton />
@@ -273,9 +270,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                   </li>
                 ))
               ) : (
-                // <p className="cssRequestSentHeading text-3xl text-slate-400 w-[72vw] h-20 flex items-center">
-                //   No users found!
-                // </p>
                 <FriendsLoadingSkeleton />
               )}
             </ul>

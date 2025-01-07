@@ -13,12 +13,9 @@ var currentUserId;
 
 router.post('/friends', (req, res) => {
     try {
-        const { userId } = req.body; // Destructure userId from req.body
+        const { userId } = req.body;
         currentUserId = userId
 
-        console.log(currentUserId)
-
-        // Now you can use the userId as needed
         res.status(200).json({ message: 'UserId received successfully' });
     } catch (error) {
         console.error('Error fetching current user:', error);

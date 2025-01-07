@@ -28,36 +28,16 @@ interface SideBarProps {
 }
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {
-  // const { isLoaded, userId } = useAuth();
-  // const { user } = useUser();
   const pathname = usePathname();
-  // const [userDisplayName, setUserDisplayName] = useState<String>("");
-  const [isAnimating, setIsAnimating] = useState<boolean>(false); // New state to track animation
-  // const [loading, setLoading] = useState<boolean>(true);
-
-  // useEffect(() => {
-  //   try {
-  //     if (user) {
-  //       setUserDisplayName(user.username || user.firstName || "");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, [user]);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
   const handleClose = () => {
-    setIsAnimating(true); // Start the closing animation
+    setIsAnimating(true);
     setTimeout(() => {
-      setIsAnimating(false); // Reset the animation state
-      onClose(); // Trigger the actual close function passed as a prop
-    }, 500); // Match this duration to the length of the closing animation in CSS
+      setIsAnimating(false);
+      onClose();
+    }, 500);
   };
-
-  // if (!isLoaded || !userId || !user) {
-  //   return null;
-  // }
 
   return (
     <Suspense fallback="sidebar comming">
