@@ -23,6 +23,8 @@ interface ConnectedFriendsProps {
   searchQuery: string;
 }
 
+const baseUrl = "https://mind-maps-backend.onrender.com";
+
 const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   // currentUser,
   searchQuery,
@@ -35,7 +37,7 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
   const { selectedUser, loggedinUser } = useUserContext();
 
   const fetchUsers = () => {
-    fetch("api/getConnectedUsers", { cache: 'no-store' })
+    fetch(`${baseUrl}/api/friends/connected`, { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch friend request users");
         return res.json();

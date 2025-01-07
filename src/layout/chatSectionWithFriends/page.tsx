@@ -2,10 +2,11 @@ import "@/context/UserContext";
 import { useUserContext } from "@/context/UserContext";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import "./responsive.css"
+import "./responsive.css";
 
 import EmojiPicker from "@/components/comps/EmojiPicker";
 import { decryptData, encryptData } from "@/utils/cryptojs";
+import Loading from "./loading";
 
 const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
@@ -20,6 +21,7 @@ interface Message {
 const ChatSectionWithFriends = () => {
   const [messageHistory, setMessageHistory] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState(true);
   const { selectedUser, loggedinUser } = useUserContext();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -46,29 +48,37 @@ const ChatSectionWithFriends = () => {
   }, [loggedinUser, selectedUser]);
 
   const fetchMessageHistory = () => {
-    fetch(`${baseUrl}/chat/fetchMessages`, { cache: 'no-store' })
-      .then((response) => {
-        if (!response.ok) throw new Error("Failed to fetch messages");
-        return response.json();
-      })
-      .then((msgs) => {
-        const decryptedMessages = msgs.map((msg: Message) => {
-          const decryptedContent = decryptData(msg.content);
-  
-          return {
-            ...msg,
-            content: decryptedContent,
-          };
-        });
+    setTimeout(() => {
+      fetch(`${baseUrl}/chat/fetchMessages`, { cache: "no-store" })
+        .then((response) => {
+          if (!response.ok) throw new Error("Failed to fetch messages");
+          return response.json();
+        })
+        .then((msgs) => {
+          const decryptedMessages = msgs.map((msg: Message) => {
+            const decryptedContent = decryptData(msg.content);
 
-        const sortedMessages = decryptedMessages.sort((a: Message, b: Message) => {
-          return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+            return {
+              ...msg,
+              content: decryptedContent,
+            };
+          });
+
+          const sortedMessages = decryptedMessages.sort(
+            (a: Message, b: Message) => {
+              return (
+                new Date(a.timestamp).getTime() -
+                new Date(b.timestamp).getTime()
+              );
+            }
+          );
+          setMessageHistory(sortedMessages);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log("Failed to fetch message history", error);
         });
-        setMessageHistory(sortedMessages);
-      })
-      .catch((error) => {
-        console.log("Failed to fetch message history", error);
-      });
+    }, 1000);
   };
 
   useEffect(() => {
@@ -89,8 +99,6 @@ const ChatSectionWithFriends = () => {
     );
 
     const timestamp = istDate.toISOString();
-
-
 
     try {
       await axios.post(`${baseUrl}/chat/sendMessage`, {
@@ -173,67 +181,71 @@ const ChatSectionWithFriends = () => {
   }, [messageHistory]);
 
   return (
-    <div className="h-[calc(95vh-7rem)]">
-      <section className="py-1 px-3 h-full overflow-scroll">
-        
-        {Object.keys(groupedMessages).map((date, index) => (
-          <div key={index}>
-            
-            <div className="flex justify-center">
-              <span className="text-sm flex justify-center font-medium w-fit text-gray-100 bg-noteBackgroundCyan border border-noteBorderCyan rounded-full py-1 px-4 my-3">
-                {formatDate(groupedMessages[date][0].timestamp)}{" "}
-                
-              </span>
-            </div>
+    <>
+      <div className="h-[calc(95vh-7rem)]">
+        <section className="py-1 px-3 h-full overflow-scroll">
+          {loading ? (
+            <Loading />
+          ) : (
+            Object.keys(groupedMessages).map((date, index) => (
+              <div key={index}>
+                <div className="flex justify-center">
+                  <span className="text-sm flex justify-center font-medium w-fit text-gray-100 bg-noteBackgroundCyan border border-noteBorderCyan rounded-full py-1 px-4 my-3">
+                    {formatDate(groupedMessages[date][0].timestamp)}{" "}
+                  </span>
+                </div>
 
-            
-            {groupedMessages[date].map((msg, index) => (
-              <ul
-                key={index}
-                className={`w-full flex flex-wrap ${
-                  msg.from === loggedinUser?.id ? "justify-end" : "justify-start"
-                }`}
-              >
-                <li
-                  className={`border border-chatSectionMessageBorder text-smFont rounded-lg px-3 py-1 my-1 max-w-[60%] bg-chatSectionMessageBG ${
-                    msg.from === loggedinUser?.id ? "justify-end" : "justify-start"
-                  } break-words overflow-hidden`}
-                >
-                  <div className="cssChatMessageMessage">{msg.content}</div>
-                  <div className="cssChatMessageTime text-xs text-gray-400 flex items-end justify-end text-end mt-1 font-light select-none">
-                    {new Date(msg.timestamp).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}{" "}
-                    
-                  </div>
-                </li>
-              </ul>
-            ))}
-          </div>
-        ))}
+                {groupedMessages[date].map((msg, index) => (
+                  <ul
+                    key={index}
+                    className={`w-full flex flex-wrap ${
+                      msg.from === loggedinUser?.id
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
+                    <li
+                      className={`border border-chatSectionMessageBorder text-smFont rounded-lg px-3 py-1 my-1 max-w-[60%] bg-chatSectionMessageBG ${
+                        msg.from === loggedinUser?.id
+                          ? "justify-end"
+                          : "justify-start"
+                      } break-words overflow-hidden`}
+                    >
+                      <div className="cssChatMessageMessage">{msg.content}</div>
+                      <div className="cssChatMessageTime text-xs text-gray-400 flex items-end justify-end text-end mt-1 font-light select-none">
+                        {new Date(msg.timestamp).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                      </div>
+                    </li>
+                  </ul>
+                ))}
+              </div>
+            ))
+          )}
 
-        
-        <div ref={messagesEndRef} />
-      </section>
+          <div ref={messagesEndRef} />
+        </section>
 
-      <section className="flex items-center h-14">
-        <EmojiPicker onEmojiSelect={handleEmojiSelect} />
-        <input
-          className="cssChatInputSection text-slate-200 text-md mx-2 my-2 bg-chatSectionInputField outline-none rounded-md px-3 py-2 flex-grow"
-          type="text"
-          placeholder="Type a message ..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyPress}
-        />
-        <button className="outline-none" onClick={handleSendMessage}>
-          <span className="cssChatSendButton material-symbols-rounded mr-3 flex px-3 py-[9px] items-center bg-chatSectionInputField rounded-md">
-            send
-          </span>
-        </button>
-      </section>
-    </div>
+        <section className="flex items-center h-14">
+          <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+          <input
+            className="cssChatInputSection text-slate-200 text-md mx-2 my-2 bg-chatSectionInputField outline-none rounded-md px-3 py-2 flex-grow"
+            type="text"
+            placeholder="Type a message ..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+          />
+          <button className="outline-none" onClick={handleSendMessage}>
+            <span className="cssChatSendButton material-symbols-rounded mr-3 flex px-3 py-[9px] items-center bg-chatSectionInputField rounded-md">
+              send
+            </span>
+          </button>
+        </section>
+      </div>
+    </>
   );
 };
 

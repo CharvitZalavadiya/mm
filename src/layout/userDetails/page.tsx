@@ -95,7 +95,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   }, [userId]);
 
   const ncUsers = () => {
-    fetch("api/getNotConnectedUsers", { cache: 'no-store' })
+    fetch(`${baseUrl}/api/friends/notConnected`, { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch notConnected users");
 
