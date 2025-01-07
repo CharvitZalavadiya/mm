@@ -59,7 +59,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const { userId } = useAuth();
 
   const fetchUsers = () => {
-    fetch("/api/getUsers", { cache: 'no-store' })
+    fetch("/api/getUsers", { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch users");
 
@@ -84,45 +84,48 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   };
 
   useEffect(() => {
-    userId && axios.post(`${baseUrl}/api/friends`, { userId })
-      .then(response => {
-        console.log('UserId sent successfully:');
-        setIsFriendsRequesting(false);
-      })
-      .catch(error => {
-        console.error('Error sending userId:', error);
-      });
+    userId &&
+      axios
+        .post(`${baseUrl}/api/friends`, { userId })
+        .then((response) => {
+          console.log("UserId sent successfully:");
+          setIsFriendsRequesting(false);
+          
+          fetch(`${baseUrl}/api/friends/notConnected`, { cache: "no-store" })
+            .then((res) => {
+              if (!res.ok)
+                throw new Error("Failed to fetch notConnected users");
+
+              return res.json();
+            })
+            .then((users) => {
+              setNotConnected(users);
+              setLoading(false);
+
+              axios
+                .post(`${baseUrl}/friends/bulk/:id`, { users })
+                .then((res) => {
+                  console.log("response for multiple user request");
+                })
+                .catch((error) => {
+                  console.error("Error storing users in the database:", error);
+                });
+            })
+            .catch((err) => {
+              console.log("failed to fetch friend request users", err);
+            });
+        })
+        .catch((error) => {
+          console.error("Error sending userId:", error);
+        });
   }, [userId]);
 
-  const ncUsers = () => {
-    fetch(`${baseUrl}/api/friends/notConnected`, { cache: 'no-store' })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch notConnected users");
-
-        return res.json();
-      })
-      .then((users) => {
-        setNotConnected(users);
-        setLoading(false);
-
-        axios
-          .post(`${baseUrl}/friends/bulk/:id`, { users })
-          .then((res) => {
-            console.log("response for multiple user request");
-          })
-          .catch((error) => {
-            console.error("Error storing users in the database:", error);
-          });
-      })
-      .catch((err) => {
-        console.log("failed to fetch friend request users", err);
-      });
-  };
+  const ncUsers = () => {};
 
   useEffect(() => {
-    ncUsers();
+    // ncUsers();
     fetchUsers();
-  }, []);  
+  }, []);
 
   const convertToUser = (userInfo: UserInfo): User => ({
     username: userInfo.username || "",
@@ -136,7 +139,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     requestReceivedPeople: [],
   });
 
-  
   useEffect(() => {
     const currentUserData = notConnected.find((user) => userId === user.id);
     if (currentUserData) {
@@ -145,9 +147,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     }
   }, [notConnected, userId, setLoggedinUser]);
 
-  
-  localStorage.setItem('currentUser', JSON.stringify(loggedinUser))
-  
+  localStorage.setItem("currentUser", JSON.stringify(loggedinUser));
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
