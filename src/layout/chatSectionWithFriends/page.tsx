@@ -8,6 +8,9 @@ import EmojiPicker from "@/components/comps/EmojiPicker";
 import { decryptData, encryptData } from "@/utils/cryptojs";
 import Loading from "./loading";
 
+import io from 'socket.io-client'; // Import socket.io-client
+
+
 const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
 
@@ -24,6 +27,29 @@ const ChatSectionWithFriends = () => {
   const [loading, setLoading] = useState(true);
   const { selectedUser, loggedinUser } = useUserContext();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  const socketRef = useRef<any>(null);  // Reference to the socket
+  useEffect(() => {
+    if (loggedinUser && selectedUser) {
+      const socket = io("http://localhost:8080"); // Connect to Socket.io server
+
+      socketRef.current = socket;
+
+      // Join the chat room for the two users (use user IDs)
+      socket.emit('joinChat', { from: loggedinUser.id, to: selectedUser.id });
+
+      // Listen for incoming messages
+      socket.on('receiveMessage', (message: Message) => {
+        setMessageHistory((prevMessages) => [...prevMessages, message]);
+      });
+
+      // Cleanup when the component unmounts
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [loggedinUser, selectedUser]);
+
 
   useEffect(() => {
     if (loggedinUser && selectedUser) {
@@ -49,35 +75,37 @@ const ChatSectionWithFriends = () => {
 
   const fetchMessageHistory = () => {
     setTimeout(() => {
-      fetch(`${baseUrl}/chat/fetchMessages`, { cache: "no-store" })
-        .then((response) => {
-          if (!response.ok) throw new Error("Failed to fetch messages");
-          return response.json();
-        })
-        .then((msgs) => {
-          const decryptedMessages = msgs.map((msg: Message) => {
-            const decryptedContent = decryptData(msg.content);
+      // setInterval(() => {
+        fetch(`${baseUrl}/chat/fetchMessages`, { cache: "no-store" })
+          .then((response) => {
+            if (!response.ok) throw new Error("Failed to fetch messages");
+            return response.json();
+          })
+          .then((msgs) => {
+            const decryptedMessages = msgs.map((msg: Message) => {
+              const decryptedContent = decryptData(msg.content);
 
-            return {
-              ...msg,
-              content: decryptedContent,
-            };
+              return {
+                ...msg,
+                content: decryptedContent,
+              };
+            });
+
+            const sortedMessages = decryptedMessages.sort(
+              (a: Message, b: Message) => {
+                return (
+                  new Date(a.timestamp).getTime() -
+                  new Date(b.timestamp).getTime()
+                );
+              }
+            );
+            setMessageHistory(sortedMessages);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.log("Failed to fetch message history", error);
           });
-
-          const sortedMessages = decryptedMessages.sort(
-            (a: Message, b: Message) => {
-              return (
-                new Date(a.timestamp).getTime() -
-                new Date(b.timestamp).getTime()
-              );
-            }
-          );
-          setMessageHistory(sortedMessages);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.log("Failed to fetch message history", error);
-        });
+      // }, 1000);
     }, 1000);
   };
 
@@ -89,44 +117,82 @@ const ChatSectionWithFriends = () => {
     setMessage((prevMessage) => prevMessage + emoji);
   };
 
+  // const handleSendMessage = async () => {
+  //   if (message.trim() === "") return;
+
+  //   const now = new Date();
+
+  //   const istDate = new Date(
+  //     now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+  //   );
+
+  //   const timestamp = istDate.toISOString();
+
+  //   try {
+  //     await axios.post(`${baseUrl}/chat/sendMessage`, {
+  //       from: loggedinUser?.id,
+  //       to: selectedUser?.id,
+  //       content: encryptData(message),
+  //       timestamp: timestamp,
+  //     });
+
+  //     if (loggedinUser && selectedUser) {
+  //       setMessageHistory((prevMessages) => [
+  //         ...prevMessages,
+  //         {
+  //           from: loggedinUser.id,
+  //           to: selectedUser.id,
+  //           content: message,
+  //           timestamp,
+  //         },
+  //       ]);
+  //     }
+
+  //     setMessage("");
+
+  //     fetchMessageHistory();
+  //   } catch (error) {
+  //     console.error("Error sending message:", error);
+  //   }
+  // };
+
   const handleSendMessage = async () => {
     if (message.trim() === "") return;
 
     const now = new Date();
-
     const istDate = new Date(
       now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
     );
-
     const timestamp = istDate.toISOString();
 
-    try {
-      await axios.post(`${baseUrl}/chat/sendMessage`, {
-        from: loggedinUser?.id,
-        to: selectedUser?.id,
-        content: encryptData(message),
-        timestamp: timestamp,
-      });
+    const newMessage = {
+      from: loggedinUser?.id,
+      to: selectedUser?.id,
+      content: encryptData(message),
+      timestamp: timestamp,
+    };
 
-      if (loggedinUser && selectedUser) {
-        setMessageHistory((prevMessages) => [
-          ...prevMessages,
-          {
-            from: loggedinUser.id,
-            to: selectedUser.id,
-            content: message,
-            timestamp,
-          },
-        ]);
-      }
+    // Emit the message to the server via socket
+    socketRef.current.emit('sendMessage', newMessage);
 
-      setMessage("");
+    // Update local state for the message
+    if(loggedinUser && selectedUser) {
 
-      fetchMessageHistory();
-    } catch (error) {
-      console.error("Error sending message:", error);
+      setMessageHistory((prevMessages) => [
+        ...prevMessages,
+        {
+          from: loggedinUser.id,
+          to: selectedUser.id,
+          content: message,
+          timestamp,
+        },
+      ]);
+      
     }
+    setMessage("");
+    fetchMessageHistory();
   };
+
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" && message.trim() !== "") {
@@ -228,7 +294,7 @@ const ChatSectionWithFriends = () => {
           <div ref={messagesEndRef} />
         </section>
 
-        <section className="flex items-center h-14">
+        <section className="flex sticky bottom-1 items-center h-14">
           <EmojiPicker onEmojiSelect={handleEmojiSelect} />
           <input
             className="cssChatInputSection text-slate-200 text-md mx-2 my-2 bg-chatSectionInputField outline-none rounded-md px-3 py-2 flex-grow"
