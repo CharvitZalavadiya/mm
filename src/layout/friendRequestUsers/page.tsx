@@ -153,6 +153,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
           });
 
         closeUserInfoPopup();
+        window.location.reload();
       } catch (error) {
         console.log(
           `error sending post request for accepting other user friend request: ${error}`

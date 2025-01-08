@@ -302,7 +302,7 @@ const Notes: React.FC = () => {
         </Suspense>
       </span>
 
-      <main className="cssMainCompNotes bg-sidebarGradient rounded-lg tracking-wide leading-relaxed h-[95vh] overflow-y-scroll p-5 ml-3 w-full">
+      <main className="cssMainCompNotes bg-sidebarGradient rounded-lg tracking-wide leading-relaxed h-[95dvh] overflow-y-scroll p-5 ml-3 w-full">
         <span className="top-0 sticky">
           <TopBarNotes
             onSearch={handleSearch}

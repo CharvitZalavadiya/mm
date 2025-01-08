@@ -42,7 +42,7 @@ const Chat = () => {
       </span>
 
       <div className="bg-sidebarGradient ml-3 rounded-lg w-full">
-        <main className="cssMainCompFriends overflow-y-scroll rounded-lg tracking-wide leading-relaxed h-[95vh] w-full">
+        <main className="cssMainCompFriends overflow-y-scroll rounded-lg tracking-wide leading-relaxed h-[95dvh] w-full">
           <section className="inline-flex top-0 sticky bg-chatFriendDetailsGradient w-full py-1 px-3 rounded-lg h-12">
             <span>
               <TopbarChat

@@ -34,7 +34,7 @@ const Friends = () => {
       </span>
 
       <div className="bg-sidebarGradient ml-3 rounded-lg w-full">
-        <main className="cssMainCompFriends overflow-y-scroll rounded-lg tracking-wide leading-relaxed h-[95vh] p-5 w-full">
+        <main className="cssMainCompFriends overflow-y-scroll rounded-lg tracking-wide leading-relaxed h-[95dvh] p-5 w-full">
           <section className="top-0 sticky backdrop-blur-[5px]">
             <TopbarFriends
               onSearch={handleSearch}

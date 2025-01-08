@@ -42,7 +42,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
   return (
     <Suspense fallback="sidebar comming">
       <span
-        className={`cssSidebar w-[220px] p-3 rounded-lg flex flex-grow bg-sidebarGradient flex-col select-none tracking-wide text-lg h-[95vh] ${
+        className={`cssSidebar w-[220px] p-3 rounded-lg flex flex-grow bg-sidebarGradient flex-col select-none tracking-wide text-lg h-[95dvh] ${
           isOpen && !isAnimating
             ? "sidebarIncome"
             : isAnimating
