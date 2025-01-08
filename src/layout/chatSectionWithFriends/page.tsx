@@ -31,7 +31,7 @@ const ChatSectionWithFriends = () => {
   const socketRef = useRef<any>(null);  // Reference to the socket
   useEffect(() => {
     if (loggedinUser && selectedUser) {
-      const socket = io("http://localhost:8080"); // Connect to Socket.io server
+      const socket = io(`${baseUrl}`); // Connect to Socket.io server
 
       socketRef.current = socket;
 
