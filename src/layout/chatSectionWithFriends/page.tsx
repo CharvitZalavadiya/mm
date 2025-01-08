@@ -190,7 +190,10 @@ const ChatSectionWithFriends = () => {
       
     }
     setMessage("");
-    fetchMessageHistory();
+    setTimeout(() => {
+
+      fetchMessageHistory();
+    }, 1000)
   };
 
 
