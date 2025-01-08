@@ -8,8 +8,7 @@ import EmojiPicker from "@/components/comps/EmojiPicker";
 import { decryptData, encryptData } from "@/utils/cryptojs";
 import Loading from "./loading";
 
-import io from 'socket.io-client'; // Import socket.io-client
-
+import io from "socket.io-client"; // Import socket.io-client
 
 const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:8080";
@@ -28,7 +27,7 @@ const ChatSectionWithFriends = () => {
   const { selectedUser, loggedinUser } = useUserContext();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const socketRef = useRef<any>(null);  // Reference to the socket
+  const socketRef = useRef<any>(null); // Reference to the socket
   useEffect(() => {
     if (loggedinUser && selectedUser) {
       const socket = io(`${baseUrl}`); // Connect to Socket.io server
@@ -36,11 +35,18 @@ const ChatSectionWithFriends = () => {
       socketRef.current = socket;
 
       // Join the chat room for the two users (use user IDs)
-      socket.emit('joinChat', { from: loggedinUser.id, to: selectedUser.id });
+      socket.emit("joinChat", { from: loggedinUser.id, to: selectedUser.id });
 
       // Listen for incoming messages
-      socket.on('receiveMessage', (message: Message) => {
-        setMessageHistory((prevMessages) => [...prevMessages, message]);
+      socket.on("receiveMessage", (message: Message) => {
+        fetchMessageHistory()
+        const decryptedReceivedMessage = {
+          from: message.from,
+          to: message.to,
+          content: decryptData(message.content),
+          timestamp: message.timestamp
+        }
+        setMessageHistory((prevMessages) => [...prevMessages, decryptedReceivedMessage]);
       });
 
       // Cleanup when the component unmounts
@@ -49,7 +55,6 @@ const ChatSectionWithFriends = () => {
       };
     }
   }, [loggedinUser, selectedUser]);
-
 
   useEffect(() => {
     if (loggedinUser && selectedUser) {
@@ -74,43 +79,45 @@ const ChatSectionWithFriends = () => {
   }, [loggedinUser, selectedUser]);
 
   const fetchMessageHistory = () => {
-    setTimeout(() => {
+    // setTimeout(() => {
       // setInterval(() => {
-        fetch(`${baseUrl}/chat/fetchMessages`, { cache: "no-store" })
-          .then((response) => {
-            if (!response.ok) throw new Error("Failed to fetch messages");
-            return response.json();
-          })
-          .then((msgs) => {
-            const decryptedMessages = msgs.map((msg: Message) => {
-              const decryptedContent = decryptData(msg.content);
+      fetch(`${baseUrl}/chat/fetchMessages`, { cache: "no-store" })
+        .then((response) => {
+          if (!response.ok) throw new Error("Failed to fetch messages");
+          return response.json();
+        })
+        .then((msgs) => {
+          const decryptedMessages = msgs.map((msg: Message) => {
+            const decryptedContent = decryptData(msg.content);
 
-              return {
-                ...msg,
-                content: decryptedContent,
-              };
-            });
-
-            const sortedMessages = decryptedMessages.sort(
-              (a: Message, b: Message) => {
-                return (
-                  new Date(a.timestamp).getTime() -
-                  new Date(b.timestamp).getTime()
-                );
-              }
-            );
-            setMessageHistory(sortedMessages);
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.log("Failed to fetch message history", error);
+            return {
+              ...msg,
+              content: decryptedContent,
+            };
           });
+
+          const sortedMessages = decryptedMessages.sort(
+            (a: Message, b: Message) => {
+              return (
+                new Date(a.timestamp).getTime() -
+                new Date(b.timestamp).getTime()
+              );
+            }
+          );
+          setMessageHistory(sortedMessages);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log("Failed to fetch message history", error);
+        });
       // }, 1000);
-    }, 1000);
+    // }, 500);
   };
 
   useEffect(() => {
-    fetchMessageHistory();
+    setTimeout(() => {
+      fetchMessageHistory();
+    }, 500)
   }, []);
 
   const handleEmojiSelect = (emoji: string) => {
@@ -165,18 +172,18 @@ const ChatSectionWithFriends = () => {
     );
     const timestamp = istDate.toISOString();
 
-    const newMessage = {
-      from: loggedinUser?.id,
-      to: selectedUser?.id,
-      content: encryptData(message),
-      timestamp: timestamp,
-    };
-
-    // Emit the message to the server via socket
-    socketRef.current.emit('sendMessage', newMessage);
-
     // Update local state for the message
-    if(loggedinUser && selectedUser) {
+    if (loggedinUser && selectedUser) {
+
+      const newMessage = {
+        from: loggedinUser.id,
+        to: selectedUser.id,
+        content: encryptData(message),
+        timestamp: timestamp,
+      };
+
+      // Emit the message to the server via socket
+      socketRef.current.emit("sendMessage", newMessage);
 
       setMessageHistory((prevMessages) => [
         ...prevMessages,
@@ -187,15 +194,10 @@ const ChatSectionWithFriends = () => {
           timestamp,
         },
       ]);
-      
     }
     setMessage("");
-    setTimeout(() => {
-
-      fetchMessageHistory();
-    }, 1000)
+    fetchMessageHistory();
   };
-
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" && message.trim() !== "") {

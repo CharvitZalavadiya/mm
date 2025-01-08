@@ -77,6 +77,7 @@
 import { Server as SocketIO } from 'socket.io';
 import Message from '../../models/Message.js'; // Import your Message model
 import { getDb } from './db.js';  // Import your database connection
+import {encryptData, decryptData} from "../../utils/cryptojs.js"
 
 let io;
 let collection;
@@ -94,7 +95,6 @@ export const initializeSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
 
     // Handle user joining chat room
     socket.on('joinChat', ({ from, to }) => {
@@ -117,10 +117,12 @@ export const initializeSocket = (server) => {
 
       try {
         // Save the message to the database
+        const encryptedContent = encryptData(content);
+
         const newMessage = new Message({
           from,
           to,
-          content,
+          content: encryptedContent,
           timestamp,
         });
 
@@ -129,6 +131,10 @@ export const initializeSocket = (server) => {
         // res.status(201).json(result);
         
         console.log("Message saved to database:", newMessage);
+
+        const decryptedMessage = decryptData(message.content);
+        console.log(decryptedMessage)
+        console.log(message.content)
 
         // Emit the message to the recipient (both users will get the message)
         io.to(`${from}-${to}`).emit('receiveMessage', message);
