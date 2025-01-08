@@ -117,12 +117,12 @@ export const initializeSocket = (server) => {
 
       try {
         // Save the message to the database
-        const encryptedContent = encryptData(content);
+        // const encryptedContent = encryptData(content);
 
         const newMessage = new Message({
           from,
           to,
-          content: encryptedContent,
+          content,
           timestamp,
         });
 
@@ -137,8 +137,8 @@ export const initializeSocket = (server) => {
         console.log(message.content)
 
         // Emit the message to the recipient (both users will get the message)
-        io.to(`${from}-${to}`).emit('receiveMessage', message);
-        io.to(`${to}-${from}`).emit('receiveMessage', message); // Send to the other user as well
+        io.to(`${from}-${to}`).emit('receiveMessage', newMessage);
+        io.to(`${to}-${from}`).emit('receiveMessage', newMessage); // Send to the other user as well
       } catch (error) {
         console.error('Error saving message:', error);
         socket.emit('error', { error: 'Failed to send message' });
