@@ -57,8 +57,6 @@ router.post('/sendMessage', async (req, res) => {
 
 router.get('/fetchMessages', async (req, res) => {
     try {
-        console.log(`currentUserId : ${currentUserId}`)
-        console.log(`selectedUserId : ${selectedUserId}`)
         const chats = await collection.find({
             $or: [
                 { from: currentUserId, to: selectedUserId },

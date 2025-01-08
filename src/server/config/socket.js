@@ -125,7 +125,7 @@ export const initializeSocket = (server) => {
         });
 
         // Assuming you have a `messages` collection in your DB
-        const result = await collection.insertOne(newMessage);
+        await collection.insertOne(newMessage);
         // res.status(201).json(result);
         
         console.log("Message saved to database:", newMessage);
