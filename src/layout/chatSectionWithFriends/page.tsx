@@ -39,13 +39,13 @@ const ChatSectionWithFriends = () => {
 
       // Listen for incoming messages
       socket.on("receiveMessage", (message: Message) => {
-        fetchMessageHistory()
         const decryptedReceivedMessage = {
           from: message.from,
           to: message.to,
           content: decryptData(message.content),
           timestamp: message.timestamp
         }
+        fetchMessageHistory()
         setMessageHistory((prevMessages) => [...prevMessages, decryptedReceivedMessage]);
       });
 
