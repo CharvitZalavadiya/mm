@@ -15,6 +15,9 @@
 2. **Sign In**: Log into your existing account or create a new one.
 3. **Create a Note**: Use the intuitive interface to start capturing your ideas.
 4. **Organize**: Assign colors and edit notes as needed.
+5. **Friends**: Go to Friends option where you will find many other users.
+6. **Friend Request**: You can send friend request to any user and the status of it will be shown to you in the same page by navingating in Requests tab below the topbar .
+7. **Chat**: Once you became friends then select the connected option from dropdown and select your friends to start the chatting.
 
 ## Technologies Used
 

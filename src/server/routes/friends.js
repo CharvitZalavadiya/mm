@@ -9,6 +9,7 @@ getDb().then((db) => {
   collection = db.collection('User');
 });
 
+// Fetching users from the database
 router.get('/', async (req, res) => {
   try {
     const users = await collection.find({}).toArray();
@@ -18,6 +19,7 @@ router.get('/', async (req, res) => {
   }
 })
 
+// Accepting the request
 router.patch('/acceptRequest/:id', async (req, res) => {
   const { currentUser, friendUser } = req.body;
 
@@ -55,6 +57,83 @@ router.patch('/acceptRequest/:id', async (req, res) => {
   }
 })
 
+// Revoking the request
+router.patch('/revokeRequest/:id', async (req, res) => {
+  const { currentUser, friendUser } = req.body;
+
+  try {
+
+    const friendUserId = await collection.findOne({ id: friendUser });
+    const currentUserId = await collection.findOne({ id: currentUser });
+
+    if (!friendUserId || !currentUserId) {
+      return res.status(404).json({ error: 'One or both users not found' });
+    }
+
+    await collection.updateOne(
+      { id: currentUser },
+      {
+        // $addToSet: { connectedPeople: friendUser },
+        $pull: { requestSentPeople: friendUser }
+      },
+      { returnOriginal: false },
+    );
+
+    await collection.updateOne(
+      { id: friendUser },
+      {
+        // $addToSet: { connectedPeople: currentUser },
+        $pull: { requestReceivedPeople: currentUser }
+      },
+      { returnOriginal: false }
+    );
+
+    res.status(200).json({ message: 'Friend request revoked by currentUser ss' });
+  } catch (error) {
+    console.error('Error revoking friend request:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+// Declining the request
+router.patch('/declineRequest/:id', async (req, res) => {
+  const { currentUser, friendUser } = req.body;
+
+  try {
+
+    const friendUserId = await collection.findOne({ id: friendUser });
+    const currentUserId = await collection.findOne({ id: currentUser });
+
+    if (!friendUserId || !currentUserId) {
+      return res.status(404).json({ error: 'One or both users not found' });
+    }
+
+    await collection.updateOne(
+      { id: currentUser },
+      {
+        // $addToSet: { connectedPeople: friendUser },
+        $pull: { requestReceivedPeople: friendUser }
+      },
+      { returnOriginal: false },
+    );
+
+    await collection.updateOne(
+      { id: friendUser },
+      {
+        // $addToSet: { connectedPeople: currentUser },
+        $pull: { requestSentPeople: currentUser }
+      },
+      { returnOriginal: false }
+    );
+
+    res.status(200).json({ message: 'Friend request revoked by currentUser ss' });
+  } catch (error) {
+    console.error('Error revoking friend request:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+// Sending friend request
 router.patch('/:id', async (req, res) => {
   const { fromUser, toUser } = req.body;
   console.log(`from user: ${fromUser} to user: ${toUser}`);
@@ -85,7 +164,7 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-
+// Adding the selected user to database
 router.post('/', async (req, res) => {
   const { username, firstname, lastname, imageUrl, id, email } = req.body[0] || {};
 
@@ -120,8 +199,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-
+// Adding the multiple users to database
 router.post('/bulk/:id', async (req, res) => {
   const users = req.body.users || [];
 

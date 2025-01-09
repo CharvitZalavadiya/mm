@@ -1,5 +1,8 @@
-import { clerkClient } from "@clerk/nextjs/server";
+// import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { clerkClient } from "@clerk/clerk-sdk-node";
+// const clerk = clerkClient();
+
 
 interface UserInfo {
   username: string;
