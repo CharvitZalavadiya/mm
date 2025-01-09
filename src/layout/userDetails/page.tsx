@@ -52,6 +52,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<UserInfo[]>([]);
   const [isFriendsRequesting, setIsFriendsRequesting] = useState(true);
+  const [hasNcUsersBeenCalled, setHasNcUsersBeenCalled] = useState(false);
+
   const popupRef = useRef<HTMLDivElement>(null);
 
   const { setLoggedinUser, loggedinUser } = useUserContext();
@@ -90,37 +92,38 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         .then((response) => {
           console.log("UserId sent successfully:");
           setIsFriendsRequesting(false);
-          
-          fetch(`${baseUrl}/api/friends/notConnected`, { cache: "no-store" })
-            .then((res) => {
-              if (!res.ok)
-                throw new Error("Failed to fetch notConnected users");
 
-              return res.json();
-            })
-            .then((users) => {
-              setNotConnected(users);
-              setLoading(false);
-
-              axios
-                .post(`${baseUrl}/friends/bulk/:id`, { users })
-                .then((res) => {
-                  console.log("response for multiple user request");
-                })
-                .catch((error) => {
-                  console.error("Error storing users in the database:", error);
-                });
-            })
-            .catch((err) => {
-              console.log("failed to fetch friend request users", err);
-            });
+          ncUsers();
         })
         .catch((error) => {
           console.error("Error sending userId:", error);
         });
   }, [userId]);
 
-  const ncUsers = () => {};
+  let ncUsers = () => {
+    fetch(`${baseUrl}/api/friends/notConnected`, { cache: "no-store" })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch notConnected users");
+
+        return res.json();
+      })
+      .then((users) => {
+        setNotConnected(users);
+        setLoading(false);
+
+        axios
+          .post(`${baseUrl}/friends/bulk/:id`, { users })
+          .then((res) => {
+            console.log("response for multiple user request");
+          })
+          .catch((error) => {
+            console.error("Error storing users in the database:", error);
+          });
+      })
+      .catch((err) => {
+        console.log("failed to fetch friend request users", err);
+      });
+  };
 
   useEffect(() => {
     // ncUsers();
@@ -144,10 +147,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     if (currentUserData) {
       setCurrentUser([currentUserData]);
       setLoggedinUser(convertToUser(currentUserData));
+      localStorage.setItem("currentUser", JSON.stringify(loggedinUser));
     }
   }, [notConnected, userId, setLoggedinUser]);
 
-  localStorage.setItem("currentUser", JSON.stringify(loggedinUser));
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -217,9 +220,20 @@ const UserDetails: React.FC<UserDetailsProps> = ({
       } catch (error) {
         console.log("Error occurred while sending request:", error);
       }
-      window.location.reload();
+      // window.location.reload();
+      ncUsers();
     }
   };
+
+  
+  useEffect(() => {
+    if (selectedTab === "connectToMore" && !hasNcUsersBeenCalled) {
+      ncUsers(); // Call the ncUsers function
+      setHasNcUsersBeenCalled(true); // Mark the function as called
+    } else if (selectedTab !== "connectToMore") {
+      setHasNcUsersBeenCalled(false); // Reset when leaving the tab
+    }
+  }, [selectedTab, hasNcUsersBeenCalled]);
 
   if (error) return <p>{error}</p>;
 
@@ -239,6 +253,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
         {selectedTab === "connectToMore" && (
           <>
+          {/* {ncUsers()} */}
             <ul className="cssFriendsGrids grid grid-cols-3 gap-4 mt-4 h-full">
               {loading ? (
                 <FriendsLoadingSkeleton />

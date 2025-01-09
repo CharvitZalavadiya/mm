@@ -50,7 +50,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
 
   const sUsers = () => {
-    fetch(`${baseUrl}/api/friends/requestSent`, { cache: 'no-store' })
+    fetch(`${baseUrl}/api/friends/requestSent`, { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch requestSent users");
 
@@ -66,7 +66,7 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
   };
 
   const rUsers = () => {
-    fetch(`${baseUrl}/api/friends/requestReceived`, { cache: 'no-store' })
+    fetch(`${baseUrl}/api/friends/requestReceived`, { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch requestReceived users");
 
@@ -153,10 +153,70 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
           });
 
         closeUserInfoPopup();
-        window.location.reload();
+        // window.location.reload();
+        sUsers();
+    rUsers();
       } catch (error) {
         console.log(
           `error sending post request for accepting other user friend request: ${error}`
+        );
+      }
+    }
+  };
+
+  const handleRevokeRequest = async () => {
+    if (selectedUser && selectedUserRequestSent) {
+      try {
+        const revokeRequest = {
+          currentUser: currentUserId,
+          friendUser: selectedUserRequestSent?.id,
+        };
+
+        await axios
+          .patch(`${baseUrl}/friends/revokeRequest/:id`, revokeRequest)
+          .then((response) => {
+            console.log(`Request revoked:`);
+          })
+          .catch((error) => {
+            console.log(`Error revoking request: ${error}`);
+          });
+
+        closeUserInfoPopup();
+        // window.location.reload();
+        sUsers();
+    rUsers();
+      } catch (error) {
+        console.log(
+          `error sending post request for revokeing other user friend request: ${error}`
+        );
+      }
+    }
+  };
+
+  const handleDeclineRequest = async () => {
+    if (selectedUser && selectedUserRequestReceived) {
+      try {
+        const declineRequest = {
+          currentUser: currentUserId,
+          friendUser: selectedUserRequestReceived?.id,
+        };
+
+        await axios
+          .patch(`${baseUrl}/friends/declineRequest/:id`, declineRequest)
+          .then((response) => {
+            console.log(`Request declined:`);
+          })
+          .catch((error) => {
+            console.log(`Error declining request: ${error}`);
+          });
+
+        closeUserInfoPopup();
+        // window.location.reload();
+        sUsers();
+    rUsers();
+      } catch (error) {
+        console.log(
+          `error sending post request for declining other user friend request: ${error}`
         );
       }
     }
@@ -292,13 +352,31 @@ const FriendRequestUsers: React.FC<FriendRequestUsersProps> = ({
                 Pending
               </button>
               <button
-                className={`bg-blue-500 border border-slate-300 inline-flex rounded-lg py-1 mr-4 items-center cursor-pointer hover:bg-blue-600 flex-1 justify-center gap-4 pr-4 ${
+                className={`bg-red-700 border border-red-500 text-slate-200 font-medium inline-flex rounded-lg px-4 py-1 mr-4 items-center cursor-pointer ${
+                  selectedUserRequestSent ? "" : "hidden"
+                } flex-1 justify-center`}
+                onClick={handleRevokeRequest}
+              >
+                <span className="material-symbols-rounded">close</span>
+                Revoke
+              </button>
+              <button
+                className={`bg-blue-500 border border-slate-300 inline-flex rounded-lg py-1 mr-4 items-center cursor-pointer hover:bg-blue-600 flex-1 justify-center px-2 ${
                   selectedUserRequestReceived ? "" : "hidden"
                 } flex-1`}
                 onClick={handleAcceptRequest}
               >
-                <span className="material-symbols-rounded">check</span>
+                <span className="material-symbols-rounded pr-2">check</span>
                 Accept
+              </button>
+              <button
+                className={`bg-red-700 border border-red-500 text-slate-200 font-medium inline-flex rounded-lg px-4 py-1 mr-4 items-center cursor-pointer ${
+                  selectedUserRequestReceived ? "" : "hidden"
+                } flex-1 justify-center`}
+                onClick={handleDeclineRequest}
+              >
+                <span className="material-symbols-rounded pr-2">close</span>
+                Decline
               </button>
               <button
                 className="bg-transparent border border-slate-500 bg-zinc-600 items-center rounded-lg px-4 py-1 hover:bg-zinc-700"
