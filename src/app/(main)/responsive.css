@@ -9,9 +9,9 @@
     padding: 10px 30px;
   }
 
-  .cssButtonsi {
+  /* .cssButtonsi {
     margin-right: 80px;
-  }
+  } */
 }
 
 @media screen and (max-width: 580px) {
@@ -27,9 +27,9 @@
     padding: 10px 30px;
   }
 
-  .cssButtonsi {
+  /* .cssButtonsi {
     margin-right: 40px;
-  }
+  } */
 }
 
 @media screen and (max-width: 320px) {
@@ -37,7 +37,7 @@
     padding: 10px 30px;
   }
 
-  .cssButtonsi {
+  /* .cssButtonsi {
     margin-right: 20px;
-  }
+  } */
 }

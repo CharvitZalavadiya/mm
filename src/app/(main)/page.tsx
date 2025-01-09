@@ -5,7 +5,7 @@ import "./animations.css"
 import StarBG from "@/components/comps/starBg";
 
 export default function Home() {
-  const paraText = ["Notes Made Simple : Capture, Edit, Organize with Colors"];
+  const paraText = ["Effortless Notes, Instant Chats - Capture, Organize, and Connect Seamlessly!"];
   const paraTextWords = paraText[0].split(" ");
 
   return (
@@ -22,7 +22,7 @@ export default function Home() {
 
       <span>
         <p
-          className="paraText text-xl font-semibold tracking-wide flex justify-center flex-wrap text-[#3ab2b9]"
+          className="paraText text-xl px-8 font-semibold tracking-wide flex justify-center flex-wrap text-[#3ab2b9]"
         >
           {paraTextWords.map((word, index) => (
             <span
