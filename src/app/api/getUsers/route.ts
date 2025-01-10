@@ -16,7 +16,7 @@ interface UserInfo {
 export async function GET() {
   try {
     const response = await clerkClient.users.getUserList({
-      limit: 30,
+      limit: 100,
     });
 
     const usersInfoMapped: UserInfo[] = response.data.map((user: any) => {
