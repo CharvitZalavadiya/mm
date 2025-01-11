@@ -1,7 +1,5 @@
-// import { clerkClient } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { clerkClient } from "@clerk/clerk-sdk-node";
-// const clerk = clerkClient();
 
 
 interface UserInfo {
@@ -15,8 +13,8 @@ interface UserInfo {
 
 export async function GET() {
   try {
-    const response = await clerkClient.users.getUserList({
-      limit: 30,
+    const response = await (await clerkClient()).users.getUserList({
+      limit: 100,
     });
 
     const usersInfoMapped: UserInfo[] = response.data.map((user: any) => {

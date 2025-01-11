@@ -149,7 +149,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
       setLoggedinUser(convertToUser(currentUserData));
       localStorage.setItem("currentUser", JSON.stringify(loggedinUser));
     }
-  }, [notConnected, userId, setLoggedinUser]);
+  }, [notConnected, userId, setLoggedinUser, loggedinUser, currentUser]);
 
 
   useEffect(() => {
