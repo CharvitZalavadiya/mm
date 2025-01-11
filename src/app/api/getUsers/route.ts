@@ -13,6 +13,7 @@ interface UserInfo {
 
 export async function GET() {
   try {
+
     const response = await (await clerkClient()).users.getUserList({
       limit: 100,
     });
