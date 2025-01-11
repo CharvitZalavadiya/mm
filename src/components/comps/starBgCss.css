@@ -1699,13 +1699,13 @@
   z-index: 2;
 }
 
-h4 {
+h1 {
   color: #fff;
   font-family: Monoton;
   /* animation: neon1 1.5s ease-in-out infinite alternate; */
 }
 
-h4:hover {
+h1:hover {
   color: #ff1177;
   animation: none;
 }
