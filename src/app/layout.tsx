@@ -29,7 +29,7 @@ export default function RootLayout({
       <html
         lang="en"
         suppressHydrationWarning
-        className="bg-primaryBackground text-white"
+        className="bg-primaryBackground text-slate-200"
       >
         <body className={poppins.className}>{children}</body>
       </html>
