@@ -1,18 +1,18 @@
-import "./starBgCss.css"
+import "./starBgCss.css";
 
 const StarBG = () => {
-  return (
-    <>
-      <div className="page-bg"></div>
+  const linesArray = new Array(11).fill(null); // Creates an array with 10 items for the lines
 
-      <div className="animation-wrapper">
-        <div className="particle particle-1"></div>
-        <div className="particle particle-2"></div>
-        <div className="particle particle-3"></div>
-        <div className="particle particle-4"></div>
+  return (
+    <div className="fullscreen-bg">
+      <div className="lines">
+        {linesArray.map((_, index) => (
+          <div key={index} className="line"></div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
 export default StarBG;
+
