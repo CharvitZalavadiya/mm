@@ -118,6 +118,14 @@
   backdrop-filter: blur(7px);
 }
 
+.cl-formButtonPrimary {
+  background-color: darkcyan;
+}
+
+.cl-formButtonPrimary:hover {
+  background-color: darkcyan;
+}
+
 .cl-internal-11f0qyb {
   background: linear-gradient(
     135deg,
