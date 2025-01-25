@@ -31,10 +31,10 @@ const ConnectedFriends: React.FC<ConnectedFriendsProps> = ({
 }) => {
   const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { setSelectedUser, setLoggedinUser } = useUserContext();
+  const { setSelectedUser } = useUserContext();
   const router = useRouter();
 
-  const { selectedUser, loggedinUser } = useUserContext();
+  // const { selectedUser, loggedinUser } = useUserContext();
 
   const fetchUsers = () => {
     fetch(`${baseUrl}/api/friends/connected`, { cache: 'no-store' })
