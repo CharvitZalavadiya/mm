@@ -118,7 +118,6 @@ body {
 }
 .line:nth-child(11):after {
   animation-delay: 0.67s;
-}
 
 /* Define the animation */
 @keyframes drop {
