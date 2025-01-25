@@ -26,6 +26,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
 })
 
+// Configuration for route matching
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
