@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY_ENCRYPTION || '123'
-// console.log(SECRET_KEY)
+console.log(SECRET_KEY)
 
 export const encryptData = (data: string): string => {
   return CryptoJS.AES.encrypt(data, SECRET_KEY).toString();
