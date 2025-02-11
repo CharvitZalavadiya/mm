@@ -67,7 +67,12 @@ const app = express();
 const port = 8080;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["https://mind-maps.vercel.app", "http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Userid"],
+  credentials: true,
+}));
 
 // Create an HTTP server and pass it to Socket.io
 const server = app.listen(port, async () => {

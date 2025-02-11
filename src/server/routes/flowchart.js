@@ -1,6 +1,5 @@
 import express from 'express';
-import { getDb, ObjectId } from '../config/db.js';
-import Flowchart from '../../models/Flowchart.js';
+import { getDb } from '../config/db.js';
 
 
 const router = express.Router();
@@ -13,7 +12,17 @@ getDb().then((db) => {
 });
 
 router.get('/', async (req, res) => {
-  res.send('hello from /flowcharts')
+  try {
+    const userId = req.headers['x-userid'];
+
+    if(!userId) return res.status(400).json({ error: "User ID is required in headers" });
+
+    const user = await collection.findOne({ userId });
+
+    res.status(200).json(user);
+  }catch (err) {
+    console.log(`Error ocuured while fetching flowchart : `, err);
+  }
 })
 
 
