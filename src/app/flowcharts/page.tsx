@@ -38,7 +38,7 @@ export default function FlowChart() {
   const fetchFlowcharts = async () => {
     try {
       if (!userId) return;
-      const response = await fetch(`${localUrl}/flowcharts`, {
+      const response = await fetch(`${baseUrl}/flowcharts`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
