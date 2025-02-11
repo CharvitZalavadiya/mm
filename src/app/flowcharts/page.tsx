@@ -30,8 +30,38 @@ export default function FlowChart() {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
-    setUserId(storedUserId);
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
   }, []);
+
+  const fetchFlowcharts = async () => {
+    try {
+      if (!userId) return;
+      const response = await fetch(`${localUrl}/flowcharts`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Userid": userId,
+        },
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json(); // ✅ Convert ReadableStream to JSON
+      console.log("Fetched flowcharts:", data);
+      
+    } catch (error) {
+      console.log("error fetching flowcharts : ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      fetchFlowcharts();
+    }
+  }, [userId]);
 
   const colorArray = [
     "pink",
@@ -94,7 +124,10 @@ export default function FlowChart() {
         {
           uniqueId: uuidv4(),
           title: encryptData("Flowchart"), // Encrypt the title
-          color: selectedColor === "allColor" ? encryptData("gray") : encryptData(selectedColor), // Default color or user-selected
+          color:
+            selectedColor === "allColor"
+              ? encryptData("gray")
+              : encryptData(selectedColor), // Default color or user-selected
           data: {
             nodes: [
               {
@@ -135,20 +168,18 @@ export default function FlowChart() {
       ],
     };
 
-    
     try {
       await axios.post<Flowchart>(`${baseUrl}/flowcharts/`, newFlowchart);
-
     } catch (error) {
       console.error("Error creating new note:", error);
-    }finally{
+    } finally {
+      const responsenew = await fetch(`${baseUrl}/flowcharts`, {
+        cache: "no-store",
+      });
 
-      const responsenew = await fetch(`${baseUrl}/flowcharts`, { cache: 'no-store' });
-  
       if (!responsenew.ok) throw new Error("Failed to fetch flowcharts");
       // throw new Error("Failed to create new flowchart");
     }
-
   };
 
   const handleColorChange = (color: string) => {
