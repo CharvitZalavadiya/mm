@@ -59,6 +59,7 @@ import notesRoutes from './routes/notes.js';
 import friendsRoutes from './routes/friends.js';
 import chatRoutes from './routes/chat.js';
 import apiRoutes from './routes/api.js';
+import flowchartRoutes from './routes/flowchart.js';
 import { connectToDatabase } from '../server/config/db.js';
 import { initializeSocket } from './config/socket.js'; // Import the socket initialization
 
@@ -90,6 +91,7 @@ app.use('/notes', notesRoutes);
 app.use('/friends', friendsRoutes);
 app.use('/chat', chatRoutes);
 app.use('/api', apiRoutes);
+app.use('/flowcharts', flowchartRoutes);
 
 process.on("SIGINT", async () => {
   console.log("Shutting down server...");
