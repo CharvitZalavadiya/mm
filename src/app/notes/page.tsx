@@ -43,8 +43,8 @@ const Notes: React.FC = () => {
     router.push("/sign-in")
   }
 
-
   useEffect(() => {
+    if(userId) localStorage.setItem("userId", userId);
     const fetchNotes = async () => {
       try {
         const response = await fetch(`${baseUrl}/notes`, { cache: 'no-store' });
@@ -255,7 +255,7 @@ const Notes: React.FC = () => {
       description: encryptData("Note"),
       color: selectedColor === "allColor" ? encryptData("gray") : encryptData(selectedColor),
     };
-  
+    
     try {
       const response = await axios.post<Note>(`${baseUrl}/notes/`, newNote);
       const createdNote = response.data;

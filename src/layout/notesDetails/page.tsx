@@ -33,6 +33,7 @@ const UserNotes: React.FC = () => {
   const { userId } = useAuth();
 
   useEffect(() => {
+    if(userId) localStorage.setItem("userId", userId);
     const fetchNotes = async () => {
       try {
         const response = await fetch("/api/getNotes", { cache: 'no-store' });
