@@ -33,8 +33,6 @@ export default function FlowChart() {
     setUserId(storedUserId);
   }, []);
 
-  console.log(userId);
-
   const colorArray = [
     "pink",
     "green",
@@ -139,15 +137,16 @@ export default function FlowChart() {
 
     
     try {
-      await axios.post<Flowchart>(`${localUrl}/flowcharts/`, newFlowchart);
+      await axios.post<Flowchart>(`${baseUrl}/flowcharts/`, newFlowchart);
 
     } catch (error) {
       console.error("Error creating new note:", error);
     }finally{
 
-      const responsenew = await fetch(`${localUrl}/flowcharts`, { cache: 'no-store' });
+      const responsenew = await fetch(`${baseUrl}/flowcharts`, { cache: 'no-store' });
   
       if (!responsenew.ok) throw new Error("Failed to fetch flowcharts");
+      // throw new Error("Failed to create new flowchart");
     }
 
   };
