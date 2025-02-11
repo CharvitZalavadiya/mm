@@ -4,7 +4,6 @@ import axios from "axios";
 import SideBar from "@/layout/sidebar/page";
 import TopBarNotes from "@/layout/topbarNotes/page";
 import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import "./responsive.css";
 import NotesLoadingSkeleton from "./notesLoadingSkeleton";
 import "./animations.css"
@@ -36,12 +35,6 @@ const Notes: React.FC = () => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   const { userId } = useAuth();
-
-  const router = useRouter();
-
-  if(!userId) {
-    router.push("/sign-in")
-  }
 
   useEffect(() => {
     if(userId) localStorage.setItem("userId", userId);
