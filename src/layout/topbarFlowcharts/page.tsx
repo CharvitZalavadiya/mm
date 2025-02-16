@@ -88,7 +88,7 @@ const TopBarFlowcharts: React.FC<TopBarFlowchartsProps> = ({
   };
 
   return (
-    <div className="flex gap-3 mb-3 select-none justify-evenly">
+    <div id="flowchartTopbar" className="flex gap-3 mb-3 select-none justify-evenly">
       {isMenuVisible && (
         <span
           className="cssMenu hidden material-symbols-outlined py-2 cursor-pointer"

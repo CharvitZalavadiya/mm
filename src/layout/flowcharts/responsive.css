@@ -1,3 +1,7 @@
+.react-flow__attribution {
+  display: none;
+}
+
 @media screen and (max-width: 850px) {
   .cssFlowchartsGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));

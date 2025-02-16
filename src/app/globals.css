@@ -91,6 +91,9 @@
   --chatSectionMessageBG: #414141;
   --chatSectionMessageBorder: #2d2d2d;
 
+  /* flowcharts */
+  --canvasBackground: #151515;
+
 }
 
 /* Scrollbar */
