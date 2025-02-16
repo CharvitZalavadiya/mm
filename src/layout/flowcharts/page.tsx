@@ -338,11 +338,15 @@ const Flowcharts: React.FC<FlowchartsProps> = ({
   // ✅ Set the selected flowchart on click
   const openFlowchartDetails = (flowchart: FlowchartItem) => {
     setSelectedFlowchart(flowchart);
+    const topbar = document.getElementById("flowchartTopbar")
+    topbar?.classList.add("hidden")
   };
-
+  
   // ✅ Close flowchart details and show the list again
   const closeFlowchartDetails = () => {
     setSelectedFlowchart(null);
+    const topbar = document.getElementById("flowchartTopbar")
+    topbar?.classList.remove("hidden")
   };
 
   return (

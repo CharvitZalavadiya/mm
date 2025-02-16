@@ -1,55 +1,89 @@
-// const FlowchartDetails = () => {
-//   return (
-//     <div>
-//       <p>123</p>
-//     </div>
-//   );
-// };
+import React, { useCallback, useEffect } from "react";
+import {
+  ReactFlow,
+  MiniMap,
+  Controls,
+  Background,
+  useNodesState,
+  useEdgesState,
+  addEdge,
+  Panel,
+} from "@xyflow/react";
 
-// export default FlowchartDetails;
-
-
-
-
-
-
-
-
+import "@xyflow/react/dist/style.css";
+import FlowchartDetailTopPanel from "../flowchartDetailTopPanel/page";
 
 interface FlowchartDetailsProps {
-    flowchart: any;
-    onClose: () => void; // ✅ Close function from parent
-  }
-  
-  const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({ flowchart, onClose }) => {
-    return (
-      <div className="p-4 bg-gray-800 text-white rounded-lg">
-        <button onClick={onClose} className="bg-red-500 px-3 py-1 rounded mb-3">⬅ Back</button>
-        
-        <h2 className="text-xl font-bold">{flowchart.title}</h2>
-        <p><strong>Unique ID:</strong> {flowchart.uniqueId}</p>
-        <p><strong>Color:</strong> {flowchart.color}</p>
-  
-        <h3 className="mt-4">Nodes:</h3>
-        <ul>
-          {flowchart.data.nodes.map((node: any) => (
-            <li key={node.id}>
-              <strong>{node.data.label}</strong> ({node.data.shape})
-            </li>
-          ))}
-        </ul>
-  
-        <h3 className="mt-4">Edges:</h3>
-        <ul>
-          {flowchart.data.edges.map((edge: any) => (
-            <li key={edge.id}>
-              {edge.source} → {edge.target}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
+  flowchart: {
+    uniqueId: string;
+    title: string;
+    color: string;
+    data: {
+      nodes: {
+        id: string;
+        position: { x: number; y: number };
+        data: { label: string; shape: string; color: string };
+      }[];
+      edges: {
+        source: string;
+        target: string;
+        // markerEnd: { type: string };
+        id: string;
+      }[];
+    };
   };
-  
-  export default FlowchartDetails;
-  
+  onClose: () => void;
+}
+
+const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
+  flowchart,
+  onClose,
+}) => {
+  const initialNodes = flowchart.data.nodes;
+
+  const initialEdges = flowchart.data.edges;
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+
+    useEffect(() => {
+        const minimap = document.getElementsByClassName("react-flow__minimap-svg");
+        
+        if (minimap.length > 0) {
+          minimap[0].classList.add("bg-selectedFunctionalityBackgroundColor", "rounded-lg");
+        }
+      }, []);
+
+  return (
+    <div className="w-full h-[90dvh] bg-canvasBackground text-white rounded-lg shadow-lg border border-navBlockBackgroundHover">
+      <span className="bg-canvasBackground">
+        <ReactFlow
+          className="bg-canvasBackground"
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          //   onConnect={onConnect}
+          //   onNodeClick={handleNodeClick}
+          //   onEdgeClick={handleEdgeClick}
+          //   nodeTypes={nodeTypes}
+          fitView
+        >
+          <Background gap={12} size={1} />
+          <Panel position="top-center">
+            <FlowchartDetailTopPanel flowchart={flowchart} onClose={onClose} />
+          </Panel>
+          <Controls className="bg-selectedFunctionalityBackgroundColor border border-navBlockBackgroundHover rounded-full p-2" />
+          <MiniMap
+            className="bg-selectedFunctionalityBackgroundColor border rounded-lg"
+            nodeColor={(node) => String(node.data.color)}
+            maskColor={"#363636"}
+          />
+        </ReactFlow>
+      </span>
+    </div>
+  );
+};
+
+export default FlowchartDetails;
