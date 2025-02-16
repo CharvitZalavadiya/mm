@@ -6,7 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 import "./responsive.css";
 import Flowcharts from "@/layout/flowcharts/page";
 import { v4 as uuidv4 } from "uuid";
-import { encryptData, decryptData } from "@/utils/cryptojs";
+import { encryptData } from "@/utils/cryptojs";
 import axios from "axios";
 
 interface Flowchart {
@@ -147,6 +147,7 @@ export default function FlowChart() {
             onCreateFlowchart={handleCreateNewFlowchart}
             userId={userId ?? ""}
             refetchChildComponent={refetchChildComponent}
+            selectedColor={selectedColor}
           />
         </section>
       </div>
