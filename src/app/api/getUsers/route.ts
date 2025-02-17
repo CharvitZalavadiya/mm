@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic"; // Prevents static rendering issuescls
 
 interface UserInfo {
   username: string;
@@ -30,13 +31,14 @@ export async function GET() {
       };
     });
     
-    const headers = new Headers({
-      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-      Pragma: "no-cache",
-      Expires: "0",
-    });
+    // const headers = new Headers({
+    //   "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    //   Pragma: "no-cache",
+    //   Expires: "0",
+    // });
 
-    return NextResponse.json(usersInfoMapped, {headers});
+    // return NextResponse.json(usersInfoMapped, {headers});
+    return NextResponse.json(usersInfoMapped);
   } catch (error) {
     console.error(`Error fetching user details:`, error);
     return new NextResponse("Failed to fetch users ss", { status: 500 });
