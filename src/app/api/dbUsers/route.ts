@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-export const dynamic = "force-dynamic"; // Prevents static rendering issuescls
-
 interface User {
   username: string;
   imageUrl: string;
@@ -35,7 +33,7 @@ export async function GET() {
     }));
 
     const nextResponse = NextResponse.json(usersMapped);
-    // nextResponse.headers.set("Cache-Control", "no-store");
+    nextResponse.headers.set("Cache-Control", "no-store");
     return nextResponse;
   } catch (error) {
     console.error(`Error fetching users: ${error}`);
