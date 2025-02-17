@@ -202,7 +202,7 @@
 
 
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FlowchartsSkeleton from "./flowchartsSkeleton";
 import FlowchartDetails from "../flowchartDetails/page"; // ✅ Import child component
 import "./responsive.css";
@@ -304,7 +304,7 @@ const Flowcharts: React.FC<FlowchartsProps> = ({
   });
 
   // Fetch flowcharts
-  const fetchFlowcharts = useCallback(async () => {
+  const fetchFlowcharts = async () => {
     try {
       if (!userId) return;
       const response = await fetch(`${baseUrl}/flowcharts`, {
@@ -327,13 +327,13 @@ const Flowcharts: React.FC<FlowchartsProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  };
 
   useEffect(() => {
     if (userId) {
       fetchFlowcharts();
     }
-  }, [userId, onCreateFlowchart, refetchChildComponent, fetchFlowcharts]);
+  }, [userId, onCreateFlowchart, refetchChildComponent]);
 
   // ✅ Set the selected flowchart on click
   const openFlowchartDetails = (flowchart: FlowchartItem) => {

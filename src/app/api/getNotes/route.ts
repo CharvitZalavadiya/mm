@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-export const dynamic = "force-dynamic"; // Prevents static rendering issuescls
-
 interface Note {
   _id: string;
   id: string;
@@ -31,14 +29,13 @@ export async function GET() {
       }
     })
     
-    // const headers = new Headers({
-    //   "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-    //   Pragma: "no-cache",
-    //   Expires: "0",
-    // });
+    const headers = new Headers({
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
 
-    // return NextResponse.json(userNotesMapped, {headers});
-    return NextResponse.json(userNotesMapped);
+    return NextResponse.json(userNotesMapped, {headers});
   } catch (error) {
     console.log(`error fetching notes : ${error}`);
     return new NextResponse("Failed to fetch users", { status: 500 });

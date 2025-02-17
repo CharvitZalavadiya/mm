@@ -36,7 +36,7 @@ const UserNotes: React.FC = () => {
     if(userId) localStorage.setItem("userId", userId);
     const fetchNotes = async () => {
       try {
-        const response = await fetch(`${baseUrl}/notes`, { cache: 'no-store' });
+        const response = await fetch("/api/getNotes", { cache: 'no-store' });
 
         if (!response.ok) throw new Error("Failed to fetch users");
 
@@ -50,7 +50,7 @@ const UserNotes: React.FC = () => {
     };
 
     fetchNotes();
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     const filteredNotesBasedOnUser = notes.filter(

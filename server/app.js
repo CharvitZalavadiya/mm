@@ -62,7 +62,7 @@ const port = 8080;
 
 app.use(express.json());
 app.use(cors({
-  origin: ["https://mind-maps.vercel.app", "http://localhost:3000"],
+  origin: ["https://mind-maps.vercel.app", "http://localhost:3000", "https://mind-maps-git-flowchart-charvit-zalavadiya.vercel.app"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Userid"],
   credentials: true,
