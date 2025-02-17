@@ -77,7 +77,7 @@
 import { Server as SocketIO } from 'socket.io';
 import Message from '../../src/models/Message.js'; // Import your Message model
 import { getDb } from './db.js';  // Import your database connection
-import {encryptData, decryptData} from "../../src/utils/cryptojs.js"
+import { decryptData} from "../../src/utils/cryptojs.js"
 
 let io;
 let collection;
