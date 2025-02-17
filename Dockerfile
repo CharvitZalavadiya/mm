@@ -1,5 +1,5 @@
 # Use the Node.js image
-FROM node:20
+FROM node:20-alpine
 
 # Set the working directory to the root of the project (MM folder)
 WORKDIR /MM

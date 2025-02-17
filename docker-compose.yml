@@ -5,13 +5,12 @@ services:
     container_name: Mindmaps
     build:
       context: .  # Build context pointing to the current directory
+    image: charvitzalavadiya/mindmaps:dockerUpdate
     ports:
       - "3000:3000"  # Map the frontend port
       - "8080:8080"  # Map the backend port
     environment:
       NODE_ENV: development  # Environment variable for the app
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_c2FjcmVkLWFudGVhdGVyLTc3LmNsZXJrLmFjY291bnRzLmRldiQ
-      CLERK_SECRET_KEY: sk_test_nMtVpAdSB5aGDGpkglWWxRObWfJK0ElgdoLQeGCRbR
       NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
       NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
       NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /notes
