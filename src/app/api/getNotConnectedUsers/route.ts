@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic"; // Prevents static rendering issuescls
+
 interface User {
   username: string;
   imageUrl: string;
@@ -17,13 +19,14 @@ const localUrl = "http://localhost:8080";
 
 export async function GET() {
   try {
-    const res = await fetch(`${baseUrl}/api/friends/notConnected`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    });
+    // const res = await fetch(`${baseUrl}/api/friends/notConnected`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   cache: "no-store",
+    // });
+    const res = await fetch(`${baseUrl}/api/friends/notConnected`);
 
     if (!res.ok) {
       throw new Error(`Failed to fetch data: ${res.statusText}`);
@@ -43,15 +46,16 @@ export async function GET() {
       requestReceivedPeople: user.requestReceivedPeople,
     }));
 
-    const headers = new Headers({
-      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-      Pragma: "no-cache",
-      Expires: "0",
-    });
+    // const headers = new Headers({
+    //   "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    //   Pragma: "no-cache",
+    //   Expires: "0",
+    // });
 
-    return NextResponse.json(usersMapped, { headers });
+    // return NextResponse.json(usersMapped, { headers });
+    return NextResponse.json(usersMapped);
   } catch (error) {
-    console.error(`Error fetching users:`, error);
+    console.error(`Error fetching users getNotConnected:`, error);
     return new NextResponse("Failed to fetch users", { status: 500 });
   }
 }

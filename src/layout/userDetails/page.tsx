@@ -61,7 +61,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
   const { userId } = useAuth();
 
   const fetchUsers = () => {
-    fetch("/api/getUsers", { cache: "no-store" })
+    // fetch("/api/getUsers", { cache: "no-store" })
+    fetch("/api/getUsers")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch users");
 
@@ -149,7 +150,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
       setLoggedinUser(convertToUser(currentUserData));
       localStorage.setItem("currentUser", JSON.stringify(loggedinUser));
     }
-  }, [notConnected, userId, setLoggedinUser]);
+  }, [notConnected, userId, setLoggedinUser, loggedinUser]);
 
 
   useEffect(() => {
