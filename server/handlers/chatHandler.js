@@ -1,4 +1,4 @@
-import Message from '../../models/Message.js';
+import Message from '../../src/models/Message.js';
 import { getWebSocketServer } from '../webSocketServer.js';
 
 const clients = new Map();
