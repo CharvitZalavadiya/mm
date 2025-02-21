@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic"
 
 interface UserInfo {
   username: string;

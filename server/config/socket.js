@@ -98,7 +98,7 @@ export const initializeSocket = (server) => {
 
     // Handle user joining chat room
     socket.on('joinChat', ({ from, to }) => {
-      console.log(`User ${from} joined chat with ${to}`);
+      // console.log(`User ${from} joined chat with ${to}`);
       
       // Create rooms for the pair of users
       socket.join(`${from}-${to}`);
@@ -130,7 +130,7 @@ export const initializeSocket = (server) => {
         await collection.insertOne(newMessage);
         // res.status(201).json(result);
         
-        console.log("Message saved to database:", newMessage);
+        // console.log("Message saved to database:", newMessage);
 
         const decryptedMessage = decryptData(message.content);
         console.log(decryptedMessage)

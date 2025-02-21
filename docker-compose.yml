@@ -1,25 +1,80 @@
-version: "3.9"
+# version: "3.9"
+
+# services:
+#   app:
+#     container_name: Mindmaps
+#     build:
+#       context: .  # Build context pointing to the current directory
+#     image: charvitzalavadiya/mindmaps:dockerUpdate
+#     ports:
+#       - "3000:3000"  # Map the frontend port
+#       - "8080:8080"  # Map the backend port
+#     environment:
+#       NODE_ENV: development  # Environment variable for the app
+#       NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+#       NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
+#       NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /notes
+#       NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /notes
+
+#     volumes:
+#       - .:/MM  # Mount the project directory into the container
+#       - /MM/node_modules  # Prevent overwriting node_modules in the container
+#     command: >
+#       sh -c "npx concurrently 'npm run dev:frontend' 'npm run dev:backend'"
+#     stdin_open: true  # Keeps stdin open for debugging
+#     tty: true         # Allocates a TTY for interactive debugging
+
+
+
+version: '3'
 
 services:
-  app:
-    container_name: Mindmaps
+  # Frontend service (Next.js)
+  frontend:
     build:
-      context: .  # Build context pointing to the current directory
-    image: charvitzalavadiya/mindmaps:dockerUpdate
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"  # Map the frontend port
-      - "8080:8080"  # Map the backend port
+      - "3000:3000"
     environment:
-      NODE_ENV: development  # Environment variable for the app
-      NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
-      NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
-      NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /notes
-      NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /notes
+      - NEXT_PUBLIC_API_URL=http://backend:8080
+    depends_on:
+      - backend
+    networks:
+      - mindmaps-network
 
+  # Backend service (Express.js)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - BACKEND_PORT=8080
+      - MONGO_URI=mongodb://mongo:27017/Mindmaps  # Local database URL
+    depends_on:
+      - mongo
+    networks:
+      - mindmaps-network
+
+  # MongoDB service
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=Mindmaps
     volumes:
-      - .:/MM  # Mount the project directory into the container
-      - /MM/node_modules  # Prevent overwriting node_modules in the container
-    command: >
-      sh -c "npx concurrently 'npm run dev:frontend' 'npm run dev:backend'"
-    stdin_open: true  # Keeps stdin open for debugging
-    tty: true         # Allocates a TTY for interactive debugging
+      - mongo-data:/data/db
+    networks:
+      - mindmaps-network
+
+volumes:
+  mongo-data:
+
+networks:
+  mindmaps-network:
+    driver: bridge

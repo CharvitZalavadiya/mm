@@ -50,7 +50,7 @@ const UserNotes: React.FC = () => {
     };
 
     fetchNotes();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const filteredNotesBasedOnUser = notes.filter(

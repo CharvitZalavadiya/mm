@@ -58,7 +58,7 @@ import { connectToDatabase } from '../server/config/db.js';
 import { initializeSocket } from './config/socket.js'; // Import the socket initialization
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 67876;
 
 app.use(express.json());
 app.use(cors({
