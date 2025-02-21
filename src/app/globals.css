@@ -96,6 +96,11 @@
 
 }
 
+/* flowcharts */
+.react-flow__controls-button {
+  background-color: var(--chatMainPopupBackground);
+}
+
 /* Scrollbar */
 
 ::-webkit-scrollbar {

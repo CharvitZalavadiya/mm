@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic"
+
 interface Message {
   from: string;
   to: string;
