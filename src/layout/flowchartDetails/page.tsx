@@ -8,7 +8,11 @@ import {
   useEdgesState,
   addEdge,
   Panel,
-  MarkerType
+  MarkerType,
+  NodeResizer,
+  Handle,
+  Position,
+  NodeMouseHandler
 } from "@xyflow/react";
 import {
   Circle,
@@ -69,22 +73,137 @@ interface FlowchartEdge {
 }
 
 const colorPalette = {
-  pink: { hex: "#ec4899b3", name: "Pink" },
-  green: { hex: "#22c55eb3", name: "Green" },
-  yellow: { hex: "#eab308b3", name: "Yellow" },
-  purple: { hex: "#a855f780", name: "Purple" },
-  red: { hex: "#ef4444b3", name: "Red" },
-  cyan: { hex: "#06b6d4b3", name: "Cyan" },
+  pink: { hex: "#ec4899", name: "Pink" },
+  green: { hex: "#22c55e", name: "Green" },
+  yellow: { hex: "#eab308", name: "Yellow" },
+  purple: { hex: "#a855f7", name: "Purple" },
+  red: { hex: "#ef4444", name: "Red" },
+  cyan: { hex: "#06b6d4", name: "Cyan" },
 };
 
-// const shapeIcons: Record<string, React.ReactNode> = {
-//   circle: Circle,
-//   rectangle: Square,
-// };
+const shapeIcons: any = {
+  circle: Circle,
+  rectangle: Square,
+};
 
-// const nodeTypes = {
-//   custom: (props) => <CustomNode {...props} />,
-// };
+const shapeIconsArray: { shape: string; IconComponent: React.ElementType }[] = 
+  Object.entries(shapeIcons).map(([shape, IconComponent]) => ({
+    shape,
+    IconComponent: IconComponent as React.ElementType, // Explicit type assertion
+  }));
+
+const nodeTypes = {
+  custom: (props: any) => <CustomNode {...props} />,
+};
+
+
+
+
+const CustomNode = ({ data, id, selected, width, height }: any) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [nodeName, setNodeName] = useState(data.label);
+
+  const handleDoubleClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleNameChange = (e: any) => {
+    setNodeName(e.target.value);
+  };
+
+  const handleKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      setIsEditing(false);
+      data.onNameChange(id, nodeName);
+    }
+  };
+
+  return (
+    <div
+      className={`
+        flex items-center justify-center transition-all duration-300
+        shadow-lg hover:shadow-xl border-2 border-white/10
+      `}
+      style={{
+        backgroundColor: data.color,
+        width: width, // Use dynamic width
+        height: height, // Use dynamic height
+        borderRadius: data.shape === 'circle' ? '50%' : '8px', // Dynamic border radius
+        
+      }}
+      onDoubleClick={handleDoubleClick}
+    >
+      {/* Node Resizer */}
+      {selected && (
+        <NodeResizer
+          minWidth={50}
+          minHeight={50}
+          isVisible={selected}
+        />
+      )}
+
+      <div className=''>
+        {isEditing ? (
+          <input
+            type="text"
+            value={nodeName}
+            onChange={handleNameChange}
+            // onKeyPress={handleKeyPress}      // commented due to deprecation
+            onBlur={() => setIsEditing(false)}
+            autoFocus
+            className="bg-transparent border-none text-white text-center w-full outline-none "
+          />
+        ) : (
+          <span className="text-white font-medium">{data.label}</span>
+        )}
+      </div>
+      <Handle type="target" position={Position.Top} className="w-3 h-3 bg-white/50" />
+      <Handle type="source" position={Position.Bottom} className="w-3 h-3 bg-white/50" />
+    </div>
+  );
+};
+const ColorButton = ({ color, hex, isSelected, onClick }: any) => (
+  <button
+    onClick={onClick}
+    className={`
+      relative w-8 h-8 rounded-full transition-all duration-300 transform
+      hover:scale-110 hover:shadow-lg hover:shadow-${color}-500/20
+      ${isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-gray-800' : ''}` 
+    }
+    style={{ backgroundColor: hex }}
+  />
+);
+
+const ShapeButton = ({ shape, onClick, isSelected }: any) => {
+  const IconComponent = shapeIcons[shape];
+  return (
+    <button
+      onClick={() => onClick(shape)}
+      className={`
+        flex items-center justify-center p-3 rounded-xl
+        transition-all duration-200 hover:scale-105
+        ${isSelected ? 'bg-blue-500 shadow-lg shadow-blue-500/30' : 'bg-gray-700 hover:bg-gray-600'}
+      `}
+    >
+      <IconComponent className="w-5 h-5 text-white" />
+    </button>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
   flowchart,
@@ -99,6 +218,7 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
   const [selectedNode, setSelectedNode] = useState<FlowchartNode | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<FlowchartEdge | null>(null);
 
+  // css for minimap
   useEffect(() => {
     const minimap = document.getElementsByClassName("react-flow__minimap-svg");
 
@@ -115,15 +235,36 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
     [setEdges]
   );
 
-  const handleNodeClick = useCallback((node: FlowchartNode) => {
-    setSelectedNode(node);
-    setSelectedEdge(null); // Reset edge selection when a node is clicked
-  }, []);
+  // const handleNodeClick: NodeMouseHandler<FlowchartNode> = useCallback((node: FlowchartNode) => {
+  //   setSelectedNode(node);
+  //   setSelectedEdge(null); // Reset edge selection when a node is clicked
+  // }, []);
 
-  const handleEdgeClick = useCallback((edge: FlowchartEdge) => {
-    setSelectedEdge(edge);
-    setSelectedNode(null); // Reset node selection when an edge is clicked
-  }, []);
+  const handleNodeClick: NodeMouseHandler<{
+    id: string;
+    position: { x: number; y: number };
+    data: { label: string; shape: string; color: string };
+  }> = useCallback(
+    (_event, node) => {
+      setSelectedNode(node);
+      setSelectedEdge(null); // Reset edge selection when a node is clicked
+    },
+    []
+  );
+
+  // const handleEdgeClick = useCallback((edge: FlowchartEdge) => {
+  //   setSelectedEdge(edge);
+  //   setSelectedNode(null); // Reset node selection when an edge is clicked
+  // }, []);
+
+  const handleEdgeClick = useCallback(
+    (_event: React.MouseEvent, edge: FlowchartEdge) => {
+      setSelectedEdge(edge);
+      setSelectedNode(null); // Reset node selection when an edge is clicked
+    },
+    []
+  );
+  
 
   const handleNameChange = (id: String, newName: any) => {
     setNodes((nds) =>
@@ -182,6 +323,8 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
     }
   };
 
+
+
   return (
     <div className="w-full h-[90dvh] bg-canvasBackground text-white rounded-lg shadow-lg border border-navBlockBackgroundHover">
       <span className="bg-canvasBackground">
@@ -192,9 +335,9 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          // onNodeClick={handleNodeClick}
-          // onEdgeClick={handleEdgeClick}
-          // nodeTypes={nodeTypes}
+          onNodeClick={handleNodeClick}
+          onEdgeClick={handleEdgeClick}
+          nodeTypes={nodeTypes}
           fitView
         >
           <Background gap={12} size={1} />
@@ -202,11 +345,11 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
             <FlowchartDetailTopPanel flowchart={flowchart} onClose={onClose} />
           </Panel>
           <Controls className="bg-selectedFunctionalityBackgroundColor border border-navBlockBackgroundHover rounded-full p-2" />
-          <MiniMap
+          {/* <MiniMap
             className="bg-selectedFunctionalityBackgroundColor border border-navBlockBackgroundHover rounded-lg"
             nodeColor={(node) => String(node.data.color)}
             maskColor={"#363636"}
-          />
+          /> */}
           <Panel position="top-left">
             <FlowchartControlPanel
               onAddNode={addNode}
@@ -214,7 +357,7 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({
               selectedNode={selectedNode}
               onDelete={handleDelete}
               colorPalette={colorPalette}
-              // shapeIcons={shapeIcons}
+              shapeIcons={shapeIconsArray}
               // onExport={handleExport}
               // onImport={handleImport}
             />

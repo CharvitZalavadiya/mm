@@ -6,19 +6,18 @@ interface Color {
   name: string;
 }
 
+interface ShapeIcon {
+  shape: string;
+  IconComponent: React.ElementType;
+}
+
 interface ControlPanelProps {
   onAddNode: (shape: string) => void;
   onColorChange: (color: string) => void;
   selectedNode: any;
   onDelete: () => void;
-//   onExport: () => void;
-//   onImport: () => void;
-//   onUndo: () => void;
-//   onRedo: () => void;
-//   disableUndo: boolean;
-//   disableRedo: boolean;
   colorPalette: Record<string, Color>;
-//   shapeIcons: Record<string, React.ReactNode>;
+  shapeIcons: ShapeIcon[];
 }
 
 const FlowchartControlPanel: React.FC<ControlPanelProps> = ({
@@ -26,14 +25,8 @@ const FlowchartControlPanel: React.FC<ControlPanelProps> = ({
   onColorChange,
   selectedNode,
   onDelete,
-//   onExport,
-//   onImport,
-//   onUndo,
-//   onRedo,
-//   disableUndo,
-//   disableRedo,
   colorPalette,
-//   shapeIcons,
+  shapeIcons,
 }) => {
   return (
     <div className="bg-selectedFunctionalityBackgroundColor backdrop-blur-xl rounded-lg shadow-2xl border border-navBlockBackgroundHover p-3">
@@ -50,13 +43,15 @@ const FlowchartControlPanel: React.FC<ControlPanelProps> = ({
 
       {/* Color Selection */}
       <div>
-        <h3 className="text-sm font-medium text-gray-300 mb-3">Color Palette</h3>
+        <h3 className="text-sm font-medium text-gray-300 mb-3">
+          Color Palette
+        </h3>
         <div className="grid grid-cols-3 gap-3 pb-3 border-b border-gray-500">
           {Object.entries(colorPalette).map(([key, { hex }]) => (
             <button
               key={key}
               className={`w-5 h-5 rounded-full border ${
-                selectedNode?.data?.color === hex ? "ring-3 ring-white" : ""
+                selectedNode?.data?.color === hex ? "ring-1 ring-white" : ""
               }`}
               style={{ backgroundColor: hex }}
               onClick={() => onColorChange(hex)}
@@ -66,22 +61,23 @@ const FlowchartControlPanel: React.FC<ControlPanelProps> = ({
       </div>
 
       {/* Shape Selection */}
-      {/* <div className="mt-6">
-        <h3 className="text-sm font-medium text-gray-300 mb-3">Add Shape</h3>
-        <div className="grid grid-cols-2 gap-3 pb-4 border-b border-gray-700">
-          {Object.keys(shapeIcons).map((shape) => (
+
+      <div className="">
+        <h3 className="text-sm font-medium text-gray-300 my-3">Add Shape</h3>
+        <div className="flex justify-between pb-3 border-b border-gray-500">
+          {shapeIcons.map(({ shape, IconComponent }) => (
             <button
               key={shape}
-              className={`p-2 rounded border ${
-                selectedNode?.data?.shape === shape ? "ring-2 ring-white" : ""
+              className={`p-2 rounded border-navBlockBackgroundHover bg-zinc-500 ${
+                selectedNode?.data?.shape === shape ? "ring-1 ring-white" : ""
               }`}
               onClick={() => onAddNode(shape)}
             >
-              {shapeIcons[shape]}
+              <IconComponent className="w-6 h-6 text-white" />
             </button>
           ))}
         </div>
-      </div> */}
+      </div>
 
       {/* Export/Import Buttons */}
       {/* <div className="mt-6 pb-4 border-b border-gray-700">
@@ -103,23 +99,16 @@ const FlowchartControlPanel: React.FC<ControlPanelProps> = ({
 
       {/* Delete Button */}
       {selectedNode && (
-        <div className="mt-6 pb-4 border-b border-gray-700">
-          <button
-            onClick={onDelete}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg"
-          >
-            <Trash className="w-5 h-5" />
-            <span>Delete</span>
-          </button>
-        </div>
+        // <div className="mt-6 pb-4 border-b border-gray-500">
+        <button
+          onClick={onDelete}
+          className="w-full mt-2 flex items-center justify-center gap-2 px-3 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg"
+        >
+          <Trash className="w-5 h-5" />
+          <span>Delete</span>
+        </button>
+        // </div>
       )}
-
-      {/* Footer */}
-      {/* <div className="flex items-center justify-between pb-4 border-b border-gray-700">
-        <h2 className="text-sm mt-5 font-light text-white">
-          Made with <a href="#">React-Flow Library</a>
-        </h2>
-      </div> */}
     </div>
   );
 };
