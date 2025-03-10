@@ -1,0 +1,9 @@
+.react-flow__controls button {
+    background-color: var(--selectedFunctionalityBackgroundColor);
+    border-bottom: none;
+}
+
+.react-flow__controls button:hover {
+    border-radius: 50%;
+    background-color: #505050;
+}
