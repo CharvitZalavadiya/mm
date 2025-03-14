@@ -15,12 +15,12 @@ router.get('/', async (req, res) => {
   try {
     const userId = req.headers['x-userid'];
 
-    if(!userId) return res.status(400).json({ error: "User ID is required in headers" });
+    if (!userId) return res.status(400).json({ error: "User ID is required in headers" });
 
     const user = await collection.findOne({ userId });
 
     res.status(200).json(user);
-  }catch (err) {
+  } catch (err) {
     console.log(`Error ocuured while fetching flowchart : `, err);
   }
 })
@@ -55,5 +55,46 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const { nodes, edges, flowchartColor, flowchartId, flowchartTitle, userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "Did not able to recieved the userId in backend" });
+    } else if (!flowchartId || !flowchartTitle || !flowchartColor) {
+      return res.status(400).json({ message: "Did not able to recieved the flowchart details in backend" });
+    }
+
+    const user = await collection.findOne({ userId: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found in db" });
+    }
+
+    const flowchartIndex = user.flowcharts.findIndex(fc => fc.uniqueId === flowchartId);
+
+    if (flowchartIndex === -1) {
+      return res.status(404).json({ message: "Flowchart not found for this user" });
+    }
+    
+    await collection.updateOne(
+      { userId, "flowcharts.uniqueId": flowchartId },
+      {
+        $set: {
+          "flowcharts.$.title": flowchartTitle,
+          "flowcharts.$.color": flowchartColor,
+          "flowcharts.$.data.nodes": nodes,
+          "flowcharts.$.data.edges": edges
+        }
+      }
+    );
+
+    res.status(200).json({ message: "Flowchart updated successfully", updatedFlowchart: user.flowcharts[flowchartIndex] });
+  } catch (error) {
+    console.error("Error updating flowchart:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+})
 
 export default router;

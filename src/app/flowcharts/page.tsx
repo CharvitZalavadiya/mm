@@ -19,7 +19,7 @@ interface Flowchart {
 }
 
 const baseUrl = "https://mind-maps-backend.onrender.com";
-const localUrl = "http://localhost:8080";
+const localUrl = "http://localhost:56765";
 
 export default function FlowChart() {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -58,29 +58,29 @@ export default function FlowChart() {
                   color: encryptData("#22c55e"),
                 },
                 type: "custom",
-                width: 150,
-                height: 60,
+                width: 100,
+                height: 50,
               },
               {
                 id: "2",
-                position: { x: 400, y: 150 },
+                position: { x: 350, y: 100 },
                 data: {
                   label: encryptData("End Node"),
                   shape: encryptData("circle"),
                   color: encryptData("#22c55e"),
                 },
                 type: "custom",
-                width: 100,
-                height: 100,
+                width: 70,
+                height: 70,
               },
             ],
             edges: [
-              {
-                source: "1",
-                target: "2",
-                markerEnd: { type: "arrowclosed" },
-                id: "edge-1-2",
-              },
+              // {
+              //   source: "1",
+              //   target: "2",
+              //   markerEnd: { type: "ArrowClosed" },
+              //   id: "edge-1-2",
+              // },
             ],
           },
         },
