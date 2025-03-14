@@ -101,6 +101,10 @@
   background-color: var(--chatMainPopupBackground);
 }
 
+.react-flow__node:first-child {
+  padding: 0px;
+}
+
 /* Scrollbar */
 
 ::-webkit-scrollbar {

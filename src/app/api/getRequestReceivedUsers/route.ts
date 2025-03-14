@@ -15,7 +15,7 @@ interface User {
 }
 
 const baseUrl = "https://mind-maps-backend.onrender.com";
-const localUrl = "http://localhost:8080";
+const localUrl = "http://localhost:56765";
 
 export async function GET() {
   try {
