@@ -420,7 +420,7 @@ const Flowcharts: React.FC<FlowchartsProps> = ({
       //   }),
       // });
 
-      await axios.patch(`${localUrl}/flowcharts/update/${selectedFlowchart.uniqueId}`, {
+      await axios.patch(`${baseUrl}/flowcharts/update/${selectedFlowchart.uniqueId}`, {
         flowchartTitle: encryptedTitle,
         flowchartColor: encryptedColor,
         userId,
@@ -452,7 +452,7 @@ const Flowcharts: React.FC<FlowchartsProps> = ({
     try {
       const userId = localStorage.getItem("userId");
   
-      await axios.delete(`${localUrl}/flowcharts/${selectedFlowchart.uniqueId}`, {
+      await axios.delete(`${baseUrl}/flowcharts/${selectedFlowchart.uniqueId}`, {
         data: { userId, flowchartId: selectedFlowchart.uniqueId},
         headers: { "Content-Type": "application/json" },
       });
@@ -494,11 +494,11 @@ const Flowcharts: React.FC<FlowchartsProps> = ({
                 onClick={() => openFlowchartDetails(flowchart)} // ✅ Show details on click
                 className={`${returnBg(
                   flowchart.color
-                )} border w-46 h-32 rounded-lg p-4 select-none cursor-pointer hover:bg-opacity-50`}
+                )} border w-46 h-32 flex flex-col items-end rounded-lg p-4 select-none cursor-pointer hover:bg-opacity-50`}
               >
                 <button
                   onClick={(e) => handleMoreClick(flowchart, e)}
-                  className="bg-navBlockBackground hover:bg-navBlockBackgroundHover rounded-full p-1 border mb-5"
+                  className="hover:bg-zinc-500 w-fit rounded-full p-1 mb-5"
                 >
                   <MoreVerticalIcon />
                 </button>
