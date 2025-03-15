@@ -537,7 +537,7 @@ const CustomNode = ({ data, id, selected, width, height }: any) => {
         height: height,
         borderRadius: data.shape === "circle" ? "50%" : "8px",
       }}
-      onClick={handleDoubleClick}
+      onDoubleClick={handleDoubleClick}
     >
       {selected && <NodeResizer minWidth={50} minHeight={50} isVisible={selected} />}
 
@@ -701,11 +701,11 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({ flowchart, onClose 
         fitView
       >
         <Background gap={12} size={1} />
-        <Panel position="top-center" className="text-smFont">
+        <Panel position="top-left" className="text-smFont">
              <FlowchartDetailTopPanel flowchart={flowchart} onClose={onClose} />
            </Panel>
-        <Controls className="bg-selectedFunctionalityBackgroundColor border border-navBlockBackgroundHover rounded-full p-2" />
-        <Panel position="top-left">
+        <Controls position="top-right" orientation="horizontal" className="bg-selectedFunctionalityBackgroundColor border border-navBlockBackgroundHover rounded-full p-1" />
+        <Panel position="bottom-left">
             <FlowchartControlPanel
               onAddNode={addNode}
               onColorChange={handleColorChange}

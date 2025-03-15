@@ -51,7 +51,7 @@ export default function FlowChart() {
             nodes: [
               {
                 id: "1",
-                position: { x: 250, y: 5 },
+                position: { x: 250, y: 0 },
                 data: {
                   label: encryptData("Start Node"),
                   shape: encryptData("rectangle"),
@@ -63,7 +63,7 @@ export default function FlowChart() {
               },
               {
                 id: "2",
-                position: { x: 350, y: 100 },
+                position: { x: 350, y: 75 },
                 data: {
                   label: encryptData("End Node"),
                   shape: encryptData("circle"),
@@ -92,13 +92,6 @@ export default function FlowChart() {
       setRefetchChildComponent((prev) => !prev);
     } catch (error) {
       console.error("Error creating new flowchart:", error);
-    } finally {
-      // const responsenew = await fetch(`${baseUrl}/flowcharts`, {
-      //   cache: "no-store",
-      // });
-
-      // if (!responsenew.ok) throw new Error("Failed to fetch flowcharts after creating flowchart");
-      console.log("finally create new flowchart");
     }
   };
 
@@ -148,6 +141,7 @@ export default function FlowChart() {
             userId={userId ?? ""}
             refetchChildComponent={refetchChildComponent}
             selectedColor={selectedColor}
+            searchQuery={searchQuery}
           />
         </section>
       </div>

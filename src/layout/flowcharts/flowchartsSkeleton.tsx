@@ -11,7 +11,7 @@ const FlowchartsSkeleton = () => {
         key={index}
         className={`border border-navBlockBackground h-32 rounded-lg p-4`}
       >
-        <Skeleton className="h-5 w-1/2 -z-10 rounded-full animate-pulse bg-navBlockBackgroundHover relative top-2/3 mb-3" />
+        <Skeleton className="h-5 w-5/6 -z-10 rounded-full animate-pulse bg-navBlockBackgroundHover relative top-2/3 mb-3" />
       </li>
     </ul>
   ));

@@ -24,15 +24,23 @@ const FlowchartDetailTopPanel: React.FC<FlowchartDetailTopPanelProps> = ({
   onClose,
 }) => {
   return (
-    <div className="p-[6px] pr-3 gap-3 flex items-center bg-selectedFunctionalityBackgroundColor rounded-full">
+    // <div className="p-[6px] pr-3 gap-3 flex items-center bg-selectedFunctionalityBackgroundColor rounded-full">
+    //   <button
+    //     onClick={onClose}
+    //     className="bg-navBlockBackground select-none material-symbols-rounded p-1 rounded-full hover:bg-navBlockBackgroundHover transition"
+    //   >
+    //     chevron_left
+    //   </button>
+    //   <p>{flowchart.title}</p>
+    // </div>
+    // <div className="p-[6px] pr-3 gap-3 flex items-center bg-selectedFunctionalityBackgroundColor rounded-full">
       <button
         onClick={onClose}
         className="bg-navBlockBackground select-none material-symbols-rounded p-1 rounded-full hover:bg-navBlockBackgroundHover transition"
       >
         chevron_left
       </button>
-      <p>{flowchart.title}</p>
-    </div>
+    // </div>
   );
 };
 

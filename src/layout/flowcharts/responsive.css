@@ -20,8 +20,22 @@
   }
 }
 
+@media screen and (max-width:385px){
+  .cssFlowchartDialogButtons {
+    font-size: 12px;
+  }
+
+  .cssFlowchartDialogButtons button {
+    padding: 4px 8px;
+  }
+}
+
 @media screen and (max-width: 310px) {
   .cssFlowchartsGrid {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .cssFlowchartDialogBox {
+    padding: 12px;
   }
 }
