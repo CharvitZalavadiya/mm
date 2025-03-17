@@ -6,12 +6,12 @@ import LoggedInUserDetails from "./loggedInUserDetails";
 import "./animations.css"
 
 const navLinks = [
-  // {
-  //   href: "/flowcharts",
-  //   icon: "account_tree",
-  //   label: "Flow Charts",
-  //   iconType: "rounded",
-  // },
+  {
+    href: "/flowcharts",
+    icon: "account_tree",
+    label: "Flowcharts",
+    iconType: "rounded",
+  },
   { href: "/notes", icon: "edit_note", label: "Notes", iconType: "outlined" },
   { href: "/friends", icon: "groups", label: "Friends", iconType: "outlined" },
   // {

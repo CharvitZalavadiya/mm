@@ -5,7 +5,7 @@ import "./animations.css"
 import StarBG from "@/components/comps/starBg";
 
 export default function Home() {
-  const paraText = ["Effortless Notes, Instant Chats - Capture, Organize, and Connect Seamlessly!"];
+  const paraText = ["Create, Connect, Chart: With Notes, Chats, and Flowcharts"];
   const paraTextWords = paraText[0].split(" ");
 
   return (

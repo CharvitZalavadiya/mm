@@ -1,0 +1,15 @@
+@media screen and (max-width: 400px){
+    .cssFlowchartBackSaveDialogBox p, .cssFlowchartBackSaveDialogBox {
+        font-size: small;
+    }
+}
+
+@media screen and (max-width:300px){
+    .cssFlowchartBackSaveDialogBox {
+        padding: 12px;
+    }
+
+    .cssFlowchartBackSaveDialogBox button {
+        padding: 4px 12px;
+    }
+}
