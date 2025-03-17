@@ -10,6 +10,7 @@
 - **User Authentication**: Securely access your notes with a personal account.
 - **Friend Request**: User can send friend request to there friends on the same platform.
 - **Chat**: One becoming the friend then go to friends tab at url /friends and click on card of your friends to have a real time chat.
+- **Flowchart**: Make flowcharts with different shapes and colors with each node customizations.
 
 ## Getting Started
 
@@ -20,6 +21,7 @@
 5. **Friends**: Go to Friends option where you will find many other users.
 6. **Friend Request**: You can send friend request to any user and the status of it will be shown to you in the same page by navingating in Requests tab below the topbar .
 7. **Chat**: Once you became friends then select the connected option from dropdown and select your friends to start the chatting.
+8. **Flowchart**: You can make your own flowchart with different types of node shapes like circle, ractangle and also assign each node a different color.
 
 ## Technologies Used
 
@@ -28,6 +30,7 @@
 - **Clerk**: User authentication and management.
 - **Axios**: Promise-based HTTP client for API requests.
 - **Socket.io**: Real-time chatting enviornment for two users.
+- **XY-Flow**: Flowchart functionality.
 
 ## Development Setup
 
@@ -58,7 +61,7 @@
    npm run dev:backend
    ```
 
-   Open [http://localhost:8080](http://localhost:8080) to view backend in the browser.
+   Open [http://localhost:56765](http://localhost:56765) to view backend in the browser.
 
 ## Deployment
 
@@ -84,5 +87,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [Next.js](https://nextjs.org/) for the React framework.
 - [Clerk Auth](https://clerk.com/) for Authentication.
 - [Socket.io](https://socket.io/) for Real-time chat enviornment.
+- [XY-Flow](https://xyflow.com/) for Flowchart functionality.
 
 For more information, visit the live application at [https://mind-maps.vercel.app/](https://mind-maps.vercel.app/). 

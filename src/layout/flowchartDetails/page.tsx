@@ -702,7 +702,7 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({ flowchart, onClose 
       >
         <Background gap={12} size={1} />
         <Panel position="top-left" className="text-smFont">
-             <FlowchartDetailTopPanel flowchart={flowchart} onClose={onClose} />
+             <FlowchartDetailTopPanel onClose={onClose} hasChanges={hasChanges} onSave={handleSave} />
            </Panel>
         <Controls position="top-right" orientation="horizontal" className="bg-selectedFunctionalityBackgroundColor border border-navBlockBackgroundHover rounded-full p-1" />
         <Panel position="bottom-left">
