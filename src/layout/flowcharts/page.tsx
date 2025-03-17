@@ -482,6 +482,7 @@ const Flowcharts: React.FC<FlowchartsProps> = ({
         <FlowchartDetails
           flowchart={selectedFlowchart}
           onClose={closeFlowchartDetails}
+          fetchFlowcharts={fetchFlowcharts}
         />
       ) : (
         <ul className="cssFlowchartsGrid grid grid-cols-4 gap-4 max-h-full overflow-y-scroll">

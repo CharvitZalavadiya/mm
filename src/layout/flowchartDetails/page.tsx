@@ -469,6 +469,7 @@ interface FlowchartDetailsProps {
     };
   };
   onClose: () => void;
+  fetchFlowcharts: () => Promise<void>;
 }
 
 interface FlowchartNode {
@@ -561,7 +562,7 @@ const CustomNode = ({ data, id, selected, width, height }: any) => {
   );
 };
 
-const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({ flowchart, onClose }) => {
+const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({ flowchart, onClose, fetchFlowcharts }) => {
 
   
   const handleNameChange = (id: string, newName: string) => {
@@ -680,9 +681,12 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({ flowchart, onClose 
       });
       console.log(`Flowchart saved successfully`)
       setHasChanges(false);
+      fetchFlowcharts();
     } catch (error) {
       console.error("Error saving flowchart:", error);
       console.log("Failed to save flowchart.");
+    } finally {
+      fetchFlowcharts();
     }
   };
 
