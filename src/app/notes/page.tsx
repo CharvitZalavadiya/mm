@@ -18,7 +18,8 @@ interface Note {
   userId: string | null;
 }
 
-const baseUrl = "https://mind-maps-backend.onrender.com";
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+// const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:56765";
 
 const Notes: React.FC = () => {

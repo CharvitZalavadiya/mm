@@ -36,7 +36,8 @@ import FlowchartControlPanel from "../flowchartControlPanel/page";
 import axios from "axios";
 import { encryptData } from "@/utils/cryptojs";
 
-const baseUrl = "https://mind-maps-backend.onrender.com";
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+// const baseUrl = "https://mind-maps-backend.onrender.com";
 const localUrl = "http://localhost:56765";
 
 interface FlowchartDetailsProps {
