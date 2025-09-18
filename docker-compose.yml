@@ -1,31 +1,3 @@
-# version: "3.9"
-
-# services:
-#   app:
-#     container_name: Mindmaps
-#     build:
-#       context: .  # Build context pointing to the current directory
-#     image: charvitzalavadiya/mindmaps:dockerUpdate
-#     ports:
-#       - "3000:3000"  # Map the frontend port
-#       - "8080:8080"  # Map the backend port
-#     environment:
-#       NODE_ENV: development  # Environment variable for the app
-#       NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
-#       NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
-#       NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /notes
-#       NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /notes
-
-#     volumes:
-#       - .:/MM  # Mount the project directory into the container
-#       - /MM/node_modules  # Prevent overwriting node_modules in the container
-#     command: >
-#       sh -c "npx concurrently 'npm run dev:frontend' 'npm run dev:backend'"
-#     stdin_open: true  # Keeps stdin open for debugging
-#     tty: true         # Allocates a TTY for interactive debugging
-
-
-
 version: '3'
 
 services:

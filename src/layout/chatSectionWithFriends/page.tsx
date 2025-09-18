@@ -124,45 +124,6 @@ const ChatSectionWithFriends = () => {
     setMessage((prevMessage) => prevMessage + emoji);
   };
 
-  // const handleSendMessage = async () => {
-  //   if (message.trim() === "") return;
-
-  //   const now = new Date();
-
-  //   const istDate = new Date(
-  //     now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-  //   );
-
-  //   const timestamp = istDate.toISOString();
-
-  //   try {
-  //     await axios.post(`${baseUrl}/chat/sendMessage`, {
-  //       from: loggedinUser?.id,
-  //       to: selectedUser?.id,
-  //       content: encryptData(message),
-  //       timestamp: timestamp,
-  //     });
-
-  //     if (loggedinUser && selectedUser) {
-  //       setMessageHistory((prevMessages) => [
-  //         ...prevMessages,
-  //         {
-  //           from: loggedinUser.id,
-  //           to: selectedUser.id,
-  //           content: message,
-  //           timestamp,
-  //         },
-  //       ]);
-  //     }
-
-  //     setMessage("");
-
-  //     fetchMessageHistory();
-  //   } catch (error) {
-  //     console.error("Error sending message:", error);
-  //   }
-  // };
-
   const handleSendMessage = async () => {
     if (message.trim() === "") return;
 
