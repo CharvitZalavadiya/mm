@@ -33,6 +33,7 @@ import "@xyflow/react/dist/style.css";
 import FlowchartDetailTopPanel from "../flowchartDetailTopPanel/page";
 import "./style.css";
 import FlowchartControlPanel from "../flowchartControlPanel/page";
+import FlowchartAiBox from "../flowchartAiBox/page";
 import axios from "axios";
 import { encryptData } from "@/utils/cryptojs";
 
@@ -312,6 +313,18 @@ const FlowchartDetails: React.FC<FlowchartDetailsProps> = ({ flowchart, onClose,
               // onExport={handleExport}
               // onImport={handleImport}
             />
+          </Panel>
+          <Panel position="bottom-right">
+            <FlowchartAiBox onFlowchartGenerated={(data) => {
+        // Add the generated nodes and edges to your existing flowchart
+        const newNodes = data.nodes.map((node: { data: any; }) => ({
+            ...node,
+            data: { ...node.data, onNameChange: handleNameChange }
+        }));
+        setNodes((nds) => [...nds, ...newNodes]);
+        setEdges((eds) => [...eds, ...data.edges]);
+        setHasChanges(true);
+    }} />
           </Panel>
       </ReactFlow>
          
